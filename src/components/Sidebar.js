@@ -3,7 +3,7 @@ import SidebarRow from "./SidebarRow";
 import HomeIcon from "@material-ui/icons/Home";
 import WhatshotIcon from "@material-ui/icons/Whatshot";
 import SubscriptionsIcon from "@material-ui/icons/Subscriptions";
-import VideoLibraryIcon from "@material-ui/icons/VideoLibrary";
+import FitnessCenterIcon from "@material-ui/icons/FitnessCenter";
 import HistoryIcon from "@material-ui/icons/History";
 import OndemandVideoIcon from "@material-ui/icons/OndemandVideo";
 import WatchLaterIcon from "@material-ui/icons/WatchLater";
@@ -16,6 +16,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import FlagIcon from "@material-ui/icons/Flag";
 import HelpIcon from "@material-ui/icons/Help";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
+
 const Sidebar = () => {
   return (
     <div className="sidebar">
@@ -23,12 +24,16 @@ const Sidebar = () => {
       <SidebarRow Icon={WhatshotIcon} title="發燒影片" />
       <SidebarRow Icon={SubscriptionsIcon} title="訂閱內容" />
       <hr />
-      <SidebarRow Icon={VideoLibraryIcon} title="媒體庫" />
-      <SidebarRow Icon={HistoryIcon} title="觀看紀錄" />
-      <SidebarRow Icon={OndemandVideoIcon} title="你的影片" />
-      <SidebarRow Icon={WatchLaterIcon} title="稍後觀看" />
-      <SidebarRow Icon={ThumbUpAltIcon} title="喜歡的影片" />
-      <SidebarRow Icon={ExpandMoreOutlinedIcon} title="顯示更多" />
+      <SidebarRow Icon={FitnessCenterIcon} title="舉重" tutorial={true} />
+      <SidebarRow Icon={HistoryIcon} title="飛輪" tutorial={true} />
+      <SidebarRow Icon={OndemandVideoIcon} title="啞鈴" tutorial={true} />
+      <SidebarRow Icon={WatchLaterIcon} title="游泳" tutorial={true} />
+      <SidebarRow Icon={ThumbUpAltIcon} title="自主訓練" tutorial={true} />
+      <SidebarRow
+        Icon={ExpandMoreOutlinedIcon}
+        title="顯示更多"
+        tutorial={true}
+      />
       <hr />
       <h4>更多 YOUTUBE 內容</h4>
       <SidebarRow Icon={YouTubeIcon} title="YouTube Premium" />

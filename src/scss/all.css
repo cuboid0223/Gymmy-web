@@ -221,7 +221,7 @@
 }
 
 .sidebar-row:hover > .sidebar-row__icon {
-  color: red;
+  color: #50dd50;
 }
 
 .sidebar-row:hover > .sidebar-row__title {
@@ -247,7 +247,7 @@
 }
 
 .selected > .sidebar-row__icon {
-  color: red;
+  color: #50dd50;
 }
 
 .selected > .sidebar-row__title {
@@ -257,6 +257,11 @@
 .sidebarActive {
   -webkit-transform: translate(0%);
           transform: translate(0%);
+}
+
+.sidebarDisabled {
+  -webkit-transform: translate(-100%);
+          transform: translate(-100%);
 }
 
 .detailPage .sidebar {

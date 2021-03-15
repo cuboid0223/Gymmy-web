@@ -50,6 +50,11 @@
         $(".burgerIcon").click(function () {
           $(".sidebar").toggleClass("sidebarActive");
         });
+
+        $(".sidebar").click(function () {
+          console.log('sidebar-row click');
+          $(".sidebar").removeClass("sidebarActive");
+        })
       });
     </script>
   </body>

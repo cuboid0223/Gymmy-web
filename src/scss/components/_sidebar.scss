@@ -72,7 +72,7 @@
   }
 
   &:hover > &__icon {
-    color: red;
+    color: #50dd50;
   }
 
   &:hover > &__title {
@@ -96,7 +96,7 @@
   background-color: lightgray;
 
   & > .sidebar-row__icon {
-    color: red;
+    color: #50dd50;
   }
 
   & > .sidebar-row__title {
@@ -107,6 +107,9 @@
 .sidebarActive {
   transform: translate(0%);
   // display: block;
+}
+.sidebarDisabled {
+  transform: translate(-100%);
 }
 
 .detailPage .sidebar {

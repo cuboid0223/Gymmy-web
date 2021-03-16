@@ -82,6 +82,7 @@ function App() {
           </Route> */}
           <Route path="/">
             <div className="app__page detailPage">
+              <Sidebar />
               <MealPlan />
             </div>
           </Route>

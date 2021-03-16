@@ -1,4 +1,9 @@
 @import "./grid";
+@import "./global";
+
+// fonts
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,300&display=swap');
 
 // components
 @import "./components/app";
@@ -7,3 +12,4 @@
 @import "./components/video";
 @import "./components/searchPage";
 @import "./components/videoDetail";
+@import "./components/MealPlan";

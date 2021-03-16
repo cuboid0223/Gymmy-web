@@ -1,0 +1,36 @@
+$primary-color: #f5f5f5;
+$primary-font: "Lobster", cursive;
+$secondary-font: "Open Sans", sans-serif;
+.btn {
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: $primary-color;
+  //   color: "#444545";
+  letter-spacing: 5px;
+  font-size: 15px;
+  font-weight: bold;
+}
+.input {
+  border: none;
+  background-color: $primary-color;
+  padding: 10px;
+  font-size: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.select {
+  border: none;
+  background-color: $primary-color;
+  padding: 10px;
+  font-size: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+
+  & > option {
+    width: 100%;
+    // background-color: red;
+  }
+}

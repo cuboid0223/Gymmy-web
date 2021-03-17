@@ -3,7 +3,7 @@ import React from "react";
 import { useStateValue } from "../StateProvider";
 import { actionTypes } from "../reducer";
 
-const SidebarRow = ({ selected, Icon, title, tutorial }) => {
+const SidebarRow = ({ selected, Icon, title, tutorial, imageUrl }) => {
   const [{}, dispatch] = useStateValue();
   return (
     <div
@@ -18,7 +18,12 @@ const SidebarRow = ({ selected, Icon, title, tutorial }) => {
         }
       }}
     >
-      <Icon className="sidebar-row__icon" />
+      {imageUrl ? (
+        <img className='sidebar-row__imageUrl' src={imageUrl} />
+      ) : (
+        <Icon className="sidebar-row__icon" />
+      )}
+
       <h2 className="sidebar-row__title">{title}</h2>
     </div>
   );

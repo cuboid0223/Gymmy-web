@@ -91,7 +91,7 @@ const MealPlan = () => {
       {!meals && (
         <img
           className="mealPlan__logo"
-          src={require("../../assets/logo.png")}
+          src={require("../../assets/gymmy.png")}
           alt="Background"
         />
       )}
@@ -101,7 +101,11 @@ const MealPlan = () => {
           <ul className="mealPlan__item" key={meal.id}>
             <li>{meal.title}</li>
             {/* <li>{meal.servings} servings</li> */}
-            <a className="mealPlan__itemBtn" href={meal.sourceUrl}>
+            <a
+              className="mealPlan__itemBtn"
+              href={meal.sourceUrl}
+              target="view_window"
+            >
               Recipe
             </a>
           </ul>

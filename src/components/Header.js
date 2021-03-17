@@ -7,7 +7,7 @@ import AppsSharpIcon from "@material-ui/icons/AppsSharp";
 import NotificationsSharpIcon from "@material-ui/icons/NotificationsSharp";
 import { Avatar, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import Logo from "../assets/logo.png";
+import Logo from "../assets/gymmy.png";
 const Header = ({ onFormSubmit }) => {
   const [inputSearch, setInputSearch] = useState("");
   const [{ term }, dispatch] = useStateValue();
@@ -15,7 +15,7 @@ const Header = ({ onFormSubmit }) => {
     e.preventDefault();
     onFormSubmit(inputSearch);
   };
-  
+
   useEffect(() => {
     console.log("reducer send term: ", term);
     onFormSubmit(term);

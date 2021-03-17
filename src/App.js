@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import youtube from "./api/youtube";
 import { useHistory } from "react-router-dom";
 import MealPlan from "./components/MealPlan";
+import Profile from "./components/Profile";
+import GuessFoodNutrition from "./components/GuessFoodNutrition";
 
 function App() {
   // state = {
@@ -47,12 +49,6 @@ function App() {
       <Router>
         <Header onFormSubmit={handleSubmit} />
         <Switch>
-          <Route path="/mealPlan">
-            <div className="app__page detailPage">
-              <MealPlan />
-            </div>
-          </Route>
-
           {/* search detail page */}
           <Route path="/searchDetail">
             <div className="app__page detailPage">
@@ -73,6 +69,27 @@ function App() {
             </div>
           </Route>
 
+          {/* Meal Plan page */}
+          <Route path="/mealPlan">
+            <div className="app__page detailPage">
+              <Sidebar />
+              <MealPlan />
+            </div>
+          </Route>
+          {/* Profile */}
+          <Route path="/profile">
+            <div className="app__page detailPage">
+              <Sidebar />
+              <Profile />
+            </div>
+          </Route>
+
+          <Route path="/guessMealNutrition">
+            <div className="app__page detailPage">
+              <Sidebar />
+              <GuessFoodNutrition />
+            </div>
+          </Route>
           {/* home page */}
           {/* <Route path="/">
             <div className="app__page homePage">
@@ -80,12 +97,6 @@ function App() {
               <SearchPage videos={videos} onVideoSelect={onVideoSelect} />
             </div>
           </Route> */}
-          <Route path="/">
-            <div className="app__page detailPage">
-              <Sidebar />
-              <MealPlan />
-            </div>
-          </Route>
         </Switch>
       </Router>
     </div>

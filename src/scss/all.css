@@ -250,6 +250,12 @@
   padding: 10px 20px;
 }
 
+.sidebar-row__imageUrl {
+  -o-object-fit: contain;
+     object-fit: contain;
+  width: 30px;
+}
+
 .sidebar-row:hover {
   background-color: lightgray;
   cursor: pointer;
@@ -297,10 +303,6 @@
 .sidebarDisabled {
   -webkit-transform: translate(-100%);
           transform: translate(-100%);
-}
-
-.detailPage .sidebar {
-  display: none;
 }
 
 .video {
@@ -554,6 +556,7 @@
     -webkit-box-flex: 0.8;
         -ms-flex: 0.8;
             flex: 0.8;
+    margin: auto;
   }
 }
 
@@ -565,6 +568,12 @@
   left: 0%;
   top: 20%;
   z-index: -1;
+}
+
+@media (min-width: 768px) {
+  .mealPlan__logo {
+    display: none !important;
+  }
 }
 
 .mealPlan__infoContainer {
@@ -630,6 +639,12 @@
   bottom: 0px;
   -webkit-box-shadow: -1px -4px 12px 0px rgba(128, 128, 128, 0.44);
   box-shadow: -1px -4px 12px 0px rgba(128, 128, 128, 0.44);
+}
+
+@media (min-width: 768px) {
+  .mealPlan > form {
+    width: 80%;
+  }
 }
 
 .mealPlan input,

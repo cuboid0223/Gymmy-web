@@ -4,6 +4,7 @@
   //   overflow: hidden;
   @include desktop {
     flex: 0.8;
+    margin: auto;
   }
   &__logo {
     // height: 100%;
@@ -15,6 +16,9 @@
     left: 0%;
     top: 20%;
     z-index: -1;
+    @include desktop {
+      display: none !important;
+    }
   }
   &__infoContainer {
     margin-top: 100px;
@@ -53,6 +57,9 @@
   }
   & > form {
     width: 100%;
+    @include desktop {
+      width: 80%;
+    }
     padding: 20px;
     display: flex;
     flex-direction: column;

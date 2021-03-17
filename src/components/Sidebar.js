@@ -8,7 +8,7 @@ import HistoryIcon from "@material-ui/icons/History";
 import OndemandVideoIcon from "@material-ui/icons/OndemandVideo";
 import WatchLaterIcon from "@material-ui/icons/WatchLater";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
-import ExpandMoreOutlinedIcon from "@material-ui/icons/ExpandMoreOutlined";
+import AddIcon from "@material-ui/icons/Add";
 import YouTubeIcon from "@material-ui/icons/YouTube";
 import SportsEsportsIcon from "@material-ui/icons/SportsEsports";
 import CompassCalibrationIcon from "@material-ui/icons/CompassCalibration";
@@ -16,7 +16,8 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import FlagIcon from "@material-ui/icons/Flag";
 import HelpIcon from "@material-ui/icons/Help";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
-
+import KitchenIcon from "@material-ui/icons/Kitchen";
+import { Link } from "react-router-dom";
 const Sidebar = () => {
   return (
     <div className="sidebar">
@@ -29,16 +30,27 @@ const Sidebar = () => {
       <SidebarRow Icon={OndemandVideoIcon} title="啞鈴" tutorial={true} />
       <SidebarRow Icon={WatchLaterIcon} title="游泳" tutorial={true} />
       <SidebarRow Icon={ThumbUpAltIcon} title="自主訓練" tutorial={true} />
-      <SidebarRow
-        Icon={ExpandMoreOutlinedIcon}
-        title="顯示更多"
-        tutorial={true}
-      />
+      <SidebarRow Icon={AddIcon} title="增加更多" />
       <hr />
-      <h4>更多 YOUTUBE 內容</h4>
-      <SidebarRow Icon={YouTubeIcon} title="YouTube Premium" />
-      <SidebarRow Icon={SportsEsportsIcon} title="遊戲" />
-      <SidebarRow Icon={CompassCalibrationIcon} title="直播" />
+      <h4>更多 GYMMY 功能</h4>
+      <Link to="/guessMealNutrition">
+        <SidebarRow
+          imageUrl="https://img.icons8.com/ios-filled/100/000000/light-on.png"
+          title="GuessMealNutrition"
+        />
+      </Link>
+
+      <Link to="/mealPlan">
+        <SidebarRow
+          imageUrl="https://img.icons8.com/ios/50/000000/knife-and-spatchula.png"
+          title="MealPlan"
+        />
+      </Link>
+
+      <SidebarRow
+        title="Pick-up"
+        imageUrl="https://img.icons8.com/ios/50/000000/bot.png"
+      />
       <hr />
       <SidebarRow Icon={SettingsIcon} title="設定" />
       <SidebarRow Icon={FlagIcon} title="檢舉紀錄" />
@@ -63,7 +75,7 @@ const Sidebar = () => {
         </div>
       </div>
 
-      <div className="sidebar__copyRight">© 2020 Google LLC</div>
+      <div className="sidebar__copyRight">© 2021 Gymmy </div>
     </div>
   );
 };

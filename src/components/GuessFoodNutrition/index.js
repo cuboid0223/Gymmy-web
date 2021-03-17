@@ -6,23 +6,34 @@ const GuessFoodNutrition = () => {
   const fileInputRef = useRef(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [base64, setBase64] = useState(null);
+  
+  const onFileDrop = (files) => {
+    console.log("file: ", files[0]);
+    if (files[0] && files) {
+      filetoDataUri(files[0]);
+    }
+  };
   // click the drop area
   const onFileInputChange = (event) => {
     const { files } = event.target;
     console.log("file: ", files[0]);
     // change file to dataUri
     if (files[0] && files) {
-      var reader = new FileReader();
-      reader.addEventListener("load", function (e) {
-        const uri = e.target.result;
-        // display image on browser
-        // console.log("uri: ", uri);
-        setImageUrl(uri);
-        // change dataUri to base64(blob) -> for request
-        setBase64(dataURItoBlob(uri));
-      });
-      reader.readAsDataURL(files[0]);
+      filetoDataUri(files[0]);
     }
+  };
+
+  const filetoDataUri = (file) => {
+    var reader = new FileReader();
+    reader.addEventListener("load", function (e) {
+      const uri = e.target.result;
+      // display image on browser
+      // console.log("uri: ", uri);
+      setImageUrl(uri);
+      // change dataUri to base64(blob) -> for request
+      setBase64(dataURItoBlob(uri));
+    });
+    reader.readAsDataURL(file);
   };
 
   const dataURItoBlob = (dataURI) => {
@@ -45,10 +56,8 @@ const GuessFoodNutrition = () => {
   };
 
   const onTargetClick = () => {
+    // 即下方的 <input> 點擊，會跳出選擇檔案
     fileInputRef.current.click();
-    console.log("onTargetClick");
-    // console.log(fileInputRef);
-    console.log(fileInputRef.current);
   };
 
   useEffect(() => {
@@ -81,9 +90,9 @@ const GuessFoodNutrition = () => {
       });
   }, [base64]);
   return (
-    <div className="guessMealNutrition" style={{ marginTop: "200px" }}>
+    <div className="guessFoodNutrition" style={{ marginTop: "200px" }}>
       <div
-        className="guessMealNutrition__fileDrop"
+        className="guessFoodNutrition__fileDrop"
         style={{
           border: "1px solid black",
           width: "100%",
@@ -97,18 +106,18 @@ const GuessFoodNutrition = () => {
           onFrameDrop={(event) => console.log("onFrameDrop", event)}
           onDragOver={(event) => console.log("onDragOver", event)}
           onDragLeave={(event) => console.log("onDragLeave", event)}
-          onDrop={(files, event) => console.log("onDrop!", files, event)}
+          onDrop={onFileDrop}
           onTargetClick={onTargetClick}
         >
           Drop some files here!
         </FileDrop>
-        <input
-          onChange={onFileInputChange}
-          ref={fileInputRef}
-          type="file"
-          className="hidden"
-        />
       </div>
+      <input
+        onChange={onFileInputChange}
+        ref={fileInputRef}
+        type="file"
+        className="hidden"
+      />
       {imageUrl && <img src={imageUrl} alt="..." />}
     </div>
   );

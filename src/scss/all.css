@@ -767,6 +767,7 @@
 }
 
 .pickUpRobot__messageContainer {
+  margin-top: 60px;
   background-color: #f5f5f5;
   padding: 5px;
   -webkit-box-flex: 1;
@@ -777,7 +778,7 @@
 }
 
 .pickUpRobot__userText {
-  margin-top: 5px;
+  margin-top: 20px;
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
@@ -794,11 +795,14 @@
 }
 
 .pickUpRobot__robotText {
-  margin-top: 190px;
+  margin-top: 20px;
+  margin-right: 30px;
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
-  background-color: #7bd1aa;
+  font-family: "Open Sans", sans-serif;
+  background-color: #2a7cb3;
+  color: #f5f5f5;
   border-radius: 20px;
   -webkit-box-shadow: -4px 3px 13px 0px rgba(50, 50, 50, 0.53);
   box-shadow: -4px 3px 13px 0px rgba(50, 50, 50, 0.53);
@@ -832,5 +836,9 @@
           flex: 0.8;
   font-size: 18px;
   font-family: "Open Sans", sans-serif;
+}
+
+.pickUpRobot .message_display_none {
+  display: none;
 }
 /*# sourceMappingURL=all.css.map */

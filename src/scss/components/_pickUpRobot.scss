@@ -4,6 +4,7 @@
   flex-direction: column;
 
   &__messageContainer {
+    margin-top: 60px;
     background-color: $primary-color;
     padding: 5px;
     flex: 1;
@@ -11,7 +12,7 @@
     overflow-x: hidden;
   }
   &__userText {
-    margin-top: 5px;
+    margin-top: 20px;
     width: fit-content;
     margin-left: auto;
     background-color: $secondary-color;
@@ -25,10 +26,12 @@
     }
   }
   &__robotText {
-    margin-top: 190px;
+    margin-top: 20px;
+    margin-right: 30px;
     width: fit-content;
-    // margin-left: auto;
-    background-color: $secondary-color;
+    font-family: $secondary-font;
+    background-color: $third-color;
+    color: $primary-color;
     border-radius: 20px;
     -webkit-box-shadow: -4px 3px 13px 0px rgba(50, 50, 50, 0.53);
     -moz-box-shadow: -4px 3px 13px 0px rgba(50, 50, 50, 0.53);
@@ -53,5 +56,9 @@
       font-size: 18px;
       font-family: $secondary-font;
     }
+  }
+
+  .message_display_none {
+    display: none;
   }
 }

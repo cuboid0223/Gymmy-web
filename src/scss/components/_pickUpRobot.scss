@@ -7,9 +7,11 @@
     background-color: $primary-color;
     padding: 5px;
     flex: 1;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
   &__userText {
-    margin-top: 190px;
+    margin-top: 5px;
     width: fit-content;
     margin-left: auto;
     background-color: $secondary-color;

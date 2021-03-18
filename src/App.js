@@ -93,7 +93,7 @@ function App() {
               <GuessFoodNutrition />
             </div>
           </Route>
-          
+
           {/* pickUp robot */}
           <Route path="/pickUpRobot">
             <div className="app__page detailPage">
@@ -103,12 +103,12 @@ function App() {
           </Route>
 
           {/* home page */}
-          <Route path="/">
+          {/* <Route path="/">
             <div className="app__page homePage">
               <Sidebar />
               <SearchPage videos={videos} onVideoSelect={onVideoSelect} />
             </div>
-          </Route>
+          </Route> */}
         </Switch>
       </Router>
     </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import SendIcon from "@material-ui/icons/Send";
 import { IconButton } from "@material-ui/core";
 import axios from "axios";
+import FlipMove from "react-flip-move";
 
 const PickUpRobot = () => {
   const [isUser, setIsUser] = useState(true); // 還沒接後端 先用 true false 替代
@@ -71,17 +72,24 @@ const PickUpRobot = () => {
           </p>
         </div>
         {/* user ask message */}
-        {messages.map(({ message, answer, user }) => (
-          <div
-            className={
-              //判斷訊息是否人為使用者輸入
-              user ? "pickUpRobot__userText" : "pickUpRobot__robotText"
-            }
-          >
-            <p className={!message && "message_display_none"}>{message}</p>
-            <p className={!answer && "message_display_none"}>{answer}</p>
-          </div>
-        ))}
+        <FlipMove>
+          {messages.map(({ message, answer, user, imageUrl }) => (
+            <div
+              className={
+                //判斷訊息是否人為使用者輸入
+                user ? "pickUpRobot__userText" : "pickUpRobot__robotText"
+              }
+            >
+              <p className={!message && "message_display_none"}>{message}</p>
+              <p className={!answer && "message_display_none"}>{answer}</p>
+              <img
+                className={!imageUrl && "message_display_none"}
+                src={imageUrl}
+                alt="message__image"
+              />
+            </div>
+          ))}
+        </FlipMove>
       </div>
 
       <form className="pickUpRobot__inputContainer" onSubmit={sendTextFunc}>

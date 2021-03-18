@@ -1,0 +1,55 @@
+.pickUpRobot {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  &__messageContainer {
+    background-color: $primary-color;
+    padding: 5px;
+    flex: 1;
+  }
+  &__userText {
+    margin-top: 190px;
+    width: fit-content;
+    margin-left: auto;
+    background-color: $secondary-color;
+    border-radius: 20px;
+    -webkit-box-shadow: 4px 4px 13px 0px rgba(50, 50, 50, 0.53);
+    -moz-box-shadow: 4px 4px 13px 0px rgba(50, 50, 50, 0.53);
+    box-shadow: 4px 4px 13px 0px rgba(50, 50, 50, 0.53);
+    & > p {
+      padding: 10px;
+      text-align: left;
+    }
+  }
+  &__robotText {
+    margin-top: 190px;
+    width: fit-content;
+    // margin-left: auto;
+    background-color: $secondary-color;
+    border-radius: 20px;
+    -webkit-box-shadow: -4px 3px 13px 0px rgba(50, 50, 50, 0.53);
+    -moz-box-shadow: -4px 3px 13px 0px rgba(50, 50, 50, 0.53);
+    box-shadow: -4px 3px 13px 0px rgba(50, 50, 50, 0.53);
+    & > p {
+      padding: 10px;
+      text-align: left;
+    }
+  }
+  &__inputContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    -webkit-box-shadow: -1px -4px 12px 0px rgba(128, 128, 128, 0.44);
+    -moz-box-shadow: -1px -4px 12px 0px rgba(128, 128, 128, 0.44);
+    box-shadow: -1px -4px 12px 0px rgba(128, 128, 128, 0.44);
+    & > input {
+      padding: 10px;
+      border: none;
+      flex: 0.8;
+      font-size: 18px;
+      font-family: $secondary-font;
+    }
+  }
+}

@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import MealPlan from "./components/MealPlan";
 import Profile from "./components/Profile";
 import GuessFoodNutrition from "./components/GuessFoodNutrition";
+import PickUpRobot from "./components/PickUpRobot";
 
 function App() {
   // state = {
@@ -76,6 +77,7 @@ function App() {
               <MealPlan />
             </div>
           </Route>
+
           {/* Profile */}
           <Route path="/profile">
             <div className="app__page detailPage">
@@ -84,19 +86,29 @@ function App() {
             </div>
           </Route>
 
+          {/* GuessMealNutrition */}
           <Route path="/guessMealNutrition">
             <div className="app__page detailPage">
               <Sidebar />
               <GuessFoodNutrition />
             </div>
           </Route>
+          
+          {/* pickUp robot */}
+          <Route path="/pickUpRobot">
+            <div className="app__page detailPage">
+              <Sidebar />
+              <PickUpRobot />
+            </div>
+          </Route>
+
           {/* home page */}
-          {/* <Route path="/">
+          <Route path="/">
             <div className="app__page homePage">
               <Sidebar />
               <SearchPage videos={videos} onVideoSelect={onVideoSelect} />
             </div>
-          </Route> */}
+          </Route>
         </Switch>
       </Router>
     </div>

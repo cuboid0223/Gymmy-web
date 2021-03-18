@@ -1,22 +1,44 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { FileDrop } from "react-file-drop";
+import Modal from "react-modal";
 
 const GuessFoodNutrition = () => {
   const fileInputRef = useRef(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [base64, setBase64] = useState(null);
-  
+  const [meal, setMeal] = useState(null);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  Modal.setAppElement(document.getElementById("root"));
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  // drop the file on drop area
   const onFileDrop = (files) => {
     console.log("file: ", files[0]);
     if (files[0] && files) {
       filetoDataUri(files[0]);
     }
   };
-  // click the drop area
+  // when click the drop area
   const onFileInputChange = (event) => {
     const { files } = event.target;
-    console.log("file: ", files[0]);
+    // console.log("file: ", files[0]);
     // change file to dataUri
     if (files[0] && files) {
       filetoDataUri(files[0]);
@@ -60,6 +82,7 @@ const GuessFoodNutrition = () => {
     fileInputRef.current.click();
   };
 
+  // request
   useEffect(() => {
     if (!base64) {
       return;
@@ -84,22 +107,19 @@ const GuessFoodNutrition = () => {
       .request(options)
       .then(function (response) {
         console.log(response.data);
+        setMeal(response.data);
+        // 等資料回傳 打開 modal
+
+        setIsOpen(true);
       })
       .catch(function (error) {
         console.error(error);
       });
   }, [base64]);
   return (
-    <div className="guessFoodNutrition" style={{ marginTop: "200px" }}>
-      <div
-        className="guessFoodNutrition__fileDrop"
-        style={{
-          border: "1px solid black",
-          width: "100%",
-          color: "black",
-          padding: 20,
-        }}
-      >
+    <div className="guessFoodNutrition" id="guessFoodNutrition">
+      <h1>Guess Your Meal Nutrition</h1>
+      <div className="guessFoodNutrition__fileDrop">
         <FileDrop
           onFrameDragEnter={(event) => console.log("onFrameDragEnter", event)}
           onFrameDragLeave={(event) => console.log("onFrameDragLeave", event)}
@@ -109,16 +129,35 @@ const GuessFoodNutrition = () => {
           onDrop={onFileDrop}
           onTargetClick={onTargetClick}
         >
-          Drop some files here!
+          <p>Drop or select a file here!</p>
         </FileDrop>
       </div>
       <input
         onChange={onFileInputChange}
         ref={fileInputRef}
         type="file"
-        className="hidden"
+        className="hiddenInput"
       />
-      {imageUrl && <img src={imageUrl} alt="..." />}
+      {imageUrl && (
+        <img className="guessFoodNutrition__image" src={imageUrl} alt="..." />
+      )}
+
+      {meal && (
+        <div style={{ backgroundColor: "red" }}>
+          <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+            style={customStyles}
+            contentLabel="Example Modal"
+          >
+            <button onClick={closeModal}>close</button>
+            <p>{meal.category.name}</p>
+            <p>
+              {meal.nutrition.calories.value} {meal.nutrition.calories.unit}
+            </p>
+          </Modal>
+        </div>
+      )}
     </div>
   );
 };

@@ -7,6 +7,7 @@
   background-color: #fff;
   position: fixed;
   top: 70px;
+  font-family: $secondary-font;
 
   left: 0;
   z-index: 10;
@@ -22,7 +23,7 @@
   & > hr {
     height: 1px;
     border: 0;
-    background-color: lightgray;
+    background-color: $secondary-color;
     margin-top: 10px;
     margin-bottom: 10px;
   }
@@ -77,7 +78,7 @@
   }
 
   &:hover > &__icon {
-    color: #50dd50;
+    color: $secondary-color;
   }
 
   &:hover > &__title {
@@ -101,7 +102,7 @@
   background-color: lightgray;
 
   & > .sidebar-row__icon {
-    color: #50dd50;
+    color: $third-color;
   }
 
   & > .sidebar-row__title {

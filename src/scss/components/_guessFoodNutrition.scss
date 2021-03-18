@@ -1,9 +1,29 @@
 .guessFoodNutrition {
-    
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  & > h1 {
+    font-family: $primary-font;
+    font-weight: normal;
+    color: $secondary-color;
+  }
+
+  &__fileDrop {
+    width: 100%;
+
+    & p {
+      font-family: $secondary-font;
+      color: $primary-color;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
   .file-drop {
     /* relatively position the container bc the contents are absolute */
     position: relative;
-    height: 100px;
+    height: 300px;
     width: 100%;
   }
 
@@ -14,6 +34,7 @@
     left: 0;
     height: 100%;
     width: 100%;
+    background-color: $secondary-color;
     border-radius: 2px;
 
     /* horizontally and vertically center all content */
@@ -62,4 +83,15 @@
     color: #ff6e40;
     box-shadow: 0 0 13px 3px #ff6e40;
   }
+
+  .hiddenInput {
+    display: none;
+  }
+
+  &__image {
+    object-fit: contain;
+    width: 100%;
+  }
+
+ 
 }

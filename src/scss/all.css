@@ -185,6 +185,7 @@
   background-color: #fff;
   position: fixed;
   top: 70px;
+  font-family: "Open Sans", sans-serif;
   left: 0;
   z-index: 10;
   padding-bottom: 60px;
@@ -204,7 +205,7 @@
 .sidebar > hr {
   height: 1px;
   border: 0;
-  background-color: lightgray;
+  background-color: #7bd1aa;
   margin-top: 10px;
   margin-bottom: 10px;
 }
@@ -262,7 +263,7 @@
 }
 
 .sidebar-row:hover > .sidebar-row__icon {
-  color: #50dd50;
+  color: #7bd1aa;
 }
 
 .sidebar-row:hover > .sidebar-row__title {
@@ -288,7 +289,7 @@
 }
 
 .selected > .sidebar-row__icon {
-  color: #50dd50;
+  color: #2a7cb3;
 }
 
 .selected > .sidebar-row__title {
@@ -653,10 +654,44 @@
   font-family: "Lobster", cursive;
 }
 
+.guessFoodNutrition {
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.guessFoodNutrition > h1 {
+  font-family: "Lobster", cursive;
+  font-weight: normal;
+  color: #7bd1aa;
+}
+
+.guessFoodNutrition__fileDrop {
+  width: 100%;
+}
+
+.guessFoodNutrition__fileDrop p {
+  font-family: "Open Sans", sans-serif;
+  color: #f5f5f5;
+  font-size: 20px;
+  font-weight: bold;
+}
+
 .guessFoodNutrition .file-drop {
   /* relatively position the container bc the contents are absolute */
   position: relative;
-  height: 100px;
+  height: 300px;
   width: 100%;
 }
 
@@ -667,6 +702,7 @@
   left: 0;
   height: 100%;
   width: 100%;
+  background-color: #7bd1aa;
   border-radius: 2px;
   /* horizontally and vertically center all content */
   display: flex;
@@ -707,5 +743,92 @@
   color: #ff6e40;
   -webkit-box-shadow: 0 0 13px 3px #ff6e40;
           box-shadow: 0 0 13px 3px #ff6e40;
+}
+
+.guessFoodNutrition .hiddenInput {
+  display: none;
+}
+
+.guessFoodNutrition__image {
+  -o-object-fit: contain;
+     object-fit: contain;
+  width: 100%;
+}
+
+.pickUpRobot {
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.pickUpRobot__messageContainer {
+  background-color: #f5f5f5;
+  padding: 5px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.pickUpRobot__userText {
+  margin-top: 190px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin-left: auto;
+  background-color: #7bd1aa;
+  border-radius: 20px;
+  -webkit-box-shadow: 4px 4px 13px 0px rgba(50, 50, 50, 0.53);
+  box-shadow: 4px 4px 13px 0px rgba(50, 50, 50, 0.53);
+}
+
+.pickUpRobot__userText > p {
+  padding: 10px;
+  text-align: left;
+}
+
+.pickUpRobot__robotText {
+  margin-top: 190px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  background-color: #7bd1aa;
+  border-radius: 20px;
+  -webkit-box-shadow: -4px 3px 13px 0px rgba(50, 50, 50, 0.53);
+  box-shadow: -4px 3px 13px 0px rgba(50, 50, 50, 0.53);
+}
+
+.pickUpRobot__robotText > p {
+  padding: 10px;
+  text-align: left;
+}
+
+.pickUpRobot__inputContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 10px;
+  -webkit-box-shadow: -1px -4px 12px 0px rgba(128, 128, 128, 0.44);
+  box-shadow: -1px -4px 12px 0px rgba(128, 128, 128, 0.44);
+}
+
+.pickUpRobot__inputContainer > input {
+  padding: 10px;
+  border: none;
+  -webkit-box-flex: 0.8;
+      -ms-flex: 0.8;
+          flex: 0.8;
+  font-size: 18px;
+  font-family: "Open Sans", sans-serif;
 }
 /*# sourceMappingURL=all.css.map */

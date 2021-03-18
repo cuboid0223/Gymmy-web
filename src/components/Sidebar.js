@@ -21,18 +21,22 @@ import { Link } from "react-router-dom";
 const Sidebar = () => {
   return (
     <div className="sidebar">
-      <SidebarRow selected Icon={HomeIcon} title="首頁" />
-      <SidebarRow Icon={WhatshotIcon} title="發燒影片" />
-      <SidebarRow Icon={SubscriptionsIcon} title="訂閱內容" />
+      <SidebarRow selected Icon={HomeIcon} title="Homepage" />
+      <SidebarRow Icon={WhatshotIcon} title="hoto" />
+      {/* <SidebarRow Icon={SubscriptionsIcon} title="訂閱內容" /> */}
       <hr />
-      <SidebarRow Icon={FitnessCenterIcon} title="舉重" tutorial={true} />
-      <SidebarRow Icon={HistoryIcon} title="飛輪" tutorial={true} />
-      <SidebarRow Icon={OndemandVideoIcon} title="啞鈴" tutorial={true} />
-      <SidebarRow Icon={WatchLaterIcon} title="游泳" tutorial={true} />
-      <SidebarRow Icon={ThumbUpAltIcon} title="自主訓練" tutorial={true} />
-      <SidebarRow Icon={AddIcon} title="增加更多" />
+      <SidebarRow
+        Icon={FitnessCenterIcon}
+        title="Weight Training"
+        tutorial={true}
+      />
+      <SidebarRow Icon={HistoryIcon} title="Spinning Bike" tutorial={true} />
+      <SidebarRow Icon={OndemandVideoIcon} title="Dumbbells" tutorial={true} />
+      <SidebarRow Icon={WatchLaterIcon} title="Swim" tutorial={true} />
+      <SidebarRow Icon={ThumbUpAltIcon} title="Self-training" tutorial={true} />
+      <SidebarRow Icon={AddIcon} title="Add more" />
       <hr />
-      <h4>更多 GYMMY 功能</h4>
+      <h4>More GYMMY functions</h4>
       <Link to="/guessMealNutrition">
         <SidebarRow
           imageUrl="https://img.icons8.com/ios-filled/100/000000/light-on.png"
@@ -46,13 +50,14 @@ const Sidebar = () => {
           title="MealPlan"
         />
       </Link>
-
-      <SidebarRow
-        title="Pick-up"
-        imageUrl="https://img.icons8.com/ios/50/000000/bot.png"
-      />
+      <Link to="/pickUpRobot">
+        <SidebarRow
+          title="Pick-up"
+          imageUrl="https://img.icons8.com/ios/50/000000/bot.png"
+        />
+      </Link>
       <hr />
-      <SidebarRow Icon={SettingsIcon} title="設定" />
+      <SidebarRow Icon={SettingsIcon} title="Settings" />
       <SidebarRow Icon={FlagIcon} title="檢舉紀錄" />
       <SidebarRow Icon={HelpIcon} title="說明" />
       <SidebarRow Icon={QuestionAnswerIcon} title="提供意見" />

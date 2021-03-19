@@ -10,15 +10,15 @@ const PickUpRobot = () => {
   const [sendText, setSendText] = useState([]); // 已傳送的訊息
   const [messages, setMessages] = useState([]);
   //   const [robotAnswers, setRobotAnswers] = useState([]);
-  console.log("sendText: ", sendText);
+  //console.log("sendText: ", sendText);
 
   const sendTextFunc = (e) => {
     e.preventDefault();
-    console.log("inputText: ", inputText);
+    //console.log("inputText: ", inputText);
     setSendText([...sendText, { message: inputText, user: isUser }]);
     setMessages([...messages, { message: inputText, user: isUser }]);
-    console.log("messages: ", messages);
-    console.log("sendText: ", sendText);
+    //console.log("messages: ", messages);
+    //console.log("sendText: ", sendText);
     setInputText(""); // clear input file
 
     // when add new message, we don't need to scroll down
@@ -46,7 +46,7 @@ const PickUpRobot = () => {
     axios
       .request(options)
       .then(function (response) {
-        console.log(response.data);
+        //console.log(response.data);
         const ans = response.data.answer;
         const imageUrl = response.data.image;
         setMessages([...messages, { answer: ans, imageUrl: imageUrl }]);
@@ -56,23 +56,22 @@ const PickUpRobot = () => {
         console.error(error);
       });
   }, [sendText]);
-  console.log("messages: ", messages);
+  // console.log("messages: ", messages);
   return (
     <div className="pickUpRobot">
       {/* message container  */}
       <div className="pickUpRobot__messageContainer" id="messageContainer">
-        {/* robot default message */}
-        <div className="pickUpRobot__robotText">
-          <p>
-            Hey!
-            <br />
-            I am Pick-Up, you can ask me anything about 'nutrition'.
-            <br />
-            For example, How much vitamin c is in 2 apples?
-          </p>
-        </div>
-        {/* user ask message */}
         <FlipMove>
+          {/* robot default message */}
+          <div className="pickUpRobot__robotText">
+            <p>
+              Hey!
+              <br />
+              I am Pick-Up, you can ask me anything about 'nutrition'.
+              <br />
+              For example, How much vitamin c is in 2 apples?
+            </p>
+          </div>
           {messages.map(({ message, answer, user, imageUrl }) => (
             <div
               className={
@@ -101,7 +100,12 @@ const PickUpRobot = () => {
             setInputText(e.target.value);
           }}
         />
-        <IconButton type="submit" onClick={sendTextFunc} disabled={!inputText}>
+        <IconButton
+          className="pickUpRobot__sendIcon"
+          type="submit"
+          onClick={sendTextFunc}
+          disabled={!inputText}
+        >
           <SendIcon fontSize="large" />
         </IconButton>
       </form>

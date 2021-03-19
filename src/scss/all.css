@@ -241,6 +241,26 @@
   font-size: 12px;
 }
 
+.sidebar .addSidebarRow {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 10px 20px;
+}
+
+.sidebar .addSidebarRow__form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.sidebar .addSidebarRow__form-disabled {
+  display: none;
+}
+
 .sidebar-row {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -282,6 +302,10 @@
   margin-left: 20px;
   font-size: 14px;
   font-weight: 400;
+}
+
+.sidebar-row__title-disabled {
+  display: none;
 }
 
 .selected {
@@ -836,6 +860,14 @@
           flex: 0.8;
   font-size: 18px;
   font-family: "Open Sans", sans-serif;
+}
+
+.pickUpRobot__sendIcon {
+  cursor: pointer;
+}
+
+.pickUpRobot__sendIcon:hover {
+  color: #7bd1aa;
 }
 
 .pickUpRobot .message_display_none {

@@ -1,7 +1,7 @@
 import React from "react";
 // React Context API
-import { useStateValue } from "../StateProvider";
-import { actionTypes } from "../reducer";
+import { useStateValue } from "../../../StateProvider";
+import { actionTypes } from "../../../reducer";
 
 const SidebarRow = ({ selected, Icon, title, tutorial, imageUrl }) => {
   const [{}, dispatch] = useStateValue();
@@ -19,7 +19,7 @@ const SidebarRow = ({ selected, Icon, title, tutorial, imageUrl }) => {
       }}
     >
       {imageUrl ? (
-        <img className='sidebar-row__imageUrl' src={imageUrl} />
+        <img className="sidebar-row__imageUrl" src={imageUrl} />
       ) : (
         <Icon className="sidebar-row__icon" />
       )}

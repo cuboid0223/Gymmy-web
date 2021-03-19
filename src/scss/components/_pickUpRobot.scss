@@ -58,6 +58,13 @@
     }
   }
 
+  &__sendIcon {
+    cursor: pointer;
+    &:hover {
+      color: $secondary-color;
+    }
+  }
+
   .message_display_none {
     display: none;
   }

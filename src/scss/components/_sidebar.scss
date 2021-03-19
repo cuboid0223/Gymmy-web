@@ -59,6 +59,18 @@
     color: #444545;
     font-size: 12px;
   }
+  .addSidebarRow {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+
+    &__form {
+      display: flex;
+    }
+    &__form-disabled {
+      display: none;
+    }
+  }
 }
 
 // sidebar-row components
@@ -95,6 +107,9 @@
     margin-left: 20px;
     font-size: 14px;
     font-weight: 400;
+  }
+  &__title-disabled {
+    display: none;
   }
 }
 

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import SidebarRow from "./SidebarRow/SidebarRow";
-import AddSidebarRow from "./AddSidebarRow";
-import { useStateValue } from "../.././StateProvider";
 
 import HomeIcon from "@material-ui/icons/Home";
 import WhatshotIcon from "@material-ui/icons/Whatshot";
@@ -23,29 +21,28 @@ const Sidebar = () => {
   const [newSidebarName, setNewSidebarName] = useState("");
   const [newSidebarNames, setNewSidebarNames] = useState([]);
   const [editFormOpen, setEditFormOpen] = useState(false);
-  // const [{}, dispatch] = useStateValue();
 
+  // when click submit -> (CheckBoxIcon)
   const addSidebarRow = (e) => {
     e.preventDefault();
-    console.log("newSidebarName: ", newSidebarName);
-    // 將新的 newSidebarName 加入陣列，存入session 中
+    // console.log("newSidebarName: ", newSidebarName);
+    // 將新的 newSidebarName 加入陣列，存入session 中 <- 待辦
     setNewSidebarNames([...newSidebarNames, newSidebarName]);
-     console.log("newSidebarNames: ", newSidebarNames);
+    // console.log("newSidebarNames: ", newSidebarNames);
     // sessionStorage.setItem("newSidebarNames", [newSidebarName]);
-    // setEditFormOpen(false);
-    setNewSidebarName("");
+
+    setNewSidebarName(""); // clear input when submit
   };
 
-  // useEffect(() => {
-  //   console.log("hello");
-   
-  // }, []);
+  // close the sidebar edit Form
+  useEffect(() => {
+    setEditFormOpen(false);
+  }, [newSidebarNames]);
 
   return (
     <div className="sidebar">
       <SidebarRow selected Icon={HomeIcon} title="Homepage" />
       <SidebarRow Icon={WhatshotIcon} title="hoto" />
-      {/* <SidebarRow Icon={SubscriptionsIcon} title="訂閱內容" /> */}
       <hr />
       {newSidebarNames.map((newSidebarName) => (
         <SidebarRow
@@ -63,8 +60,7 @@ const Sidebar = () => {
       <SidebarRow Icon={OndemandVideoIcon} title="Dumbbells" tutorial={true} />
       <SidebarRow Icon={WatchLaterIcon} title="Swim" tutorial={true} />
       <SidebarRow Icon={ThumbUpAltIcon} title="Self-training" tutorial={true} />
-      {/* <SidebarRow Icon={AddIcon} title="Add more" /> */}
-      {/* <AddSidebarRow addSidebarRow={addSidebarRow} /> */}
+      {/* add own sidebar */}
       <div className="addSidebarRow" onClick={() => setEditFormOpen(true)}>
         <AddIcon className="sidebar-row__icon" />
         <h2

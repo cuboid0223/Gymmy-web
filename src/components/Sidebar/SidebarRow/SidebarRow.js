@@ -3,11 +3,11 @@ import React from "react";
 import { useStateValue } from "../../../StateProvider";
 import { actionTypes } from "../../../reducer";
 
-const SidebarRow = ({ selected, Icon, title, tutorial, imageUrl }) => {
+const SidebarRow = ({ selected, Icon, title, tutorial, imageUrl, color }) => {
   const [{}, dispatch] = useStateValue();
   return (
     <div
-      className={`sidebar-row ${selected && "selected"}`}
+      className={`sidebar-row ${selected && "selected"} ${color && "color-red"}`}
       onClick={() => {
         console.log("click");
         if (tutorial) {

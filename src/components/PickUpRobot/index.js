@@ -79,10 +79,10 @@ const PickUpRobot = () => {
                 user ? "pickUpRobot__userText" : "pickUpRobot__robotText"
               }
             >
-              <p className={!message && "message_display_none"}>{message}</p>
-              <p className={!answer && "message_display_none"}>{answer}</p>
+              <p className={!message ? "message_display_none" : ""}>{message}</p>
+              <p className={!answer ? "message_display_none" : ""}>{answer}</p>
               <img
-                className={!imageUrl && "message_display_none"}
+                className={!imageUrl ? "message_display_none" : ""}
                 src={imageUrl}
                 alt="message__image"
               />

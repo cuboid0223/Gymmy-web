@@ -1,18 +1,23 @@
 import firebase from "firebase";
 
 const firebaseApp = firebase.initializeApp({
-  apiKey: "AIzaSyDtZRlr8VhUqz1UE9pfhh4P5xY9zrT-QiU",
-  authDomain: "clone-5f6a5.firebaseapp.com",
-  databaseURL: "https://clone-5f6a5.firebaseio.com",
-  projectId: "clone-5f6a5",
-  storageBucket: "clone-5f6a5.appspot.com",
-  messagingSenderId: "305067351667",
-  appId: "1:305067351667:web:5ffe7339ba9198ba385406",
-  measurementId: "G-3K39B98771",
+  apiKey: "AIzaSyCcTlCACx5wlGyUxYnAXDCzVpJst_J6odE",
+  authDomain: "gymmy-web.firebaseapp.com",
+  projectId: "gymmy-web",
+  storageBucket: "gymmy-web.appspot.com",
+  messagingSenderId: "270409726503",
+  appId: "1:270409726503:web:2d4424d7c320f640952c02",
+  measurementId: "G-HF0C3Z47VW",
 });
 
-const db = firebaseApp.firestore();
 
-export default db;
+
+const db = firebaseApp.firestore();
+const auth = firebase.auth(); // log in func
+const storage = firebase.storage(); // to upload image
+
+
+
+export { db, auth, storage };
 
 //

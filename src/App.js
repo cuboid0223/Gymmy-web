@@ -95,12 +95,12 @@ function App() {
           </Route>
 
           {/* pickUp robot */}
-          {/* <Route path="/pickUpRobot">
+          <Route path="/pickUpRobot">
             <div className="app__page detailPage">
               <Sidebar />
               <PickUpRobot />
             </div>
-          </Route> */}
+          </Route>
 
           {/* home page */}
           <Route path="/">

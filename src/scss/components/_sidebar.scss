@@ -124,7 +124,12 @@
     font-weight: bold;
   }
 }
-
+.color-red {
+  color: red;
+  & > .sidebar-row__icon {
+    color: red;
+  }
+}
 .sidebarActive {
   transform: translate(0%);
   // display: block;

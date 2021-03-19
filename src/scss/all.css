@@ -320,6 +320,14 @@
   font-weight: bold;
 }
 
+.color-red {
+  color: red;
+}
+
+.color-red > .sidebar-row__icon {
+  color: red;
+}
+
 .sidebarActive {
   -webkit-transform: translate(0%);
           transform: translate(0%);
@@ -872,5 +880,62 @@
 
 .pickUpRobot .message_display_none {
   display: none;
+}
+
+.profile {
+  margin-top: 70px;
+  height: 100%;
+  background-color: #f5f5f5;
+  font-family: "Open Sans", sans-serif;
+}
+
+.profile__infoContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.profile > .personalBasicInfoContainer {
+  background-color: #fefefe;
+  padding: 20px;
+  -webkit-box-shadow: 0px 3px 11px 0px rgba(50, 50, 50, 0.69);
+  box-shadow: 0px 3px 11px 0px rgba(50, 50, 50, 0.69);
+}
+
+.profile__avatar {
+  width: 80px !important;
+  height: 80px !important;
+}
+
+.profile__weightContainer {
+  background-color: #7bd1aa;
+  padding: 10px;
+  border-radius: 10px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  color: #f5f5f5;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.profile__weightContainer > h3 {
+  font-family: "Lobster", cursive;
+  font-weight: 300;
+}
+
+.profile__weightContainer > p {
+  font-weight: 600;
+}
+
+.profile__postsContainer {
+  height: 400px;
+  border-radius: 20px;
+  background-color: #fff;
 }
 /*# sourceMappingURL=all.css.map */

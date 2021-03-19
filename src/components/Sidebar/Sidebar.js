@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import SidebarRow from "./SidebarRow/SidebarRow";
 
 import HomeIcon from "@material-ui/icons/Home";
+import GradeIcon from "@material-ui/icons/Grade";
 import WhatshotIcon from "@material-ui/icons/Whatshot";
 import FitnessCenterIcon from "@material-ui/icons/FitnessCenter";
 import HistoryIcon from "@material-ui/icons/History";
@@ -14,7 +15,8 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import FlagIcon from "@material-ui/icons/Flag";
 import HelpIcon from "@material-ui/icons/Help";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
-
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { Link } from "react-router-dom";
 
 const Sidebar = () => {
@@ -44,12 +46,9 @@ const Sidebar = () => {
       <SidebarRow selected Icon={HomeIcon} title="Homepage" />
       <SidebarRow Icon={WhatshotIcon} title="hoto" />
       <hr />
+      <h4>Video Categories</h4>
       {newSidebarNames.map((newSidebarName) => (
-        <SidebarRow
-          Icon={WhatshotIcon}
-          title={newSidebarName}
-          tutorial={true}
-        />
+        <SidebarRow Icon={GradeIcon} title={newSidebarName} tutorial={true} />
       ))}
       <SidebarRow
         Icon={FitnessCenterIcon}
@@ -58,8 +57,6 @@ const Sidebar = () => {
       />
       <SidebarRow Icon={HistoryIcon} title="Spinning Bike" tutorial={true} />
       <SidebarRow Icon={OndemandVideoIcon} title="Dumbbells" tutorial={true} />
-      <SidebarRow Icon={WatchLaterIcon} title="Swim" tutorial={true} />
-      <SidebarRow Icon={ThumbUpAltIcon} title="Self-training" tutorial={true} />
       {/* add own sidebar */}
       <div className="addSidebarRow" onClick={() => setEditFormOpen(true)}>
         <AddIcon className="sidebar-row__icon" />
@@ -109,9 +106,12 @@ const Sidebar = () => {
       </Link>
       <hr />
       <SidebarRow Icon={SettingsIcon} title="Settings" />
-      <SidebarRow Icon={FlagIcon} title="檢舉紀錄" />
+      <Link to="/profile">
+        <SidebarRow Icon={AccountCircleIcon} title="Profile" />
+      </Link>
+
       <SidebarRow Icon={HelpIcon} title="說明" />
-      <SidebarRow Icon={QuestionAnswerIcon} title="提供意見" />
+      <SidebarRow Icon={ExitToAppIcon} title="Logout" color/>
       <hr />
       <div className="sidebar__footer">
         {/* <a href="#">關於</a>

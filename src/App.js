@@ -8,6 +8,7 @@ import MealPlan from "./components/MealPlan";
 import Profile from "./components/Profile";
 import GuessFoodNutrition from "./components/GuessFoodNutrition";
 import PickUpRobot from "./components/PickUpRobot";
+import Login from "./components/Auth/Login";
 
 function App() {
   // state = {
@@ -99,6 +100,13 @@ function App() {
             <div className="app__page detailPage">
               <Sidebar />
               <PickUpRobot />
+            </div>
+          </Route>
+
+          <Route path="/login">
+            <div className="app__page detailPage">
+              <Sidebar />
+              <Login />
             </div>
           </Route>
 

@@ -110,8 +110,11 @@ const Sidebar = () => {
         <SidebarRow Icon={AccountCircleIcon} title="Profile" />
       </Link>
 
-      <SidebarRow Icon={HelpIcon} title="說明" />
-      <SidebarRow Icon={ExitToAppIcon} title="Logout" color/>
+      <Link to="/login">
+        <SidebarRow Icon={HelpIcon} title="Login" />
+      </Link>
+
+      <SidebarRow Icon={ExitToAppIcon} title="Logout" color />
       <hr />
       <div className="sidebar__footer">
         {/* <a href="#">關於</a>

@@ -10,14 +10,13 @@ const firebaseApp = firebase.initializeApp({
   measurementId: "G-HF0C3Z47VW",
 });
 
-
-
 const db = firebaseApp.firestore();
 const auth = firebase.auth(); // log in func
 const storage = firebase.storage(); // to upload image
+const provider = new firebase.auth.GoogleAuthProvider();
 
 
-
-export { db, auth, storage };
+export { auth, provider };
+export default db;
 
 //

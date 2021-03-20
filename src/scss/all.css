@@ -226,10 +226,6 @@
   color: lightgray;
 }
 
-.sidebar a + a {
-  margin-left: 10px;
-}
-
 .sidebar__terms {
   margin-top: 15px;
 }

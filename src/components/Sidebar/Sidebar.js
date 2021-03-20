@@ -19,7 +19,8 @@ import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { Link } from "react-router-dom";
-
+import { auth } from "../../firebase";
+import { actionTypes } from "../../reducer";
 const Sidebar = () => {
   const [newSidebarName, setNewSidebarName] = useState("");
   const [newSidebarNames, setNewSidebarNames] = useState([]);
@@ -35,6 +36,20 @@ const Sidebar = () => {
     // sessionStorage.setItem("newSidebarNames", [newSidebarName]);
 
     setNewSidebarName(""); // clear input when submit
+  };
+
+  // 登出功能 傳給 sidebarRow component
+  const logout = () => {
+    auth
+      .signOut()
+      .then(() => {
+        console.log("logout!");
+        dispatch({
+          type: actionTypes.SET_USER,
+          user: null,
+        });
+      })
+      .catch((error) => console.log(error.message));
   };
 
   // close the sidebar edit Form
@@ -111,16 +126,18 @@ const Sidebar = () => {
       </Link>
       <hr />
       <SidebarRow Icon={SettingsIcon} title="Settings" />
-     <Link to="/profile">
+      <Link to="/profile">
         <SidebarRow Icon={AccountCircleIcon} title="Profile" />
       </Link>
-      {!user && (// 沒有登入才顯示登入按鈕
+      {!user ? ( // 沒有登入才顯示登入按鈕
         <Link to="/login">
           <SidebarRow Icon={HelpIcon} title="Login" />
         </Link>
+      ) : (
+        // 有登入才顯示登出按鈕
+        <SidebarRow Icon={ExitToAppIcon} title="Logout" color logout={logout} />
       )}
 
-      <SidebarRow Icon={ExitToAppIcon} title="Logout" color />
       <hr />
       <div className="sidebar__footer">
         {/* <a href="#">關於</a>

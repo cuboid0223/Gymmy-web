@@ -3,18 +3,31 @@ import React from "react";
 import { useStateValue } from "../../../StateProvider";
 import { actionTypes } from "../../../reducer";
 
-const SidebarRow = ({ selected, Icon, title, tutorial, imageUrl, color }) => {
+const SidebarRow = ({
+  selected,
+  Icon,
+  title,
+  tutorial,
+  imageUrl,
+  color,
+  logout,
+}) => {
   const [{}, dispatch] = useStateValue();
   return (
     <div
-      className={`sidebar-row ${selected && "selected"} ${color && "color-red"}`}
+      className={`sidebar-row ${selected && "selected"} ${
+        color && "color-red"
+      }`}
       onClick={() => {
         console.log("click");
-        if (tutorial) {
+        if (tutorial) {// 影片教學
           dispatch({
             type: actionTypes.SET_SEARCH_TERM,
             term: title + "教學", //把搜尋的字串丟到 Global State（contextAPI）
           });
+        }
+        if (logout) {//登出
+          logout();
         }
       }}
     >

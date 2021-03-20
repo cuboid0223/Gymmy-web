@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SidebarRow from "./SidebarRow/SidebarRow";
+import { useStateValue } from "../../StateProvider";
 
 import HomeIcon from "@material-ui/icons/Home";
 import GradeIcon from "@material-ui/icons/Grade";
@@ -23,7 +24,7 @@ const Sidebar = () => {
   const [newSidebarName, setNewSidebarName] = useState("");
   const [newSidebarNames, setNewSidebarNames] = useState([]);
   const [editFormOpen, setEditFormOpen] = useState(false);
-
+  const [{ user }, dispatch] = useStateValue();
   // when click submit -> (CheckBoxIcon)
   const addSidebarRow = (e) => {
     e.preventDefault();
@@ -57,31 +58,35 @@ const Sidebar = () => {
       />
       <SidebarRow Icon={HistoryIcon} title="Spinning Bike" tutorial={true} />
       <SidebarRow Icon={OndemandVideoIcon} title="Dumbbells" tutorial={true} />
-      {/* add own sidebar */}
-      <div className="addSidebarRow" onClick={() => setEditFormOpen(true)}>
-        <AddIcon className="sidebar-row__icon" />
-        <h2
-          className={
-            editFormOpen ? "sidebar-row__title-disabled" : "sidebar-row__title"
-          }
-        >
-          Add Own Item
-        </h2>
-        <form
-          className={
-            editFormOpen
-              ? "addSidebarRow__form"
-              : "addSidebarRow__form-disabled"
-          }
-        >
-          <input
-            type="text"
-            value={newSidebarName}
-            onChange={(e) => setNewSidebarName(e.target.value)}
-          />
-          {newSidebarName && <CheckBoxIcon onClick={addSidebarRow} />}
-        </form>
-      </div>
+      {/* user can add own sidebar after login*/}
+      {user && (
+        <div className="addSidebarRow" onClick={() => setEditFormOpen(true)}>
+          <AddIcon className="sidebar-row__icon" />
+          <h2
+            className={
+              editFormOpen
+                ? "sidebar-row__title-disabled"
+                : "sidebar-row__title"
+            }
+          >
+            Add Own Item
+          </h2>
+          <form
+            className={
+              editFormOpen
+                ? "addSidebarRow__form"
+                : "addSidebarRow__form-disabled"
+            }
+          >
+            <input
+              type="text"
+              value={newSidebarName}
+              onChange={(e) => setNewSidebarName(e.target.value)}
+            />
+            {newSidebarName && <CheckBoxIcon onClick={addSidebarRow} />}
+          </form>
+        </div>
+      )}
 
       <hr />
       <h4>More GYMMY functions</h4>
@@ -106,13 +111,14 @@ const Sidebar = () => {
       </Link>
       <hr />
       <SidebarRow Icon={SettingsIcon} title="Settings" />
-      <Link to="/profile">
+     <Link to="/profile">
         <SidebarRow Icon={AccountCircleIcon} title="Profile" />
       </Link>
-
-      <Link to="/login">
-        <SidebarRow Icon={HelpIcon} title="Login" />
-      </Link>
+      {!user && (// 沒有登入才顯示登入按鈕
+        <Link to="/login">
+          <SidebarRow Icon={HelpIcon} title="Login" />
+        </Link>
+      )}
 
       <SidebarRow Icon={ExitToAppIcon} title="Logout" color />
       <hr />

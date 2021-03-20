@@ -13,10 +13,11 @@ const firebaseApp = firebase.initializeApp({
 const db = firebaseApp.firestore();
 const auth = firebase.auth(); // log in func
 const storage = firebase.storage(); // to upload image
-const provider = new firebase.auth.GoogleAuthProvider();
+const provider__Google = new firebase.auth.GoogleAuthProvider();
+const provider__FB = new firebase.auth.FacebookAuthProvider();
 
 
-export { auth, provider };
+export { auth, provider__Google, provider__FB };
 export default db;
 
 //

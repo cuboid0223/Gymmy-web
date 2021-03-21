@@ -1,0 +1,71 @@
+.login {
+  height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: $primary-color;
+  &__alertMessage {
+    background-color: red;
+    color: $primary-color;
+  }
+  &__successMessage {
+    background-color: green;
+  }
+  &__form {
+    height: 300px;
+    width: 100%;
+    background-color: #fefefe;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border-radius: 10px;
+  }
+  &__formLabel {
+    font-family: $secondary-font;
+  }
+  &__formInput {
+    width: 100%;
+    border: none;
+    background-color: $primary-color;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 5px;
+  }
+  &__passwordEmailButton {
+    color: $primary-color !important;
+    padding: 5px !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    background-color: #23a248 !important;
+    &:hover {
+      background-color: #28b351;
+    }
+  }
+  &__registerButton:hover,
+  &__forgetPasswordButton:hover {
+    background-color: $primary-color;
+  }
+
+  &__providerButton {
+    width: 70%;
+    padding: 10px !important;
+    margin-top: 10px !important;
+    display: flex !important;
+    justify-content: space-around !important;
+  }
+
+  .google-color {
+    color: $primary-color;
+    background-color: #4a91ff;
+  }
+  .googleIcon {
+    width: 25px;
+  }
+  .facebook-color {
+    color: $primary-color;
+    background-color: #3f59a8;
+  }
+}

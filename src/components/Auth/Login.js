@@ -4,34 +4,41 @@ import { Button } from "@material-ui/core";
 import { auth, provider__Google, provider__FB } from "../../firebase";
 import { actionTypes } from "../../reducer";
 import { useStateValue } from "../../StateProvider";
-
+import FacebookIcon from "@material-ui/icons/Facebook";
+import GoogleIcon from "../../assets/icons8-google-48.png";
 const Login = () => {
   const [{ user }, dispatch] = useStateValue();
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [alertMessage, setAlertMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const signIn = (e) => {
     // 登入
     e.preventDefault();
     auth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        // history.push("/"); // 轉址到首頁
         dispatch({
           type: actionTypes.SET_USER,
           user: result.user,
         });
+        history.push("/"); // 轉址到首頁
+        setSuccessMessage("login success!");
       })
-      .catch((error) => alert(error.message));
-    //firebase
+      .catch((error) => {
+        setAlertMessage(`login fail! the reason -> ${error.message}`);
+        console.log(error.message);
+      });
   };
 
+  // 忘記密碼
   const forgotPassword = () => {
     auth
       .sendPasswordResetEmail(email)
       .then(function () {
         console.log("sendPasswordResetEmail");
+        setSuccessMessage("Please check your email!");
         // Password reset email sent.
       })
       .catch(function (error) {
@@ -50,6 +57,7 @@ const Login = () => {
         if (auth) {
           history.push("/"); // 轉址到首頁
         }
+        setSuccessMessage("Sign up!");
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -58,28 +66,28 @@ const Login = () => {
         switch (errorCode) {
           // 註冊密碼太弱
           case "auth/weak-password":
-            alert("The password is too weak."); // Thrown if the password is not strong enough.
+            setAlertMessage("The password is too weak."); // Thrown if the password is not strong enough.
             break;
 
           case "auth/operation-not-allowed":
-            alert(
+            setAlertMessage(
               "Email/password accounts are not enabled. Enable email/password accounts in the Firebase Console, under the Auth tab."
             );
             break;
           // 電子郵件格式不對
           case "auth/invalid-email":
-            alert("The email address is not valid.");
+            setAlertMessage("The email address is not valid.");
             break;
           // 電子郵件已註冊
           case "auth/email-already-in-use":
-            alert(
+            setAlertMessage(
               "There already exists an account with the given email address."
             );
             break;
           default:
-            alert(errorMessage);
+            setAlertMessage(errorMessage);
         }
-        alert(errorMessage);
+        setAlertMessage(errorMessage);
       });
     //firebase
   };
@@ -93,6 +101,7 @@ const Login = () => {
           user: result.user,
         });
         // console.log(result);
+        setSuccessMessage("Login with Google!");
         history.push("/"); // 轉址到首頁
       })
       .catch((error) => alert(error.message));
@@ -109,7 +118,8 @@ const Login = () => {
           user: result.user,
         });
         console.log(result);
-        // history.push("/"); // 轉址到首頁
+        setSuccessMessage("Login with Facebook!");
+        history.push("/"); // 轉址到首頁
       })
       .catch((error) => {
         // Handle Errors here.
@@ -121,40 +131,80 @@ const Login = () => {
         var credential = error.credential;
         const array = [errorCode, errorMessage, email, credential];
         array.map((item) => console.log(item));
+        setAlertMessage(
+          `Login with Facebook fail!  the reason ->  ${errorMessage}`
+        );
       });
   };
 
   return (
-    <div className="login" style={{ marginTop: "200px" }}>
-      <form action="">
-        <h5>電子郵件</h5>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <h5>密碼</h5>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit" className="Amazon__button" onClick={signIn}>
-          繼續
-        </button>
-      </form>
-      <button className="login__registerButton" onClick={register}>
-        建立您的Amazon帳戶
-      </button>
-      <button onClick={forgotPassword}>forget password?</button>
+    <div className="login">
+      {/* <p
+        className={
+          alertMessage ? "login__alertMessage" : "login__successMessage"
+        }
+      >
+        {alertMessage ? alertMessage : successMessage}
+      </p> */}
+      <form className="login__form" action="">
+        <div>
+          <label className="login__formLabel">E-mail:</label>
+          <input
+            className="login__formInput"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <label className="login__formLabel">Password:</label>
+          <input
+            className="login__formInput"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
 
-      <Button type="submit" onClick={signIn__Google}>
-        Google 登入
+        <Button
+          type="submit"
+          className="login__passwordEmailButton"
+          onClick={signIn}
+        >
+          Submit
+        </Button>
+
+        <Button className="login__registerButton" onClick={register}>
+          Sign Up
+        </Button>
+        <Button
+          className="login__forgetPasswordButton"
+          onClick={forgotPassword}
+        >
+          forget password?
+        </Button>
+      </form>
+
+      {/* google 登入 */}
+      <Button
+        className="login__providerButton google-color"
+        type="submit"
+        onClick={signIn__Google}
+      >
+        <img className="googleIcon" src={GoogleIcon} alt="googleIcon" />
+        Sign up with Google
       </Button>
+
+      {/* facebook 登入 */}
       {/* https://developers.facebook.com/?locale=zh_TW */}
       {/* Facebook 登入 需要 申請 facebook developer 故等到網站上線再回來處理 */}
-      <Button type="submit" onClick={signIn__FB}>
-        Facebook 登入
+      <Button
+        className="login__providerButton facebook-color"
+        type="submit"
+        onClick={signIn__FB}
+      >
+        <FacebookIcon />
+        Sign up with Facebook
       </Button>
     </div>
   );

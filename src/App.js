@@ -9,7 +9,7 @@ import Profile from "./components/Profile";
 import GuessFoodNutrition from "./components/GuessFoodNutrition";
 import PickUpRobot from "./components/PickUpRobot";
 import Login from "./components/Auth/Login";
-
+import CalendarPage from './components/CalendarPage'
 function App() {
   // state = {
   //   videos: [],
@@ -79,7 +79,7 @@ function App() {
             </div>
           </Route>
 
-          {/* Profile */}
+          {/* Profile Page*/}
           <Route path="/profile">
             <div className="app__page detailPage">
               <Sidebar />
@@ -87,7 +87,7 @@ function App() {
             </div>
           </Route>
 
-          {/* GuessMealNutrition */}
+          {/* GuessMealNutrition Page*/}
           <Route path="/guessMealNutrition">
             <div className="app__page detailPage">
               <Sidebar />
@@ -95,7 +95,7 @@ function App() {
             </div>
           </Route>
 
-          {/* pickUp robot */}
+          {/* pickUp robot Page*/}
           <Route path="/pickUpRobot">
             <div className="app__page detailPage">
               <Sidebar />
@@ -103,10 +103,19 @@ function App() {
             </div>
           </Route>
 
+          {/* Login Page */}
           <Route path="/login">
             <div className="app__page detailPage">
               <Sidebar />
               <Login />
+            </div>
+          </Route>
+
+          {/* Calendar page */}
+          <Route path="/">
+            <div className="app__page homePage">
+              <Sidebar />
+              <CalendarPage />
             </div>
           </Route>
 

@@ -60,7 +60,10 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <SidebarRow selected Icon={HomeIcon} title="Homepage" />
-      <SidebarRow Icon={WhatshotIcon} title="hoto" />
+      <Link to="/calendar">
+        <SidebarRow Icon={WhatshotIcon} title="Calendar" />
+      </Link>
+
       <hr />
       <h4>Video Categories</h4>
       {newSidebarNames.map((newSidebarName) => (
@@ -126,9 +129,12 @@ const Sidebar = () => {
       </Link>
       <hr />
       <SidebarRow Icon={SettingsIcon} title="Settings" />
-      <Link to="/profile">
-        <SidebarRow Icon={AccountCircleIcon} title="Profile" />
-      </Link>
+      {user && (
+        <Link to="/profile">
+          <SidebarRow Icon={AccountCircleIcon} title="Profile" />
+        </Link>
+      )}
+
       {!user ? ( // 沒有登入才顯示登入按鈕
         <Link to="/login">
           <SidebarRow Icon={HelpIcon} title="Login" />

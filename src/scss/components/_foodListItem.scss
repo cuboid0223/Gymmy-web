@@ -1,0 +1,18 @@
+.foodListItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  padding: 10px;
+  &__title {
+    font-size: 15px;
+  }
+  &__brand-unit {
+    color: #444545;
+    font-size: 13px;
+  }
+  &__cal {
+    font-weight: 300;
+    font-size: 13px;
+  }
+}

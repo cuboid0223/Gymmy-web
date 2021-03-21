@@ -1,0 +1,26 @@
+.foodList {
+  background-color: #fff;
+  margin-top: 10px;
+  &__topContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid $primary-color;
+  }
+  &__type {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  &__totalCalories {
+  }
+
+  &__addFoodButton {
+    color: $third-color;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    padding: 10px;
+    background-color: transparent;
+  }
+}

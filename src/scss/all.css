@@ -1266,6 +1266,26 @@
   margin-top: 10px;
 }
 
+.foodList__input {
+  width: 100%;
+  border: none;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.foodList__searchFoodForm {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
 .foodList__topContainer {
   display: -webkit-box;
   display: -ms-flexbox;

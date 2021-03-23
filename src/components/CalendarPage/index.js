@@ -1,16 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 // import "react-calendar/dist/Calendar.css";
+import { actionTypes } from "../../reducer";
+import { useStateValue } from "../../StateProvider";
 import FoodList from "./FoodList";
+
 const CalendarPage = () => {
-  const [value, onChange] = useState(new Date());
-  // console.log(value);
+  const [{}, dispatch] = useStateValue();
+  const [date, onDateChange] = useState(new Date());
+  // console.log(date); // 日期
+
+  useEffect(() => {
+    // 傳送日期
+    dispatch({
+      type: actionTypes.SET_DATE,
+      date: date,
+    });
+  }, [date]);
+
   return (
     <div className="calendarPage">
       <Calendar
         className="calendarPage__calendar"
-        onChange={onChange}
-        value={value}
+        onChange={onDateChange}
+        value={date}
       />
 
       <div className="caloriesCalculator">

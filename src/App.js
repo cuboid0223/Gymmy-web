@@ -11,10 +11,6 @@ import PickUpRobot from "./components/PickUpRobot";
 import Login from "./components/Auth/Login";
 import CalendarPage from './components/CalendarPage'
 function App() {
-  // state = {
-  //   videos: [],
-  //   selectedVideo: null,
-  // };
 
   const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -24,9 +20,6 @@ function App() {
     handleSubmit("健身");
   }, []);
 
-  //  const onVideoSelect = (video) => {
-  //    this.setState({ selectedVideo: video });
-  //  };
   const onVideoSelect = (video) => {
     setSelectedVideo(video);
     console.log("video is ", video);
@@ -36,7 +29,7 @@ function App() {
     // const response = await youtube.get("search", {
     //   params: {
     //     part: "snippet",
-    //     maxResults: 24,
+    //     maxResults: 10,
     //     key: "AIzaSyB0xTIo8dLxjuYf09JzzvaXdkDG-9y_K9w",
     //     q: inputSearch,
     //   },

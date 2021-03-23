@@ -143,7 +143,7 @@ const GuessFoodNutrition = () => {
       )}
 
       {meal && (
-        <div style={{ backgroundColor: "red" }}>
+        <div>
           <Modal
             isOpen={modalIsOpen}
             onRequestClose={closeModal}

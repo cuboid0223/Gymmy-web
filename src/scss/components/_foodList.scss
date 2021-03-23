@@ -1,6 +1,20 @@
 .foodList {
   background-color: #fff;
   margin-top: 10px;
+
+  &__input {
+    width: 100%;
+    border: none;
+    background-color: $primary-color;
+    border-radius: 5px;
+    padding: 10px;
+    // margin-top: 10px;
+  }
+  &__searchFoodForm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   &__topContainer {
     display: flex;
     justify-content: space-between;
@@ -23,4 +37,5 @@
     padding: 10px;
     background-color: transparent;
   }
+
 }

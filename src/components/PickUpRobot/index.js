@@ -9,7 +9,6 @@ const PickUpRobot = () => {
   const [inputText, setInputText] = useState(""); // 未傳送的訊息
   const [sendText, setSendText] = useState([]); // 已傳送的訊息
   const [messages, setMessages] = useState([]);
-  //   const [robotAnswers, setRobotAnswers] = useState([]);
   //console.log("sendText: ", sendText);
 
   const sendTextFunc = (e) => {
@@ -17,8 +16,8 @@ const PickUpRobot = () => {
     //console.log("inputText: ", inputText);
     setSendText([...sendText, { message: inputText, user: isUser }]);
     setMessages([...messages, { message: inputText, user: isUser }]);
-    //console.log("messages: ", messages);
-    //console.log("sendText: ", sendText);
+    console.log("messages: ", messages);
+    console.log("sendText: ", sendText);
     setInputText(""); // clear input file
 
     // when add new message, we don't need to scroll down
@@ -27,9 +26,6 @@ const PickUpRobot = () => {
   };
   // request
   useEffect(() => {
-    if (!sendText) {
-      return;
-    }
     const options = {
       method: "GET",
       url:
@@ -42,19 +38,33 @@ const PickUpRobot = () => {
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
       },
     };
+    if (sendText == []) {
+      console.log('object')
+      return;
+    } else {
+      console.log(sendText);
+      axios
+        .request(options)
+        .then(function (response) {
+          console.log(response.data);
+          const ans = response.data.answer;
+          const imageUrl = response.data.image;
+          if (ans) {
+            setMessages([...messages, { answer: ans, imageUrl: imageUrl }]);
+          }
+          if (!ans && sendText) {
+            setMessages([
+              ...messages,
+              { answer: "就不能好好問問題是不是，低能", imageUrl: "" },
+            ]);
+          }
 
-    axios
-      .request(options)
-      .then(function (response) {
-        //console.log(response.data);
-        const ans = response.data.answer;
-        const imageUrl = response.data.image;
-        setMessages([...messages, { answer: ans, imageUrl: imageUrl }]);
-        // setRobotAnswers([...robotAnswers, response.data.answer]);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+          // setRobotAnswers([...robotAnswers, response.data.answer]);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    }
   }, [sendText]);
   // console.log("messages: ", messages);
   return (
@@ -79,7 +89,9 @@ const PickUpRobot = () => {
                 user ? "pickUpRobot__userText" : "pickUpRobot__robotText"
               }
             >
-              <p className={!message ? "message_display_none" : ""}>{message}</p>
+              <p className={!message ? "message_display_none" : ""}>
+                {message}
+              </p>
               <p className={!answer ? "message_display_none" : ""}>{answer}</p>
               <img
                 className={!imageUrl ? "message_display_none" : ""}

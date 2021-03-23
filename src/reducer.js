@@ -2,11 +2,13 @@ export const initialState = {
   term: "",
   newSidebarRowNames: [],
   user: null,
+  date: new Date(),
 };
 export const actionTypes = {
-  SET_SEARCH_TERM: "SET_SEARCH_TERM",
-  SET_NEWSIDEBARROW_NAMES: "SET_NEWSIDEBARROW_NAMES",
-  SET_USER: "SET_USER",
+  SET_SEARCH_TERM: "SET_SEARCH_TERM", // YouTube 搜尋字元
+  SET_NEWSIDEBARROW_NAMES: "SET_NEWSIDEBARROW_NAMES", // 自訂側邊欄新欄位
+  SET_USER: "SET_USER",// 登入登出
+  SET_DATE: "SET_DATE",// 食物新增的日期
 };
 const reducer = (state, action) => {
   console.log(action); //debug
@@ -27,6 +29,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         user: action.user,
+      };
+
+    case "SET_DATE":
+      return {
+        ...state,
+        date: action.date,
       };
 
     default:

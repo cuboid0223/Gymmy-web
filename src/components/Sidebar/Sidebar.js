@@ -15,9 +15,12 @@ import AddIcon from "@material-ui/icons/Add";
 import SettingsIcon from "@material-ui/icons/Settings";
 import FlagIcon from "@material-ui/icons/Flag";
 import HelpIcon from "@material-ui/icons/Help";
-import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import EventIcon from "@material-ui/icons/Event";
+import DirectionsBikeIcon from "@material-ui/icons/DirectionsBike";
+import PoolIcon from "@material-ui/icons/Pool";
+import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebase";
 import { actionTypes } from "../../reducer";
@@ -61,21 +64,29 @@ const Sidebar = () => {
     <div className="sidebar">
       <SidebarRow selected Icon={HomeIcon} title="Homepage" />
       <Link to="/calendar">
-        <SidebarRow Icon={WhatshotIcon} title="Calendar" />
+        <SidebarRow Icon={EventIcon} title="Calendar" />
       </Link>
 
       <hr />
       <h4>Video Categories</h4>
-      {newSidebarNames.map((newSidebarName) => (
-        <SidebarRow Icon={GradeIcon} title={newSidebarName} tutorial={true} />
-      ))}
-      <SidebarRow
-        Icon={FitnessCenterIcon}
-        title="Weight Training"
-        tutorial={true}
-      />
-      <SidebarRow Icon={HistoryIcon} title="Spinning Bike" tutorial={true} />
-      <SidebarRow Icon={OndemandVideoIcon} title="Dumbbells" tutorial={true} />
+      <Link to="/search">
+        {user && newSidebarNames.map((newSidebarName) => (
+          <SidebarRow Icon={GradeIcon} title={newSidebarName} tutorial={true} />
+        ))}
+
+        <SidebarRow
+          Icon={FitnessCenterIcon}
+          title="Weight Training"
+          tutorial={true}
+        />
+        <SidebarRow
+          Icon={DirectionsBikeIcon}
+          title="Spinning Bike"
+          tutorial={true}
+        />
+        <SidebarRow Icon={PoolIcon} title="Swimming" tutorial={true} />
+      </Link>
+
       {/* user can add own sidebar after login*/}
       {user && (
         <div className="addSidebarRow" onClick={() => setEditFormOpen(true)}>
@@ -137,7 +148,7 @@ const Sidebar = () => {
 
       {!user ? ( // 沒有登入才顯示登入按鈕
         <Link to="/login">
-          <SidebarRow Icon={HelpIcon} title="Login" />
+          <SidebarRow Icon={VpnKeyIcon} title="Login" />
         </Link>
       ) : (
         // 有登入才顯示登出按鈕

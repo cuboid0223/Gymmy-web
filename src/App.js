@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./scss/all.css";
 import { Header, Sidebar, SearchPage, VideoDetail } from "./components";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { useStateValue } from "./StateProvider";
 import youtube from "./api/youtube";
 import { useHistory } from "react-router-dom";
 import MealPlan from "./components/MealPlan";
@@ -12,7 +13,9 @@ import Login from "./components/Auth/Login";
 import CalendarPage from "./components/CalendarPage";
 import SignUp from "./components/Auth/SignUp";
 import NoticePage from "./pages/NoticePage";
+import {db} from './firebase'
 function App() {
+  const [{ user }, dispatch] = useStateValue();
   const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const history = useHistory();
@@ -20,6 +23,8 @@ function App() {
   useEffect(() => {
     handleSubmit("健身");
   }, []);
+
+  
 
   const onVideoSelect = (video) => {
     setSelectedVideo(video);

@@ -7,7 +7,7 @@ import PleaseLoginPage from "../Auth/PleaseLoginPage";
 
 const Profile = () => {
   const [{ user }, dispatch] = useStateValue();
-  const userData = user?.providerData[0];
+  // const userData = user?.providerData[0];
   // console.log(user);
   const [modalIsOpen, setIsOpen] = useState(false);
   Modal.setAppElement(document.getElementById("root"));
@@ -34,10 +34,10 @@ const Profile = () => {
       {/* {user ? ( */}
         <div>
           <div className="profile__infoContainer personalBasicInfoContainer">
-            <Avatar className="profile__avatar" src={userData?.photoURL} />
+            <Avatar className="profile__avatar" src={user?.imageURL} />
             <div className="profile__userInfo">
-              <p>Name: {userData?.displayName}</p>
-              <p>Account: {userData?.email}</p>
+              <p>Name: {user?.name}</p>
+              <p>Account: {user?.email}</p>
               <p>Gender: Male</p>
               <p>Age: 21</p>
               <p>Height: 180 cm</p>

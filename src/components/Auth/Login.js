@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { auth, provider__Google, provider__FB } from "../../firebase";
@@ -7,7 +7,8 @@ import { useStateValue } from "../../StateProvider";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import GoogleIcon from "../../assets/icons8-google-48.png";
 import AlertMessage from "../AlertMessage";
-
+import logo from "../.././assets/gymmy.png";
+import db from "../../firebase";
 const Login = () => {
   const [{ user }, dispatch] = useStateValue();
   const history = useHistory();
@@ -15,8 +16,9 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  console.log("alertMessage: ", alertMessage);
+  // console.log("alertMessage: ", alertMessage);
   // 登入
+  // console.log(user?.uid);
   const signIn = (e) => {
     e.preventDefault();
     auth
@@ -26,17 +28,45 @@ const Login = () => {
           type: actionTypes.SET_USER,
           user: result.user,
         });
-        history.push("/"); // 轉址到首頁
+        history.push("/profile"); // 轉址到個人頁面
+        // 發送通知
         dispatch({
           type: actionTypes.SET_NOTICES,
-          notices: [{ imageUrl: "logo", message: "login success!" }],
+          notices: [
+            {
+              imageUrl: { logo },
+              message: "Login success! Start set up your own information.",
+            },
+          ],
         });
       })
       .catch((error) => {
         setAlertMessage(`login fail! the reason -> ${error.message}`);
-        console.log(error.message);
+        // console.log(error.message);
       });
   };
+
+  // 取得使用者資料
+  useEffect(() => {
+    var docRef = db.collection("users").doc(user?.uid);
+    docRef
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          console.log("Document data:", doc.data());
+          dispatch({
+            type: actionTypes.SET_USER,
+            user: doc.data(),
+          });
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+      })
+      .catch((error) => {
+        console.log("Error getting document:", error);
+      });
+  }, [user]);
 
   // 忘記密碼
   const forgotPassword = () => {
@@ -44,7 +74,16 @@ const Login = () => {
       .sendPasswordResetEmail(email)
       .then(function () {
         console.log("sendPasswordResetEmail");
-        setSuccessMessage("Please check your email!");
+        // 發送通知
+        dispatch({
+          type: actionTypes.SET_NOTICES,
+          notices: [
+            {
+              imageUrl: { logo },
+              message: "Please check your email!",
+            },
+          ],
+        });
         // Password reset email sent.
       })
       .catch(function (error) {
@@ -56,13 +95,23 @@ const Login = () => {
     auth
       .signInWithPopup(provider__Google)
       .then((result) => {
+        // 登入
         dispatch({
           type: actionTypes.SET_USER,
           user: result.user,
         });
-        // console.log(result);
-        setSuccessMessage("Login with Google!");
-        history.push("/"); // 轉址到首頁
+        // 發送通知
+        dispatch({
+          type: actionTypes.SET_NOTICES,
+          notices: [
+            {
+              imageUrl: { logo },
+              message: "Login with Google!",
+            },
+          ],
+        });
+
+        history.push("/profile");
       })
       .catch((error) => alert(error.message));
   };
@@ -77,9 +126,18 @@ const Login = () => {
           type: actionTypes.SET_USER,
           user: result.user,
         });
-        console.log(result);
-        setSuccessMessage("Login with Facebook!");
-        history.push("/"); // 轉址到首頁
+        // 發送通知
+        dispatch({
+          type: actionTypes.SET_NOTICES,
+          notices: [
+            {
+              imageUrl: { logo },
+              message: "Login with Facebook!",
+            },
+          ],
+        });
+
+        history.push("/profile");
       })
       .catch((error) => {
         // Handle Errors here.

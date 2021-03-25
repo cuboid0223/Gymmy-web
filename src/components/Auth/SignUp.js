@@ -7,11 +7,12 @@ import { useStateValue } from "../../StateProvider";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import _ from "lodash/fp";
+import AlertMessage from "../AlertMessage";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  //   const [confirmPassword, setConfirmPassword] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
   const [{ user }, dispatch] = useStateValue();
   const history = useHistory();
@@ -20,7 +21,6 @@ const SignUp = () => {
   });
   const passwordRef = useRef({});
   passwordRef.current = watch("passwordInput", "");
-  console.log("passwordRef.current: ", passwordRef.current);
 
   var actionCodeSettings = {
     // URL you want to redirect back to. The domain (www.example.com) for this
@@ -40,8 +40,6 @@ const SignUp = () => {
     // },
     // dynamicLinkDomain: "example.page.link",
   };
-
-  const onSubmit = (data) => console.log(data);
 
   // 當使用者由郵件登入
   useEffect(() => {
@@ -85,21 +83,21 @@ const SignUp = () => {
   // 註冊
   const signUp = () => {
     //郵件驗證信;
-    auth
-      .sendSignInLinkToEmail(email, actionCodeSettings)
-      .then(() => {
-        // The link was successfully sent. Inform the user.
-        // Save the email locally so you don't need to ask the user for it again
-        // if they open the link on the same device.
-        window.localStorage.setItem("emailForSignIn", email);
+    // auth
+    //   .sendSignInLinkToEmail(email, actionCodeSettings)
+    //   .then(() => {
+    //     // The link was successfully sent. Inform the user.
+    //     // Save the email locally so you don't need to ask the user for it again
+    //     // if they open the link on the same device.
+    //     window.localStorage.setItem("emailForSignIn", email);
 
-        // ...
-      })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        setAlertMessage(errorMessage);
-      });
+    //     // ...
+    //   })
+    //   .catch((error) => {
+    //     var errorCode = error.code;
+    //     var errorMessage = error.message;
+    //     setAlertMessage(errorMessage);
+    //   });
 
     auth
       .createUserWithEmailAndPassword(email, password)
@@ -107,20 +105,17 @@ const SignUp = () => {
         // if successfully create new User
         console.log(auth);
         if (auth) {
-          history.push("/login"); 
+          history.push("/login");
         }
-
-
+        // set user !!!!
       })
       .catch((error) => {
-        // const errorCode = error.code;
-        // console.log("errorCode: ", errorCode);
+        const errorCode = error.code;
+        console.log("errorCode: ", errorCode);
         const errorMessage = error.message;
         setAlertMessage(errorMessage);
       });
   };
-
-  
 
   return (
     <div className="signUp">
@@ -138,7 +133,8 @@ const SignUp = () => {
             })}
           />
           {/* email error message */}
-          <ErrorMessage
+          <AlertMessage message={errors?.emailInput?.message} />
+          {/* <ErrorMessage
             errors={errors}
             name="emailInput"
             render={({ messages }) => {
@@ -151,7 +147,7 @@ const SignUp = () => {
                   ))
                 : null;
             }}
-          />
+          /> */}
         </div>
 
         {/* password input */}
@@ -181,7 +177,7 @@ const SignUp = () => {
             })}
           />
           {/* password error message */}
-          {errors.passwordInput && <p>{errors.passwordInput.message}</p>}
+          <AlertMessage message={errors?.passwordInput?.message} />
         </div>
 
         {/* confirm password input */}
@@ -191,7 +187,7 @@ const SignUp = () => {
             className="login__formInput"
             type="password"
             // value={confirmPassword}
-            // onChange={(e) => setConfirmPassword(e.target.value)}
+            // onChange={(e) => setConfirmPassword(e.target.value)}x
             name="confirmPasswordInput"
             ref={register({
               required: "confirm password is required.",
@@ -212,8 +208,9 @@ const SignUp = () => {
           />
 
           {/* confirm password error message */}
-          {alertMessage && <p className="alertMessage">{alertMessage}</p>}
-          <ErrorMessage
+          <AlertMessage message={errors?.passwordConfirmInput?.message} />
+          <AlertMessage message={alertMessage} />
+          {/* <ErrorMessage
             errors={errors}
             name="confirmPasswordInput"
             render={({ messages }) => {
@@ -226,7 +223,7 @@ const SignUp = () => {
                   ))
                 : null;
             }}
-          />
+          /> */}
         </div>
 
         {/* submit button */}

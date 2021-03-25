@@ -6,6 +6,8 @@ import { actionTypes } from "../../reducer";
 import { useStateValue } from "../../StateProvider";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import GoogleIcon from "../../assets/icons8-google-48.png";
+import AlertMessage from "../AlertMessage";
+
 const Login = () => {
   const [{ user }, dispatch] = useStateValue();
   const history = useHistory();
@@ -13,7 +15,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-
+  console.log("alertMessage: ", alertMessage);
   // 登入
   const signIn = (e) => {
     e.preventDefault();
@@ -97,15 +99,9 @@ const Login = () => {
 
   return (
     <div className="login">
-      {/* <p
-        className={
-          alertMessage ? "login__alertMessage" : "login__successMessage"
-        }
-      >
-        {alertMessage ? alertMessage : successMessage}
-      </p> */}
-      <form className="login__form" action="">
-        <div className='login__formBox'>
+      <form className="login__form">
+
+        <div className="login__formBox">
           <label className="login__formLabel">E-mail:</label>
           <input
             className="login__formInput"
@@ -114,7 +110,8 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className='login__formBox'>
+
+        <div className="login__formBox">
           <label className="login__formLabel">Password:</label>
           <input
             className="login__formInput"
@@ -123,8 +120,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-
-        {alertMessage && <p className="alertMessage">{alertMessage}</p>}
+        <AlertMessage message={alertMessage} />
 
         <Button
           type="submit"

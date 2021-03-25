@@ -1,0 +1,23 @@
+.alertMessage {
+  margin-top: 10px;
+  background-color: $alert-color;
+  color: $primary-color;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100%;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__leftBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & > p{
+        margin-left: 5px;
+    }
+  }
+}

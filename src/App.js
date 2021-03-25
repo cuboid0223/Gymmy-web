@@ -9,9 +9,9 @@ import Profile from "./components/Profile";
 import GuessFoodNutrition from "./components/GuessFoodNutrition";
 import PickUpRobot from "./components/PickUpRobot";
 import Login from "./components/Auth/Login";
-import CalendarPage from './components/CalendarPage'
+import CalendarPage from "./components/CalendarPage";
+import SignUp from "./components/Auth/SignUp";
 function App() {
-
   const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const history = useHistory();
@@ -93,6 +93,14 @@ function App() {
             <div className="app__page detailPage">
               <Sidebar />
               <PickUpRobot />
+            </div>
+          </Route>
+
+          {/* SignUp Page */}
+          <Route path="/signup">
+            <div className="app__page detailPage">
+              <Sidebar />
+              <SignUp />
             </div>
           </Route>
 

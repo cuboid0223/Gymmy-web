@@ -13,8 +13,9 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  // 登入
   const signIn = (e) => {
-    // 登入
     e.preventDefault();
     auth
       .signInWithEmailAndPassword(email, password)
@@ -44,52 +45,6 @@ const Login = () => {
       .catch(function (error) {
         // Error occurred. Inspect error.code.
       });
-  };
-
-  const register = (e) => {
-    // 註冊
-    e.preventDefault();
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((auth) => {
-        // if successfully create new User
-        console.log(auth);
-        if (auth) {
-          history.push("/"); // 轉址到首頁
-        }
-        setSuccessMessage("Sign up!");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        console.log("errorCode: ", errorCode);
-        const errorMessage = error.message;
-        switch (errorCode) {
-          // 註冊密碼太弱
-          case "auth/weak-password":
-            setAlertMessage("The password is too weak."); // Thrown if the password is not strong enough.
-            break;
-
-          case "auth/operation-not-allowed":
-            setAlertMessage(
-              "Email/password accounts are not enabled. Enable email/password accounts in the Firebase Console, under the Auth tab."
-            );
-            break;
-          // 電子郵件格式不對
-          case "auth/invalid-email":
-            setAlertMessage("The email address is not valid.");
-            break;
-          // 電子郵件已註冊
-          case "auth/email-already-in-use":
-            setAlertMessage(
-              "There already exists an account with the given email address."
-            );
-            break;
-          default:
-            setAlertMessage(errorMessage);
-        }
-        setAlertMessage(errorMessage);
-      });
-    //firebase
   };
 
   const signIn__Google = (e) => {
@@ -137,6 +92,9 @@ const Login = () => {
       });
   };
 
+  //  將 global state 的 user ，若是第一次登入則新增到 users
+  const addUserToFirebase = () => {};
+
   return (
     <div className="login">
       {/* <p
@@ -147,7 +105,7 @@ const Login = () => {
         {alertMessage ? alertMessage : successMessage}
       </p> */}
       <form className="login__form" action="">
-        <div>
+        <div className='login__formBox'>
           <label className="login__formLabel">E-mail:</label>
           <input
             className="login__formInput"
@@ -156,7 +114,7 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div>
+        <div className='login__formBox'>
           <label className="login__formLabel">Password:</label>
           <input
             className="login__formInput"
@@ -166,6 +124,8 @@ const Login = () => {
           />
         </div>
 
+        {alertMessage && <p className="alertMessage">{alertMessage}</p>}
+
         <Button
           type="submit"
           className="login__passwordEmailButton"
@@ -174,9 +134,10 @@ const Login = () => {
           Submit
         </Button>
 
-        <Button className="login__registerButton" onClick={register}>
-          Sign Up
-        </Button>
+        <Link className="login__registerButton" to="/signup">
+          <Button>Sign Up</Button>
+        </Link>
+
         <Button
           className="login__forgetPasswordButton"
           onClick={forgotPassword}

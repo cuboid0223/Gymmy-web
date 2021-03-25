@@ -46,10 +46,7 @@ const FoodList = ({ type }) => {
   const addFood = (data) => {
     // e.preventDefault();
 
-    const newData = Object.assign(
-      { createdTime: date, type: type },
-      data
-    );
+    const newData = Object.assign({ createdTime: date, type: type }, data);
     console.log(newData);
     db.collection("foods").add(newData);
     // 運動
@@ -58,7 +55,6 @@ const FoodList = ({ type }) => {
     // close modal
     setIsOpen(false);
     // submit 完 清空 <input> 裡的值
-    
   };
   return (
     <div className="foodList">
@@ -128,9 +124,9 @@ const FoodList = ({ type }) => {
               type="text"
               placeholder="enter food serving"
               name="foodServing"
-              ref={register({ required: true })}
+              ref={register({ required: true, pattern: /^[0-9]*$/ })}
             />
-            {errors.foodServing && "food serving is required."}
+            {errors.foodServing && "serving is a number."}
             <input
               className="foodList__input"
               type="text"

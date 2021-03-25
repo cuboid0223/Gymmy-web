@@ -1,0 +1,19 @@
+.signUp {
+  height: 100vh;
+  //   margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.alertMessage {
+  margin-top: 10px;
+  background-color: $alert-color;
+  color: $primary-color;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100%;
+  font-size: 12px;
+  font-weight: bold;
+}

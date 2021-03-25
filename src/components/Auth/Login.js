@@ -15,15 +15,14 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
   // console.log("alertMessage: ", alertMessage);
   // 登入
-  // console.log(user?.uid);
   const signIn = (e) => {
     e.preventDefault();
     auth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
+        // 先取得 firebase auth 的資料
         dispatch({
           type: actionTypes.SET_USER,
           user: result.user,
@@ -46,8 +45,11 @@ const Login = () => {
       });
   };
 
-  // 取得使用者資料
+  // 從 firestore 取得使用者資料
   useEffect(() => {
+    if (!user) {
+      return;
+    }
     var docRef = db.collection("users").doc(user?.uid);
     docRef
       .get()
@@ -60,10 +62,12 @@ const Login = () => {
           });
         } else {
           // doc.data() will be undefined in this case
+          history.push("/login");
           console.log("No such document!");
         }
       })
       .catch((error) => {
+        history.push("/login");
         console.log("Error getting document:", error);
       });
   }, [user]);
@@ -80,7 +84,7 @@ const Login = () => {
           notices: [
             {
               imageUrl: { logo },
-              message: "Please check your email!",
+              message: `Please check your email! -> ${email}`,
             },
           ],
         });

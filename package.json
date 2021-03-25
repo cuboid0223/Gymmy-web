@@ -12,6 +12,7 @@
     "axios": "^0.20.0",
     "firebase": "^8.3.1",
     "lodash": "^4.17.21",
+    "moment": "^2.29.1",
     "react": "^16.13.1",
     "react-calendar": "^3.3.1",
     "react-dom": "^16.13.1",

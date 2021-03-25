@@ -1,0 +1,14 @@
+.noticeCard {
+  display: flex;
+  align-items: center;
+  background-color: #fefefe;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 10px;
+  &__active {
+    background-color: $secondary-color;
+  }
+  &__desc {
+    margin-left: 10px;
+  }
+}

@@ -1,74 +1,87 @@
 .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 5px 20px 5px 20px;
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  background-color: #fff;
+
+  @include iphone {
+    justify-content: space-between;
+  }
+
+  &__left {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 5px 20px 5px 20px;
-    position: fixed;
-    top: 0;
-    z-index: 100;
-    background-color: #fff;
+  }
 
+  &__logo {
+    height: 60px;
+    object-fit: contain;
+    margin-left: 10px;
+    // border: 1px solid black;
+  }
+
+  &__center {
+    display: flex;
+    align-items: center;
+    width: 40%;
+    border: 1px solid lightgray;
 
     @include iphone {
-        justify-content: space-between;
+      flex: 1;
     }
 
-    &__left {
-        display: flex;
-        align-items: center;
+    & > input {
+      flex: 1;
+      outline: none;
+      border: none;
     }
+  }
 
-    &__logo {
-        height: 60px;
-        object-fit: contain;
-        margin-left: 10px;
-        // border: 1px solid black;
+  &__searchBtn {
+    width: 50px !important;
+    background-color: #fafafa;
+    padding: 5px !important;
+    color: gray;
+    border-left: 1px solid lightgray;
+
+    @include iphone {
+      display: none !important;
     }
+  }
 
-    &__center {
-        display: flex;
-        align-items: center;
-        width: 40%;
-        border: 1px solid lightgray;
+  &__right {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 
-        @include iphone {
-            flex: 1;
-        }
+    // @include iphone {
+    //     display: none !important;
+    // }
+  }
 
-        &>input {
-            flex: 1;
-            outline: none;
-            border: none;
-        }
-    }
-
-    &__searchBtn {
-
-        width: 50px !important;
-        background-color: #fafafa;
-        padding: 5px !important;
-        color: gray;
-        border-left: 1px solid lightgray;
-
-        @include iphone {
-            display: none !important;
-        }
-    }
-
-    &__right {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-
-        @include iphone {
-            display: none !important;
-        }
-    }
-
-    &__icon {
-        margin-right: 5px;
-
-
-    }
+  &__icon {
+    margin-right: 5px;
+  }
+  &__NoticeIconContainer {
+    // background-color: red;
+    position: relative;
+  }
+  &__NoticeIcon {
+    color: $secondary-color;
+  }
+  &__NoticeIconCount {
+    position: absolute;
+    background-color: $alert-color;
+    color: $primary-color;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 50%;
+    top: -2px;
+    right: -2px;
+  }
 }

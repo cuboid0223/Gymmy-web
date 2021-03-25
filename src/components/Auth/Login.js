@@ -27,7 +27,10 @@ const Login = () => {
           user: result.user,
         });
         history.push("/"); // 轉址到首頁
-        setSuccessMessage("login success!");
+        dispatch({
+          type: actionTypes.SET_NOTICES,
+          notices: [{ imageUrl: "logo", message: "login success!" }],
+        });
       })
       .catch((error) => {
         setAlertMessage(`login fail! the reason -> ${error.message}`);
@@ -100,7 +103,6 @@ const Login = () => {
   return (
     <div className="login">
       <form className="login__form">
-
         <div className="login__formBox">
           <label className="login__formLabel">E-mail:</label>
           <input

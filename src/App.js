@@ -11,6 +11,7 @@ import PickUpRobot from "./components/PickUpRobot";
 import Login from "./components/Auth/Login";
 import CalendarPage from "./components/CalendarPage";
 import SignUp from "./components/Auth/SignUp";
+import NoticePage from "./pages/NoticePage";
 function App() {
   const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -112,8 +113,15 @@ function App() {
             </div>
           </Route>
 
+          <Route path="/noticePage">
+            <div className="app__page detailPage">
+              <Sidebar />
+              <NoticePage />
+            </div>
+          </Route>
+
           {/* Calendar page */}
-          <Route path="/">
+          <Route path="/calendar">
             <div className="app__page homePage">
               <Sidebar />
               <CalendarPage />

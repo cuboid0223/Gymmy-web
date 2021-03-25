@@ -1,20 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { useStateValue } from "../StateProvider";
+import { actionTypes } from "../reducer";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import VideoCallSharpIcon from "@material-ui/icons/VideoCallSharp";
 import AppsSharpIcon from "@material-ui/icons/AppsSharp";
 import NotificationsSharpIcon from "@material-ui/icons/NotificationsSharp";
+import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 import { Avatar, Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import Logo from "../assets/gymmy.png";
+
 const Header = ({ onFormSubmit }) => {
   const [inputSearch, setInputSearch] = useState("");
-  const [{ term }, dispatch] = useStateValue();
+
+  const [{ term, noticesCount, notices }, dispatch] = useStateValue(); // 取得 header__NoticeIconCount
+  console.log("noticesCount: ", noticesCount);
   const handleSubmit = (e) => {
     e.preventDefault();
     onFormSubmit(inputSearch);
   };
+  useEffect(() => {
+    dispatch({
+      type: actionTypes.SET_NOTICESCOUNT,
+      noticesCount: notices.length,
+    });
+  }, [notices]);
 
   useEffect(() => {
     console.log("reducer send term: ", term);
@@ -29,6 +40,7 @@ const Header = ({ onFormSubmit }) => {
           <img className="header__logo" src={Logo} alt="Logo" />
         </Link>
       </div>
+
       <form className="header__center" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -42,11 +54,18 @@ const Header = ({ onFormSubmit }) => {
           </Link>
         </Button>
       </form>
+
       <div className="header__right">
-        <VideoCallSharpIcon className="header__icon" />
-        <AppsSharpIcon className="header__icon" />
-        <NotificationsSharpIcon className="header__icon" />
-        <Avatar />
+        <Link to="/noticePage">
+          <div className="header__NoticeIconContainer">
+            <NotificationsSharpIcon className="header__NoticeIcon" />
+            {noticesCount ? (
+              <pre className="header__NoticeIconCount">{noticesCount}</pre>
+            ) : null}
+          </div>
+        </Link>
+
+        {/* <Avatar /> */}
       </div>
     </div>
   );

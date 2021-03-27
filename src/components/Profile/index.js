@@ -1,21 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { useStateValue } from "../../StateProvider";
+import { actionTypes } from "../../reducer";
 import { Avatar } from "@material-ui/core";
 import Modal from "react-modal";
+import { useHistory } from "react-router-dom";
 import ArrowIcon from "../../assets/icons8-arrow-60.png";
 import PleaseLoginPage from "../Auth/PleaseLoginPage";
 import moment from "moment";
 import axios from "axios";
-
+import { useForm } from "react-hook-form";
+import AlertMessage from "../AlertMessage";
+import db from "../../firebase";
 const Profile = () => {
-  const [{ userInfo }, dispatch] = useStateValue();
+  const [{ userInfo, user }, dispatch] = useStateValue();
   const [BMIData, setBMIData] = useState(null);
-  const storage = window.localStorage;
-  // const userData = user?.providerData[0];
-  // console.log(user);
-  const [modalIsOpen, setIsOpen] = useState(false);
+  // const storage = window.localStorage;
+  const [modalIsOpen, setIsOpen] = useState(false); // false
+  const { register, handleSubmit, watch, errors } = useForm();
+  const history = useHistory();
 
-  // console.log("localUser: ", JSON.stringify(newUser?.uid));
+  const onModalFormSubmit = (data) => {
+    if (!userInfo) {
+      // 如果沒有使用者資料（userInfo），則新增使用者資料（userInfo）
+      const newData = Object.assign(
+        {
+          email: user.email,
+          height_unit: "cm",
+          weight_unit: "kg",
+          user_auth: "normal",
+        },
+        data
+      );
+      // console.log(newData);
+      db.collection("users").doc(user.uid).set(newData);
+      history.push("/login");
+    } else {
+      //如果有使用者資料（userInfo），則更新使用者資料（userInfo）
+      db.collection("users").doc(user.uid).update(data);
+      setIsOpen(false);
+    }
+  };
 
   Modal.setAppElement(document.getElementById("root"));
   const customStyles = {
@@ -29,13 +53,33 @@ const Profile = () => {
     },
   };
 
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
+  const isModalOpen = () => {
+    setIsOpen(modalIsOpen ? false : true);
+    // 修改使用者資料（userInfo）
+    if (userInfo) {
+      var docRef = db.collection("users").doc(user?.uid);
+      docRef
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            dispatch({
+              type: actionTypes.SET_USERINFO,
+              userInfo: doc.data(),
+            });
+            console.log("user info:", userInfo);
+            // storage.setItem("user", JSON.stringify(user));
+          } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+            history.push("./profile");
+            // sendNotice("go to profile and set your height and weight!");
+          }
+        })
+        .catch((error) => {
+          console.log("Error getting document:", error);
+        });
+    }
+  };
 
   const secondsToAge = (seconds) => {
     const year_birth = new Date(seconds * 1000).getFullYear();
@@ -47,6 +91,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (!userInfo) {
+      setIsOpen(true);
       return;
     }
 
@@ -94,24 +139,58 @@ const Profile = () => {
             <p>
               Weight: {userInfo?.weight} {userInfo?.weight_unit}
             </p>
-            <button onClick={openModal}>open</button>
+            <button onClick={isModalOpen}>open</button>
           </div>
           {/* a modal form to edit userInfo */}
           <Modal
             isOpen={modalIsOpen}
-            onRequestClose={closeModal}
+            onRequestClose={isModalOpen}
             style={customStyles}
-            contentLabel="Example Modal"
+            contentLabel="user info Modal"
           >
-            <form action="">
-              <input type="text" placeholder="Name" />
-              <input type="text" placeholder="Gender" />
-              <input type="text" placeholder="Age" />
-              <input type="text" placeholder="Height" />
-              <input type="text" placeholder="weight" />
+            <form onSubmit={handleSubmit(onModalFormSubmit)}>
+              <input
+                name="name"
+                placeholder="Name"
+                defaultValue={userInfo?.name}
+                ref={register({ required: true })}
+              />
+
+              {/* {errors.name && <span> Name is required</span>} */}
+              <select
+                name="gender"
+                ref={register({ required: true })}
+                defaultValue={userInfo?.gender}
+              >
+                <option value="male">male</option>
+                <option value="female">female</option>
+                <option value="other">other</option>
+              </select>
+              <input
+                name="age"
+                type="number"
+                placeholder="Age"
+                defaultValue={userInfo?.age}
+                ref={register({ min: 15, max: 99, required: true })}
+              />
+              <input
+                name="height"
+                type="number"
+                placeholder="Height"
+                defaultValue={userInfo?.height}
+                ref={register({ required: true })}
+              />
+              <input
+                name="weight"
+                type="number"
+                placeholder="weight"
+                defaultValue={userInfo?.weight}
+                ref={register({ required: true })}
+              />
               <input type="submit" value="submit" />
             </form>
-            <button onClick={closeModal}>close</button>
+            <AlertMessage message={errors?.age?.message} />
+            <button onClick={isModalOpen}>close</button>
           </Modal>
         </div>
         <div className="profile__infoContainer">

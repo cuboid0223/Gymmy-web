@@ -83,6 +83,8 @@ const Login = () => {
         } else {
           // doc.data() will be undefined in this case
           console.log("No such document!");
+          history.push('./profile');
+          sendNotice("go to profile and set your height and weight!")
         }
       })
       .catch((error) => {

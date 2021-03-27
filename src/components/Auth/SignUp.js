@@ -210,7 +210,7 @@ const SignUp = () => {
           />
 
           {/* confirm password error message */}
-          <AlertMessage message={errors?.passwordConfirmInput?.message} />
+          <AlertMessage message={errors?.confirmPasswordInput?.message} />
           <AlertMessage message={alertMessage} />
           {/* <ErrorMessage
             errors={errors}

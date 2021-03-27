@@ -10,34 +10,53 @@ import AlertMessage from "../AlertMessage";
 import logo from "../.././assets/gymmy.png";
 import db from "../../firebase";
 const Login = () => {
-  const [{ user }, dispatch] = useStateValue();
+  const [{ user, userInfo, notices }, dispatch] = useStateValue();
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
+  // const storage = window.localStorage;
+  // const [user_uid, setUser_uid] = useState(""); // 以保持登入
+
   // console.log("alertMessage: ", alertMessage);
+  const sendNotice = (noticeMessage) => {
+    // 發送通知
+    dispatch({
+      type: actionTypes.SET_NOTICES,
+      notices: [
+        ...notices,
+        {
+          imageUrl: { logo },
+          message: noticeMessage,
+        },
+      ],
+    });
+  };
   // 登入
   const signIn = (e) => {
     e.preventDefault();
     auth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        // 先取得 firebase auth 的資料
+        // 先取得 uid from  firebase auth
         dispatch({
           type: actionTypes.SET_USER,
           user: result.user,
         });
-        history.push("/profile"); // 轉址到個人頁面
+
         // 發送通知
-        dispatch({
-          type: actionTypes.SET_NOTICES,
-          notices: [
-            {
-              imageUrl: { logo },
-              message: "Login success! Start set up your own information.",
-            },
-          ],
-        });
+        sendNotice("Please verified your email to unlock more Gymmy services.");
+        sendNotice("Login success! Start set up your own information.");
+        sendNotice("Please verified your email to unlock more Gymmy services.");
+        console.log("notices: ", notices);
+        // 若信箱沒有認證，則發送通知
+        console.log("user.emailVerified: ", user?.user.emailVerified);
+
+        if (user?.user.emailVerified === false) {
+          sendNotice(
+            "Please verified your email to unlock more Gymmy services."
+          );
+        }
       })
       .catch((error) => {
         setAlertMessage(`login fail! the reason -> ${error.message}`);
@@ -55,19 +74,18 @@ const Login = () => {
       .get()
       .then((doc) => {
         if (doc.exists) {
-          console.log("Document data:", doc.data());
           dispatch({
-            type: actionTypes.SET_USER,
-            user: doc.data(),
+            type: actionTypes.SET_USERINFO,
+            userInfo: doc.data(),
           });
+          console.log("user info:", userInfo);
+          // storage.setItem("user", JSON.stringify(user));
         } else {
           // doc.data() will be undefined in this case
-          history.push("/login");
           console.log("No such document!");
         }
       })
       .catch((error) => {
-        history.push("/login");
         console.log("Error getting document:", error);
       });
   }, [user]);
@@ -78,17 +96,8 @@ const Login = () => {
       .sendPasswordResetEmail(email)
       .then(function () {
         console.log("sendPasswordResetEmail");
-        // 發送通知
-        dispatch({
-          type: actionTypes.SET_NOTICES,
-          notices: [
-            {
-              imageUrl: { logo },
-              message: `Please check your email! -> ${email}`,
-            },
-          ],
-        });
-        // Password reset email sent.
+        // 發送通知 Password reset email sent.
+        sendNotice(`Please check your email! -> ${email}`);
       })
       .catch(function (error) {
         // Error occurred. Inspect error.code.
@@ -100,20 +109,14 @@ const Login = () => {
       .signInWithPopup(provider__Google)
       .then((result) => {
         // 登入
+        // 先取得 uid from  firebase auth
         dispatch({
           type: actionTypes.SET_USER,
           user: result.user,
         });
+        // setUser_uid(user?.uid);
         // 發送通知
-        dispatch({
-          type: actionTypes.SET_NOTICES,
-          notices: [
-            {
-              imageUrl: { logo },
-              message: "Login with Google!",
-            },
-          ],
-        });
+        sendNotice("Login with Google!");
 
         history.push("/profile");
       })
@@ -126,36 +129,19 @@ const Login = () => {
       .then((result) => {
         var token = result.credential.accessToken;
         // The signed-in user info.
+        // 先取得 uid from  firebase auth
         dispatch({
           type: actionTypes.SET_USER,
           user: result.user,
         });
         // 發送通知
-        dispatch({
-          type: actionTypes.SET_NOTICES,
-          notices: [
-            {
-              imageUrl: { logo },
-              message: "Login with Facebook!",
-            },
-          ],
-        });
+        sendNotice("Login with Facebook!");
 
         history.push("/profile");
       })
       .catch((error) => {
         // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-        const array = [errorCode, errorMessage, email, credential];
-        array.map((item) => console.log(item));
-        setAlertMessage(
-          `Login with Facebook fail!  the reason ->  ${errorMessage}`
-        );
+        alert(error.message);
       });
   };
 

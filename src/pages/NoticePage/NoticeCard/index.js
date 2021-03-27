@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Avatar } from "@material-ui/core";
-import logo from "../../../assets/logo.png";
 import { useStateValue } from "../../../StateProvider";
 import { actionTypes } from "../../../reducer";
 const NoticeCard = ({ imageURL, desc }) => {

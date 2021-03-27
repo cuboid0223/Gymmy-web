@@ -65,9 +65,11 @@ const SignUp = () => {
           const newUser = result.additionalUserInfo.isNewUser;
           if (newUser) {
             // 轉址 /profile 輸入身高體重等資訊
+            window.localStorage.setItem("newUser", true);
             history.push("/profile");
           } else {
             //   history.push("/profile");
+            window.localStorage.removeItem("newUser");
             console.log("此帳號已註冊過");
           }
 

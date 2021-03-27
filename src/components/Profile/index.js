@@ -1,15 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useStateValue } from "../../StateProvider";
 import { Avatar } from "@material-ui/core";
 import Modal from "react-modal";
 import ArrowIcon from "../../assets/icons8-arrow-60.png";
 import PleaseLoginPage from "../Auth/PleaseLoginPage";
 import moment from "moment";
+import axios from "axios";
+
 const Profile = () => {
-  const [{ user }, dispatch] = useStateValue();
+  const [{ userInfo }, dispatch] = useStateValue();
+  const [BMIData, setBMIData] = useState(null);
+  const storage = window.localStorage;
   // const userData = user?.providerData[0];
   // console.log(user);
   const [modalIsOpen, setIsOpen] = useState(false);
+
+  // console.log("localUser: ", JSON.stringify(newUser?.uid));
+
   Modal.setAppElement(document.getElementById("root"));
   const customStyles = {
     content: {
@@ -21,8 +28,8 @@ const Profile = () => {
       transform: "translate(-50%, -50%)",
     },
   };
+
   function openModal() {
-    console.log("object");
     setIsOpen(true);
   }
 
@@ -35,27 +42,57 @@ const Profile = () => {
     const year_now = new Date().getFullYear();
     // console.log(year_now); // now year
     // console.log(year_birth); // 2001
-    return year_now - year_birth;
+    return parseInt(year_now - year_birth);
   };
-  // console.log(secondsToAge("982857600"));
+
+  useEffect(() => {
+    if (!userInfo) {
+      return;
+    }
+
+    const BMIOptions = {
+      method: "GET",
+      url: "https://fitness-calculator.p.rapidapi.com/bmi",
+      params: {
+        age: secondsToAge(userInfo?.birth?.seconds),
+        weight: userInfo?.weight,
+        height: userInfo?.height,
+      },
+      headers: {
+        "x-rapidapi-key": "561ee6d36amshf73fd6455efaa12p1935aejsn0c7dc81a59b2",
+        "x-rapidapi-host": "fitness-calculator.p.rapidapi.com",
+      },
+    };
+
+    axios
+      .request(BMIOptions)
+      .then(function (response) {
+        // console.log(response.data);
+        setBMIData(response.data);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  }, [userInfo]);
+
   return (
     <div className="profile">
       {/* {user ? ( */}
       <div>
         <div className="profile__infoContainer personalBasicInfoContainer">
-          <Avatar className="profile__avatar" src={user?.imageURL} />
+          <Avatar className="profile__avatar" src={userInfo?.imageURL} />
           <div className="profile__userInfo">
-            <p>Name: {user?.name}</p>
-            <p>Account: {user?.email}</p>
-            <p>Gender: {user?.gender}</p>
+            <p>Name: {userInfo?.name}</p>
+            <p>Account: {userInfo?.email}</p>
+            <p>Gender: {userInfo?.gender}</p>
             {/* 982857600 */}
             {/* <p>{secondsFormats(user?.birth?.seconds)}</p> */}
-            <p>Age: {secondsToAge(user?.birth?.seconds)}</p>
+            <p>Age: {secondsToAge(userInfo?.birth?.seconds)}</p>
             <p>
-              Height: {user?.height} {user?.height_unit}
+              Height: {userInfo?.height} {userInfo?.height_unit}
             </p>
             <p>
-              Height: {user?.weight} {user?.weight_unit}
+              Weight: {userInfo?.weight} {userInfo?.weight_unit}
             </p>
             <button onClick={openModal}>open</button>
           </div>
@@ -81,10 +118,15 @@ const Profile = () => {
           {/* current state  */}
           <div className="profile__weightContainer">
             <h3>Current </h3>
-            <p>Weight: 60 kg</p>
-            <p>BMI: 30</p>
+            <p>
+              Weight: {userInfo?.weight} {userInfo?.weight_unit}
+            </p>
+            {/* 取到第二位 */}
+            <p>BMI:{Math.round(BMIData?.bmi * 100) / 100}</p>
+            <p>Health: {BMIData?.health}</p>
+            <p>Healthy BMI Range: {BMIData?.healthy_bmi_range}</p>
           </div>
-          <img src={ArrowIcon} alt="arrow" />
+          {/* <img src={ArrowIcon} alt="arrow" /> */}
           {/* ideal state  */}
           <div className="profile__weightContainer">
             <h3>Ideal </h3>

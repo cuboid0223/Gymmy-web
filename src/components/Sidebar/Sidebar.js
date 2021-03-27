@@ -21,14 +21,17 @@ import EventIcon from "@material-ui/icons/Event";
 import DirectionsBikeIcon from "@material-ui/icons/DirectionsBike";
 import PoolIcon from "@material-ui/icons/Pool";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { auth } from "../../firebase";
 import { actionTypes } from "../../reducer";
+
+
 const Sidebar = () => {
   const [newSidebarName, setNewSidebarName] = useState("");
   const [newSidebarNames, setNewSidebarNames] = useState([]);
   const [editFormOpen, setEditFormOpen] = useState(false);
   const [{ user }, dispatch] = useStateValue();
+  const history = useHistory();
   // when click submit -> (CheckBoxIcon)
   const addSidebarRow = (e) => {
     e.preventDefault();
@@ -47,10 +50,19 @@ const Sidebar = () => {
       .signOut()
       .then(() => {
         console.log("logout!");
+        // 將使用者去除
         dispatch({
           type: actionTypes.SET_USER,
           user: null,
         });
+        // 將通知去除
+        dispatch({
+          type: actionTypes.SET_NOTICES,
+          notices: null,
+        });
+        // window.localStorage.clear();
+        // window.localStorage.removeItem("emailForSignIn");
+        history.push('/login')
       })
       .catch((error) => console.log(error.message));
   };
@@ -70,9 +82,14 @@ const Sidebar = () => {
       <hr />
       <h4>Video Categories</h4>
       <Link to="/search">
-        {user && newSidebarNames.map((newSidebarName) => (
-          <SidebarRow Icon={GradeIcon} title={newSidebarName} tutorial={true} />
-        ))}
+        {user &&
+          newSidebarNames.map((newSidebarName) => (
+            <SidebarRow
+              Icon={GradeIcon}
+              title={newSidebarName}
+              tutorial={true}
+            />
+          ))}
 
         <SidebarRow
           Icon={FitnessCenterIcon}

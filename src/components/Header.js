@@ -23,7 +23,7 @@ const Header = ({ onFormSubmit }) => {
   useEffect(() => {
     dispatch({
       type: actionTypes.SET_NOTICESCOUNT,
-      noticesCount: notices.length,
+      noticesCount: notices?.length,
     });
   }, [notices]);
 

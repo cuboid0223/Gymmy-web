@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import NoticeCard from "./NoticeCard";
 import { actionTypes } from "../../reducer";
 import { useStateValue } from "../../StateProvider";
+
+import logo from "../.././assets/logo.jpg";
 const NoticePage = () => {
   //   events.map(({ name, start, logo, url, id, description }) => {
   //     const maxChar = 20
@@ -13,8 +15,8 @@ const NoticePage = () => {
   return (
     <div className="noticePage">
       {/* map limit 20 notice cards */}
-      {notices.slice(0, 20).map((notice) => (
-        <NoticeCard imageURL={notice?.logo} desc={notice?.message} />
+      {notices?.slice(0, 20).map((notice) => (
+        <NoticeCard imageURL={logo} desc={notice?.message} />
       ))}
       {!notices && <p>there is nothing notice</p>}
     </div>

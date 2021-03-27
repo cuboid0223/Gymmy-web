@@ -976,6 +976,7 @@
 
 .profile__weightContainer > p {
   font-weight: 600;
+  font-size: 12px;
 }
 
 .profile__postsContainer {

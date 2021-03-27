@@ -3,6 +3,7 @@ import "./scss/all.css";
 import { Header, Sidebar, SearchPage, VideoDetail } from "./components";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useStateValue } from "./StateProvider";
+import { actionTypes } from "./reducer";
 import youtube from "./api/youtube";
 import { useHistory } from "react-router-dom";
 import MealPlan from "./components/MealPlan";
@@ -13,18 +14,30 @@ import Login from "./components/Auth/Login";
 import CalendarPage from "./components/CalendarPage";
 import SignUp from "./components/Auth/SignUp";
 import NoticePage from "./pages/NoticePage";
-import {db} from './firebase'
+import { db } from "./firebase";
 function App() {
-  const [{ user }, dispatch] = useStateValue();
+  const [{ userInfo }, dispatch] = useStateValue();
   const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const history = useHistory();
 
   useEffect(() => {
     handleSubmit("健身");
+    // mock user data
+    // dispatch({
+    //   type: actionTypes.SET_USER,
+    //   user: true,
+    // });
+    // dispatch({
+    //   type: actionTypes.SET_USERINFO,
+    //   userInfo: {
+    //     name: "jeff",
+    //     weight: 60,
+    //     height: 177,
+    //     birth: { seconds: "90000" },
+    //   },
+    // });
   }, []);
-
-  
 
   const onVideoSelect = (video) => {
     setSelectedVideo(video);

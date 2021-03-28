@@ -38,6 +38,7 @@ const Profile = () => {
       //如果有使用者資料（userInfo），則更新使用者資料（userInfo）
       db.collection("users").doc(user.uid).update(data);
       setIsOpen(false);
+      history.push("/");
     }
   };
 
@@ -99,20 +100,24 @@ const Profile = () => {
       method: "GET",
       url: "https://fitness-calculator.p.rapidapi.com/bmi",
       params: {
-        age: secondsToAge(userInfo?.birth?.seconds),
-        weight: userInfo?.weight,
-        height: userInfo?.height,
+        age: parseInt(userInfo?.age),
+        weight: parseInt(userInfo?.weight),
+        height: Number(userInfo?.height),
       },
       headers: {
         "x-rapidapi-key": "561ee6d36amshf73fd6455efaa12p1935aejsn0c7dc81a59b2",
         "x-rapidapi-host": "fitness-calculator.p.rapidapi.com",
       },
     };
-
+    // console.log(
+    //   parseInt(userInfo?.age),
+    //   Number(userInfo?.weight),
+    //   Number(userInfo?.height)
+    // );
     axios
       .request(BMIOptions)
       .then(function (response) {
-        // console.log(response.data);
+        console.log(response.data);
         setBMIData(response.data);
       })
       .catch(function (error) {
@@ -132,7 +137,7 @@ const Profile = () => {
             <p>Gender: {userInfo?.gender}</p>
             {/* 982857600 */}
             {/* <p>{secondsFormats(user?.birth?.seconds)}</p> */}
-            <p>Age: {secondsToAge(userInfo?.birth?.seconds)}</p>
+            <p>Age: {userInfo?.age}</p>
             <p>
               Height: {userInfo?.height} {userInfo?.height_unit}
             </p>

@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FoodListItem from "../FoodListItem";
 import Modal from "react-modal";
 import SearchIcon from "@material-ui/icons/Search";
 import { useForm } from "react-hook-form";
 import { useStateValue } from "../../../StateProvider";
-
+import axios from "axios";
 import db from "../../../firebase";
 import firebase from "firebase";
+import "../../../api/fatSecret";
 
 const FoodList = ({ type }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -14,7 +15,7 @@ const FoodList = ({ type }) => {
   const [inputFoodName, setInputFoodName] = useState("");
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
   const [{ date }, dispatch] = useStateValue(); // 取得所選日期
-
+  const token = window.localStorage.getItem("token");
   Modal.setAppElement(document.getElementById("root"));
   const customStyles = {
     content: {
@@ -28,6 +29,21 @@ const FoodList = ({ type }) => {
       transform: "translate(-50%, -50%)",
     },
   };
+
+  useEffect(() => {
+    const config = {
+      url:
+        "https://blooming-stream-76058.herokuapp.com/https://platform.fatsecret.com/rest/server.api", // 只有此為必需
+      method: "post", 
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+
+      params: { method: "food.get.v2", food_id: "33691", format: "json" },
+    };
+    // axios(config).then((res) => console.log(res.data));
+  }, []);
 
   function openModal() {
     setIsOpen(true);

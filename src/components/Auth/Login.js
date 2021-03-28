@@ -45,14 +45,15 @@ const Login = () => {
         });
 
         // 發送通知
-        sendNotice("Please verified your email to unlock more Gymmy services.");
-        sendNotice("Login success! Start set up your own information.");
-        sendNotice("Please verified your email to unlock more Gymmy services.");
-        console.log("notices: ", notices);
-        // 若信箱沒有認證，則發送通知
-        console.log("user.emailVerified: ", user?.user.emailVerified);
+
+        //sendNotice("Login success! Start set up your own information.");
+
+        // console.log("notices: ", notices);
+        //
+        // console.log("user.emailVerified: ", user?.user.emailVerified);
 
         if (user?.user.emailVerified === false) {
+          // 若信箱沒有認證，則發送通知
           sendNotice(
             "Please verified your email to unlock more Gymmy services."
           );
@@ -83,8 +84,8 @@ const Login = () => {
         } else {
           // doc.data() will be undefined in this case
           console.log("No such document!");
-          history.push('./profile');
-          sendNotice("go to profile and set your height and weight!")
+          history.push("./profile");
+          sendNotice("go to profile and set your height and weight!");
         }
       })
       .catch((error) => {

@@ -25,12 +25,11 @@ import { Link, useHistory } from "react-router-dom";
 import { auth } from "../../firebase";
 import { actionTypes } from "../../reducer";
 
-
 const Sidebar = () => {
   const [newSidebarName, setNewSidebarName] = useState("");
   const [newSidebarNames, setNewSidebarNames] = useState([]);
   const [editFormOpen, setEditFormOpen] = useState(false);
-  const [{ user }, dispatch] = useStateValue();
+  const [{ user, isSidebarOpen }, dispatch] = useStateValue();
   const history = useHistory();
   // when click submit -> (CheckBoxIcon)
   const addSidebarRow = (e) => {
@@ -51,18 +50,18 @@ const Sidebar = () => {
       .then(() => {
         console.log("logout!");
         // 將使用者去除
-        dispatch({
-          type: actionTypes.SET_USER,
-          user: null,
-        });
         // 將通知去除
-        dispatch({
-          type: actionTypes.SET_NOTICES,
-          notices: null,
-        });
-        // window.localStorage.clear();
-        // window.localStorage.removeItem("emailForSignIn");
-        history.push('/login')
+        dispatch(
+          {
+            type: actionTypes.SET_USER,
+            user: null,
+          },
+          {
+            type: actionTypes.SET_NOTICES,
+            notices: null,
+          }
+        );
+        history.push("/login");
       })
       .catch((error) => console.log(error.message));
   };
@@ -73,7 +72,11 @@ const Sidebar = () => {
   }, [newSidebarNames]);
 
   return (
-    <div className="sidebar">
+    <div
+      className={`sidebar ${
+        isSidebarOpen ? "sidebarActive" : "sidebarDisabled"
+      }`}
+    >
       <SidebarRow selected Icon={HomeIcon} title="Homepage" />
       <Link to="/calendar">
         <SidebarRow Icon={EventIcon} title="Calendar" />

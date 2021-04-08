@@ -12,7 +12,7 @@ const SidebarRow = ({
   color,
   logout,
 }) => {
-  const [{}, dispatch] = useStateValue();
+  const [{ isSidebarOpen }, dispatch] = useStateValue();
   return (
     <div
       className={`sidebar-row ${selected && "selected"} ${
@@ -20,14 +20,22 @@ const SidebarRow = ({
       }`}
       onClick={() => {
         console.log("click");
-        if (tutorial) {// 影片教學
+        if (tutorial) {
+          // 影片教學
           dispatch({
             type: actionTypes.SET_SEARCH_TERM,
             term: title + "教學", //把搜尋的字串丟到 Global State（contextAPI）
           });
         }
-        if (logout) {//登出
+        if (logout) {
+          //登出
           logout();
+        }
+        if (isSidebarOpen) {
+          dispatch({
+            type: actionTypes.SET_IS_SIDEBAR_OPEN,
+            isSidebarOpen: false,
+          });
         }
       }}
     >

@@ -20,6 +20,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 function App() {
   const [{ userInfo }, dispatch] = useStateValue();
   const [user, loading, error] = useAuthState(auth);
+  // console.log('user: ', user);
   const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const history = useHistory();
@@ -64,7 +65,7 @@ function App() {
   return (
     <div className="app">
       {loading ? (
-        //need a loading page 
+        //need a loading page
         <p>loading</p>
       ) : (
         <Router>

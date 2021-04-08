@@ -6,6 +6,7 @@ export const initialState = {
   date: new Date(),
   notices: [],
   noticesCount: 0,
+  isSidebarOpen: false,
 };
 export const actionTypes = {
   SET_SEARCH_TERM: "SET_SEARCH_TERM", // YouTube 搜尋字元
@@ -15,10 +16,17 @@ export const actionTypes = {
   SET_DATE: "SET_DATE", // 食物新增的日期
   SET_NOTICES: "SET_NOTICES", // 提醒訊息
   SET_NOTICESCOUNT: "SET_NOTICESCOUNT", // 提醒訊息數量
+  SET_IS_SIDEBAR_OPEN: "SET_IS_SIDEBAR_OPEN", // 打開 sidebar
 };
 const reducer = (state, action) => {
   console.log(action); //debug
   switch (action.type) {
+    case "SET_IS_SIDEBAR_OPEN":
+      return {
+        ...state,
+        isSidebarOpen: action.isSidebarOpen,
+      };
+
     case "SET_SEARCH_TERM":
       return {
         ...state,
@@ -36,7 +44,7 @@ const reducer = (state, action) => {
         ...state,
         user: action.user,
       };
-      
+
     case "SET_USERINFO":
       return {
         ...state,

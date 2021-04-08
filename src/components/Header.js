@@ -14,7 +14,10 @@ import Logo from "../assets/gymmy.png";
 const Header = ({ onFormSubmit }) => {
   const [inputSearch, setInputSearch] = useState("");
 
-  const [{ term, noticesCount, notices }, dispatch] = useStateValue(); // 取得 header__NoticeIconCount
+  const [
+    { term, noticesCount, notices, isSidebarOpen },
+    dispatch,
+  ] = useStateValue(); // 取得 header__NoticeIconCount
   console.log("noticesCount: ", noticesCount);
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,9 +35,16 @@ const Header = ({ onFormSubmit }) => {
     onFormSubmit(term);
   }, [term]);
 
+  const openSidebar = () => {
+    dispatch({
+      type: actionTypes.SET_IS_SIDEBAR_OPEN,
+      isSidebarOpen: isSidebarOpen ? false : true,
+    });
+  };
+
   return (
     <div className="header">
-      <div className="header__left">
+      <div className="header__left" onClick={openSidebar}>
         <MenuIcon className="burgerIcon" />
         <Link to="/">
           <img className="header__logo" src={Logo} alt="Logo" />

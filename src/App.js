@@ -14,9 +14,12 @@ import Login from "./components/Auth/Login";
 import CalendarPage from "./components/CalendarPage";
 import SignUp from "./components/Auth/SignUp";
 import NoticePage from "./pages/NoticePage";
-import { db } from "./firebase";
+import { db, auth } from "./firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+
 function App() {
   const [{ userInfo }, dispatch] = useStateValue();
+  const [user, loading, error] = useAuthState(auth);
   const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const history = useHistory();
@@ -24,19 +27,19 @@ function App() {
   useEffect(() => {
     handleSubmit("健身");
     // mock user data
-    // dispatch({
-    //   type: actionTypes.SET_USER,
-    //   user: true,
-    // });
-    // dispatch({
-    //   type: actionTypes.SET_USERINFO,
-    //   userInfo: {
-    //     name: "jeff",
-    //     weight: 60,
-    //     height: 177,
-    //     birth: { seconds: "90000" },
-    //   },
-    // });
+    dispatch({
+      type: actionTypes.SET_USER,
+      user: { uid: "JCgBwjeIucQyoQU8IdgQ7GUB8642" },
+    });
+    dispatch({
+      type: actionTypes.SET_USERINFO,
+      userInfo: {
+        name: "jeff",
+        weight: 60,
+        height: 177,
+        birth: { seconds: "90000" },
+      },
+    });
   }, []);
 
   const onVideoSelect = (video) => {
@@ -60,101 +63,106 @@ function App() {
 
   return (
     <div className="app">
-      <Router>
-        <Header onFormSubmit={handleSubmit} />
-        <Switch>
-          {/* search detail page */}
-          <Route path="/searchDetail">
-            <div className="app__page detailPage">
-              <Sidebar />
-              <VideoDetail video={selectedVideo} /> {/* flex: .7; */}
-              <SearchPage videos={videos} onVideoSelect={onVideoSelect} />
-              {/* flex: .3; */}
-            </div>
-          </Route>
+      {loading ? (
+        //need a loading page 
+        <p>loading</p>
+      ) : (
+        <Router>
+          <Header onFormSubmit={handleSubmit} />
+          <Switch>
+            {/* search detail page */}
+            <Route path="/searchDetail">
+              <div className="app__page detailPage">
+                <Sidebar />
+                <VideoDetail video={selectedVideo} /> {/* flex: .7; */}
+                <SearchPage videos={videos} onVideoSelect={onVideoSelect} />
+                {/* flex: .3; */}
+              </div>
+            </Route>
 
-          {/* search page */}
-          <Route path="/search">
-            <div className="app__page searchPage">
-              <Sidebar />
-              {/* flex: .2; */}
-              <SearchPage videos={videos} onVideoSelect={onVideoSelect} />
-              {/* flex: .8; */}
-            </div>
-          </Route>
+            {/* search page */}
+            <Route path="/search">
+              <div className="app__page searchPage">
+                <Sidebar />
+                {/* flex: .2; */}
+                <SearchPage videos={videos} onVideoSelect={onVideoSelect} />
+                {/* flex: .8; */}
+              </div>
+            </Route>
 
-          {/* Meal Plan page */}
-          <Route path="/mealPlan">
-            <div className="app__page detailPage">
-              <Sidebar />
-              <MealPlan />
-            </div>
-          </Route>
+            {/* Meal Plan page */}
+            <Route path="/mealPlan">
+              <div className="app__page detailPage">
+                <Sidebar />
+                <MealPlan />
+              </div>
+            </Route>
 
-          {/* Profile Page*/}
-          <Route path="/profile">
-            <div className="app__page detailPage">
-              <Sidebar />
-              <Profile />
-            </div>
-          </Route>
+            {/* Profile Page*/}
+            <Route path="/profile">
+              <div className="app__page detailPage">
+                <Sidebar />
+                <Profile />
+              </div>
+            </Route>
 
-          {/* GuessMealNutrition Page*/}
-          <Route path="/guessMealNutrition">
-            <div className="app__page detailPage">
-              <Sidebar />
-              <GuessFoodNutrition />
-            </div>
-          </Route>
+            {/* GuessMealNutrition Page*/}
+            <Route path="/guessMealNutrition">
+              <div className="app__page detailPage">
+                <Sidebar />
+                <GuessFoodNutrition />
+              </div>
+            </Route>
 
-          {/* pickUp robot Page*/}
-          <Route path="/pickUpRobot">
-            <div className="app__page detailPage">
-              <Sidebar />
-              <PickUpRobot />
-            </div>
-          </Route>
+            {/* pickUp robot Page*/}
+            <Route path="/pickUpRobot">
+              <div className="app__page detailPage">
+                <Sidebar />
+                <PickUpRobot />
+              </div>
+            </Route>
 
-          {/* SignUp Page */}
-          <Route path="/signup">
-            <div className="app__page detailPage">
-              <Sidebar />
-              <SignUp />
-            </div>
-          </Route>
+            {/* SignUp Page */}
+            <Route path="/signup">
+              <div className="app__page detailPage">
+                <Sidebar />
+                <SignUp />
+              </div>
+            </Route>
 
-          {/* Login Page */}
-          <Route path="/login">
-            <div className="app__page detailPage">
-              <Sidebar />
-              <Login />
-            </div>
-          </Route>
+            {/* Login Page */}
+            <Route path="/login">
+              <div className="app__page detailPage">
+                <Sidebar />
+                <Login />
+              </div>
+            </Route>
 
-          <Route path="/noticePage">
-            <div className="app__page detailPage">
-              <Sidebar />
-              <NoticePage />
-            </div>
-          </Route>
+            <Route path="/noticePage">
+              <div className="app__page detailPage">
+                <Sidebar />
+                <NoticePage />
+              </div>
+            </Route>
 
-          {/* Calendar page */}
-          <Route path="/calendar">
-            <div className="app__page homePage">
-              <Sidebar />
-              <CalendarPage />
-            </div>
-          </Route>
+            {/* Calendar page */}
+            <Route path="/calendar">
+              <div className="app__page homePage">
+                <Sidebar />
+                <CalendarPage />
+              </div>
+            </Route>
 
-          {/* home page */}
-          <Route path="/">
-            <div className="app__page homePage">
-              <Sidebar />
-              <SearchPage videos={videos} onVideoSelect={onVideoSelect} />
-            </div>
-          </Route>
-        </Switch>
-      </Router>
+            {/* home page */}
+            <Route path="/">
+              <div className="app__page homePage">
+                <Sidebar />
+                <SearchPage videos={videos} onVideoSelect={onVideoSelect} />
+              </div>
+            </Route>
+          </Switch>
+        </Router>
+      )}
     </div>
   );
 }

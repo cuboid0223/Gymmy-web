@@ -12,9 +12,10 @@ import "../../../api/fatSecret";
 const FoodList = ({ type }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [searchFoodName, setSearchFoodName] = useState("");
+  const [foods, setFoods] = useState([]);
   const [inputFoodName, setInputFoodName] = useState("");
   const { register, handleSubmit, errors } = useForm(); // initialize the hook
-  const [{ date }, dispatch] = useStateValue(); // 取得所選日期
+  const [{ date, user }, dispatch] = useStateValue(); // 取得所選日期
   const token = window.localStorage.getItem("token");
   Modal.setAppElement(document.getElementById("root"));
   const customStyles = {
@@ -31,10 +32,13 @@ const FoodList = ({ type }) => {
   };
 
   useEffect(() => {
+    if (!date) {
+      return;
+    }
     const config = {
       url:
         "https://blooming-stream-76058.herokuapp.com/https://platform.fatsecret.com/rest/server.api", // 只有此為必需
-      method: "post", 
+      method: "post",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
@@ -43,7 +47,54 @@ const FoodList = ({ type }) => {
       params: { method: "food.get.v2", food_id: "33691", format: "json" },
     };
     // axios(config).then((res) => console.log(res.data));
-  }, []);
+    // console.log("eow ");
+    // console.log(user?.uid);
+
+    // date.setDate(date.getDate() - 1) => date 減一天
+    const yesterday = date.setDate(date.getDate() - 1) / 1000;
+    // date.setDate(date.getDate() + 1) => date 加一天
+    const tomorrow = date.setDate(date.getDate() + 1) / 1000;
+    console.log("yesterday: ", yesterday);
+    const userFoodRef = db
+      .collection("users")
+      .doc("JCgBwjeIucQyoQU8IdgQ7GUB8642")
+      .collection("foods");
+
+    userFoodRef
+      // .orderBy("time", "desc")
+      // .where("brand", "==", "麥當勞")
+      .where("time", ">", yesterday)
+      .where("time", "<", tomorrow)
+      .onSnapshot((snapshot) =>
+        setFoods(snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() })))
+      );
+    // db.collection("users")
+    //   // .doc(user?.uid)
+    //   .doc("JCgBwjeIucQyoQU8IdgQ7GUB8642")
+    //   .collection("foods")
+    //   .where("brand", "==", "麥當勞")
+    //   // .where("time", ">=", yesterday)
+    //   // .where("time.seconds", "==", false)
+    //   .get()
+    //   .then((querySnapshot) => {
+    //     querySnapshot.forEach((doc) => {
+    //       console.log(doc.data());
+    //       const foodInsertDate = doc.data().time.seconds.valueOf();
+
+    //       // console.log(foodInsertDate);
+    //       setFoods([...foods, doc.data()]);
+    //       if (yesterday < foodInsertDate < tomorrow) {
+    //         // console.log(doc.data());
+    //       }
+    //       // doc.data() is never undefined for query doc snapshots
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     console.log("ss");
+    //     console.log("Error getting documents: ", error);
+    //   });
+  }, [date]);
+  console.log(foods);
 
   function openModal() {
     setIsOpen(true);
@@ -80,7 +131,7 @@ const FoodList = ({ type }) => {
       </div>
 
       {/* list.map */}
-      <FoodListItem />
+      {!foods && <FoodListItem />}
 
       <button
         className="foodList__addFoodButton"
@@ -157,7 +208,9 @@ const FoodList = ({ type }) => {
 
           <p>歷程</p>
           {/* a list that user has set the foods */}
-          <FoodListItem />
+          {foods?.map((food) => (
+            <FoodListItem food={food.data} key={food.id} />
+          ))}
         </div>
       </Modal>
     </div>

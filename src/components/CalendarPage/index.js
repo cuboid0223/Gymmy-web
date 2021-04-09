@@ -27,36 +27,36 @@ const CalendarPage = () => {
       />
 
       <div className="caloriesCalculator">
-        <h3>還剩卡路里</h3>
+        <h3>surplus calories</h3>
         <div className="caloriesCalculator__container">
           <div>
-            2390 <p>目標</p>
+            2390 <p>target</p>
           </div>
           <pre> - </pre>
           <div>
-            45<p>食品</p>
+            45<p>foods</p>
           </div>
-          <pre> - </pre>
+          <pre> + </pre>
           <div>
-            19<p>運動</p>
+            19<p>sports</p>
           </div>
           <pre> = </pre>
           <div>
-            1964<p>剩餘</p>
+            1964<p>surplus</p>
           </div>
         </div>
       </div>
 
       {/* 早餐 */}
-      <FoodList type="早餐" />
+      <FoodList type="breakfast" />
       {/* 中餐 */}
-      <FoodList type="中餐" />
+      <FoodList type="lunch" />
       {/* 晚餐 */}
-      <FoodList type="晚餐" />
+      <FoodList type="dinner" />
       {/* 點心 */}
-      <FoodList type="點心" />
+      <FoodList type="snack" />
       {/* 運動 */}
-      <FoodList type="運動" />
+      <FoodList type="sports" />
     </div>
   );
 };

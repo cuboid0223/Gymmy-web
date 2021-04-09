@@ -19,10 +19,12 @@ const Header = ({ onFormSubmit }) => {
     dispatch,
   ] = useStateValue(); // 取得 header__NoticeIconCount
   console.log("noticesCount: ", noticesCount);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onFormSubmit(inputSearch);
   };
+  
   useEffect(() => {
     dispatch({
       type: actionTypes.SET_NOTICESCOUNT,

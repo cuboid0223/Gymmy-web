@@ -24,12 +24,14 @@ import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import { Link, useHistory } from "react-router-dom";
 import { auth } from "../../firebase";
 import { actionTypes } from "../../reducer";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const Sidebar = () => {
   const [newSidebarName, setNewSidebarName] = useState("");
   const [newSidebarNames, setNewSidebarNames] = useState([]);
   const [editFormOpen, setEditFormOpen] = useState(false);
   const [{ user, isSidebarOpen }, dispatch] = useStateValue();
+  const [userLoggedIn] = useAuthState(auth);
   const history = useHistory();
   // when click submit -> (CheckBoxIcon)
   const addSidebarRow = (e) => {
@@ -108,7 +110,7 @@ const Sidebar = () => {
       </Link>
 
       {/* user can add own sidebar after login*/}
-      {user && (
+      {userLoggedIn && (
         <div className="addSidebarRow" onClick={() => setEditFormOpen(true)}>
           <AddIcon className="sidebar-row__icon" />
           <h2
@@ -154,19 +156,19 @@ const Sidebar = () => {
       </Link>
       <Link to="/pickUpRobot">
         <SidebarRow
-          title="Pick-up"
+          title="Pekka"
           imageUrl="https://img.icons8.com/ios/50/000000/bot.png"
         />
       </Link>
       <hr />
       <SidebarRow Icon={SettingsIcon} title="Settings" />
-      {user && (
+      {userLoggedIn && (
         <Link to="/profile">
           <SidebarRow Icon={AccountCircleIcon} title="Profile" />
         </Link>
       )}
 
-      {!user ? ( // 沒有登入才顯示登入按鈕
+      {!userLoggedIn ? ( // 沒有登入才顯示登入按鈕
         <Link to="/login">
           <SidebarRow Icon={VpnKeyIcon} title="Login" />
         </Link>

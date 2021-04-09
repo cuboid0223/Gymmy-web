@@ -12,7 +12,6 @@ import AlertMessage from "../AlertMessage";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  //   const [confirmPassword, setConfirmPassword] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
   const [{ user }, dispatch] = useStateValue();
   const history = useHistory();
@@ -85,21 +84,21 @@ const SignUp = () => {
   // 註冊
   const signUp = () => {
     //郵件驗證信;
-    // auth
-    //   .sendSignInLinkToEmail(email, actionCodeSettings)
-    //   .then(() => {
-    //     // The link was successfully sent. Inform the user.
-    //     // Save the email locally so you don't need to ask the user for it again
-    //     // if they open the link on the same device.
-    //     window.localStorage.setItem("emailForSignIn", email);
+    auth
+      .sendSignInLinkToEmail(email, actionCodeSettings)
+      .then(() => {
+        // The link was successfully sent. Inform the user.
+        // Save the email locally so you don't need to ask the user for it again
+        // if they open the link on the same device.
+        window.localStorage.setItem("emailForSignIn", email);
 
-    //     // ...
-    //   })
-    //   .catch((error) => {
-    //     var errorCode = error.code;
-    //     var errorMessage = error.message;
-    //     setAlertMessage(errorMessage);
-    //   });
+        // ...
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        setAlertMessage(errorMessage);
+      });
 
     auth
       .createUserWithEmailAndPassword(email, password)

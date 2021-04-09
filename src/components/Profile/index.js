@@ -3,16 +3,19 @@ import { useStateValue } from "../../StateProvider";
 import { actionTypes } from "../../reducer";
 import { Avatar } from "@material-ui/core";
 import Modal from "react-modal";
+
 import { useHistory } from "react-router-dom";
-import ArrowIcon from "../../assets/icons8-arrow-60.png";
 import PleaseLoginPage from "../Auth/PleaseLoginPage";
-import moment from "moment";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import AlertMessage from "../AlertMessage";
-import db from "../../firebase";
+import db, { auth } from "../../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+
 const Profile = () => {
   const [{ userInfo, user }, dispatch] = useStateValue();
+  const [userLoggedIn] = useAuthState(auth);
+  console.log(userLoggedIn);
   const [BMIData, setBMIData] = useState(null);
   // const storage = window.localStorage;
   const [modalIsOpen, setIsOpen] = useState(false); // false
@@ -24,19 +27,19 @@ const Profile = () => {
       // 如果沒有使用者資料（userInfo），則新增使用者資料（userInfo）
       const newData = Object.assign(
         {
-          email: user.email,
+          email: userLoggedIn.email,
           height_unit: "cm",
           weight_unit: "kg",
           user_auth: "normal",
         },
         data
       );
-      // console.log(newData);
-      db.collection("users").doc(user.uid).set(newData);
+      console.log(newData);
+      db.collection("users").doc(userLoggedIn.uid).set(newData);
       history.push("/login");
     } else {
       //如果有使用者資料（userInfo），則更新使用者資料（userInfo）
-      db.collection("users").doc(user.uid).update(data);
+      db.collection("users").doc(userLoggedIn.uid).update(data);
       setIsOpen(false);
       history.push("/");
     }
@@ -58,7 +61,7 @@ const Profile = () => {
     setIsOpen(modalIsOpen ? false : true);
     // 修改使用者資料（userInfo）
     if (userInfo) {
-      var docRef = db.collection("users").doc(user?.uid);
+      var docRef = db.collection("users").doc(userLoggedIn?.uid);
       docRef
         .get()
         .then((doc) => {
@@ -108,12 +111,7 @@ const Profile = () => {
         "x-rapidapi-key": "561ee6d36amshf73fd6455efaa12p1935aejsn0c7dc81a59b2",
         "x-rapidapi-host": "fitness-calculator.p.rapidapi.com",
       },
-    };
-    // console.log(
-    //   parseInt(userInfo?.age),
-    //   Number(userInfo?.weight),
-    //   Number(userInfo?.height)
-    // );
+    }
     axios
       .request(BMIOptions)
       .then(function (response) {
@@ -130,10 +128,15 @@ const Profile = () => {
       {/* {user ? ( */}
       <div>
         <div className="profile__infoContainer personalBasicInfoContainer">
-          <Avatar className="profile__avatar" src={userInfo?.imageURL} />
+          {userLoggedIn.imageURL ? (
+            <Avatar className="profile__avatar" src={userLoggedIn?.imageURL} />
+          ) : (
+            <Avatar className="profile__avatar">{userInfo?.name[0]}</Avatar>
+          )}
+
           <div className="profile__userInfo">
             <p>Name: {userInfo?.name}</p>
-            <p>Account: {userInfo?.email}</p>
+            <p>Account: {userLoggedIn?.email}</p>
             <p>Gender: {userInfo?.gender}</p>
             {/* 982857600 */}
             {/* <p>{secondsFormats(user?.birth?.seconds)}</p> */}

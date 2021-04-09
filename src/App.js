@@ -28,19 +28,21 @@ function App() {
   useEffect(() => {
     handleSubmit("健身");
     // mock user data
-    dispatch({
-      type: actionTypes.SET_USER,
-      user: { uid: "JCgBwjeIucQyoQU8IdgQ7GUB8642" },
-    });
-    dispatch({
-      type: actionTypes.SET_USERINFO,
-      userInfo: {
-        name: "jeff",
-        weight: 60,
-        height: 177,
-        birth: { seconds: "90000" },
-      },
-    });
+    // dispatch({
+    //   type: actionTypes.SET_USER,
+    //   user: user,
+    // });
+    // dispatch({
+    //   type: actionTypes.SET_USERINFO,
+    //   userInfo: {
+    //     name: "jeff",
+    //     account: 'mockdata@gmail.com',
+    //     gender: 'male',
+    //     weight: 60,
+    //     height: 177,
+    //     age: 23,
+    //   },
+    // });
   }, []);
 
   const onVideoSelect = (video) => {

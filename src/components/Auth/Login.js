@@ -46,7 +46,7 @@ const Login = () => {
 
         // 發送通知
 
-        //sendNotice("Login success! Start set up your own information.");
+        sendNotice("Login success! Start set up your own information.");
 
         // console.log("notices: ", notices);
         //
@@ -80,9 +80,8 @@ const Login = () => {
             userInfo: doc.data(),
           });
           console.log("user info:", userInfo);
-          // storage.setItem("user", JSON.stringify(user));
         } else {
-          // doc.data() will be undefined in this case
+          // firestore 沒有使用者資料
           console.log("No such document!");
           history.push("./profile");
           sendNotice("go to profile and set your height and weight!");

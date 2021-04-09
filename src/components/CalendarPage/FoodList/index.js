@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import SearchIcon from "@material-ui/icons/Search";
 import { useForm } from "react-hook-form";
 import { useStateValue } from "../../../StateProvider";
+import { actionTypes } from "../../../reducer";
 import axios from "axios";
 import db, { auth } from "../../../firebase";
 import firebase from "firebase";
@@ -12,17 +13,37 @@ import moment from "moment";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const FoodList = ({ type }) => {
+const FoodList = ({ type, date }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [searchFoodName, setSearchFoodName] = useState("");
   const [foods, setFoods] = useState([]);
-  const [totalCalories, setTotalCalories] = useState(0);
+  const [typeTotalCalories, setTypeTotalCalories] = useState(0);
   const [inputFoodName, setInputFoodName] = useState("");
-  const { register, errors, handleSubmit, watch } = useForm({
+  const { register, errors, handleSubmit } = useForm({
     criteriaMode: "all",
   });
-  const [{ date, user }, dispatch] = useStateValue(); // 取得所選日期
+  const [{ totalCalories }, dispatch] = useStateValue(); // 取得所選日期
   const [userLoggedIn] = useAuthState(auth);
+  const userFoodsRef = db
+    .collection("users")
+    .doc(userLoggedIn.uid) // <- user.uid
+    .collection("foods");
+  const yesterday = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    0,
+    0,
+    0
+  );
+  const tomorrow = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate() + 1,
+    0,
+    0,
+    0
+  );
   const token = window.localStorage.getItem("token");
   Modal.setAppElement(document.getElementById("root"));
   const customStyles = {
@@ -39,9 +60,7 @@ const FoodList = ({ type }) => {
   };
 
   useEffect(() => {
-    if (!date) {
-      return;
-    }
+    if (!date) return;
     const config = {
       url:
         "https://blooming-stream-76058.herokuapp.com/https://platform.fatsecret.com/rest/server.api", // 只有此為必需
@@ -53,39 +72,8 @@ const FoodList = ({ type }) => {
 
       params: { method: "food.get.v2", food_id: "33691", format: "json" },
     };
-    console.log("today:", date.toDateString());
-    console.log(date.getFullYear(), date.getMonth() + 1, date.getDate());
-    // date.setDate(date.getDate() - 1) => date 減一天
-    //const yesterday_seconds = date.setDate(date.getDate() - 1);
-    const yesterday = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      0,
-      0,
-      0
-    );
-    const tomorrow = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate() + 1,
-      0,
-      0,
-      0
-    );
-    // moment(date).format("MMM Do YY")
-    console.log("yesterday: ", yesterday);
-    console.log("today:", date);
-    console.log("tomorrow: ", tomorrow);
-
-    const userFoodsRef = db
-      .collection("users")
-      .doc(userLoggedIn.uid) // <- user.uid
-      .collection("foods");
     // 找尋選定當日的食物
     userFoodsRef
-      // .orderBy("time", "desc")
-      // .where("brand", "==", "麥當勞")
       .where("time", ">=", yesterday)
       .where("time", "<", tomorrow)
       .where("meal_type", "==", type)
@@ -93,7 +81,7 @@ const FoodList = ({ type }) => {
         setFoods(snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() })))
       );
   }, [date]);
-  console.log(foods);
+  // console.log(foods);
 
   function openModal() {
     setIsOpen(true);
@@ -133,30 +121,35 @@ const FoodList = ({ type }) => {
 
   // 取得總卡路里
   useEffect(() => {
-    if (!foods) {
-      return;
-    }
-    var getTotalCalories = 0;
+    if (!foods) return;
 
+    var getTotalCalories = 0;
     for (let i = 0; i < foods.length; i++) {
       getTotalCalories += parseInt(foods[i]?.data?.calories);
-      // console.log(foods[i]?.data?.calories);
     }
-    setTotalCalories(getTotalCalories);
-    // console.log(getTotalCalories);
+
+    // 顯示每一餐的總熱量
+    setTypeTotalCalories(getTotalCalories);
+    // 為了顯示每一天每一餐加總的總熱量
+    console.log("send");
+    dispatch({
+      type: actionTypes.SET_TOTAL_CALORIES,
+      totalCalories: totalCalories + getTotalCalories,
+    });
+    //console.log("totalCalories: ", totalCalories);
   }, [foods]);
 
   return (
     <div className="foodList">
       <div className="foodList__topContainer">
         <p className="foodList__type">{type}</p>
-        <p className="foodList__totalCalories">{totalCalories}cal</p>
+        <p className="foodList__totalCalories">{typeTotalCalories}cal</p>
       </div>
 
       {/* list.map */}
 
       {foods?.map((food) => (
-        <FoodListItem food={food} />
+        <FoodListItem food={food} key={food.id} />
       ))}
       <button
         className="foodList__addFoodButton"

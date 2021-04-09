@@ -7,6 +7,7 @@ export const initialState = {
   notices: [],
   noticesCount: 0,
   isSidebarOpen: false,
+  totalCalories: 0,
 };
 export const actionTypes = {
   SET_SEARCH_TERM: "SET_SEARCH_TERM", // YouTube 搜尋字元
@@ -17,6 +18,7 @@ export const actionTypes = {
   SET_NOTICES: "SET_NOTICES", // 提醒訊息
   SET_NOTICESCOUNT: "SET_NOTICESCOUNT", // 提醒訊息數量
   SET_IS_SIDEBAR_OPEN: "SET_IS_SIDEBAR_OPEN", // 打開 sidebar
+  SET_TOTAL_CALORIES: "SET_TOTAL_CALORIES", // surplus calories
 };
 const reducer = (state, action) => {
   console.log(action); //debug
@@ -49,6 +51,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         userInfo: action.userInfo,
+      };
+
+    case "SET_TOTAL_CALORIES":
+      return {
+        ...state,
+        totalCalories: action.totalCalories,
       };
 
     case "SET_DATE":

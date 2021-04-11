@@ -15,19 +15,25 @@ const Card = ({ type, date, category }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [searchFoodName, setSearchFoodName] = useState("");
   const [foods, setFoods] = useState([]);
+  const [sports, setSports] = useState([]);
   const [historyItems, setHistoryItems] = useState([]);
   const [showFunctions, setShowFunctions] = useState(false);
   const [typeTotalCalories, setTypeTotalCalories] = useState(0);
+  const [sportsCalories, setSportsCalories] = useState(0);
   const [inputFoodName, setInputFoodName] = useState("");
   const { register, errors, handleSubmit } = useForm({
     criteriaMode: "all",
   });
-  const [{ totalCalories }, dispatch] = useStateValue(); // 取得所選日期
+  const [{ totalCalories, sportsTotalCalories }, dispatch] = useStateValue(); // 取得所選日期
   const [userLoggedIn] = useAuthState(auth);
   const userFoodsRef = db
     .collection("users")
     .doc(userLoggedIn.uid) // <- user.uid
     .collection("foods");
+  const userSportsRef = db
+    .collection("users")
+    .doc(userLoggedIn.uid) // <- user.uid
+    .collection("sports");
   const yesterday = new Date(
     date.getFullYear(),
     date.getMonth(),
@@ -80,21 +86,44 @@ const Card = ({ type, date, category }) => {
       .onSnapshot((snapshot) =>
         setFoods(snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() })))
       );
+    // 找尋選定當日的運動
+    userSportsRef
+      .where("time", ">=", yesterday)
+      .where("time", "<", tomorrow)
+      .onSnapshot((snapshot) =>
+        setSports(
+          snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }))
+        )
+      );
   }, [date]);
   // console.log(historyItems);
 
   function openModal() {
     setIsOpen(true);
-    // 找尋歷程食物
-    userFoodsRef
-      .where("time", "<", tomorrow)
-      .orderBy("time", "asc")
-      .limit(7)
-      .onSnapshot((snapshot) =>
-        setHistoryItems(
-          snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }))
-        )
-      );
+
+    if (category === "sport") {
+      // 找尋歷程運動
+      userSportsRef
+        .where("time", "<", tomorrow)
+        .orderBy("time", "asc")
+        .limit(7)
+        .onSnapshot((snapshot) =>
+          setHistoryItems(
+            snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }))
+          )
+        );
+    } else {
+      // 找尋歷程食物
+      userFoodsRef
+        .where("time", "<", tomorrow)
+        .orderBy("time", "asc")
+        .limit(7)
+        .onSnapshot((snapshot) =>
+          setHistoryItems(
+            snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }))
+          )
+        );
+    }
   }
 
   function closeModal() {
@@ -108,19 +137,29 @@ const Card = ({ type, date, category }) => {
   };
 
   // 新增食物到 firestore
-  const addFood = (data) => {
-    const newData = Object.assign(
+  const addItem = (data) => {
+    const foodData = Object.assign(
       {
         time: date,
         meal_type: type,
+        like: false,
       },
       data
     );
-    console.log(newData);
-    db.collection("users")
-      .doc(userLoggedIn.uid)
-      .collection("foods")
-      .add(newData);
+    const sportData = Object.assign(
+      {
+        time: date,
+        like: false,
+      },
+      data
+    );
+    if (category === "sport") {
+      userSportsRef.add(sportData);
+      console.log(sportData);
+    } else {
+      userFoodsRef.add(foodData);
+    }
+
     // 運動
     // db.collection("sports").add()
 
@@ -129,7 +168,7 @@ const Card = ({ type, date, category }) => {
     // submit 完 清空 <input> 裡的值
   };
 
-  // 取得總卡路里
+  // 取得各餐總卡路里
   useEffect(() => {
     if (!foods) return;
     if (!showFunctions) {
@@ -139,7 +178,6 @@ const Card = ({ type, date, category }) => {
       for (let i = 0; i < foods.length; i++) {
         getTotalCalories += parseInt(foods[i]?.data?.calories);
       }
-
       // 顯示每一餐的總熱量
       setTypeTotalCalories(getTotalCalories);
       // 為了顯示每一天每一餐加總的總熱量
@@ -148,8 +186,25 @@ const Card = ({ type, date, category }) => {
         totalCalories: totalCalories + getTotalCalories,
       });
     }
-    //console.log("totalCalories: ", totalCalories);
   }, [foods]);
+
+  // 取得各運動總卡路里
+  useEffect(() => {
+    if (!sports) return;
+    if (!showFunctions) {
+      var getSportsTotalCalories = 0;
+      for (let i = 0; i < sports.length; i++) {
+        getSportsTotalCalories += parseInt(sports[i]?.data?.calories);
+      }
+      // 顯示每一項運動當天加總的總熱量
+      setSportsCalories(getSportsTotalCalories);
+      // 直接傳送 getSportsTotalCalories
+      dispatch({
+        type: actionTypes.SET_SPORTS_TOTAL_CALORIES,
+        sportsTotalCalories: getSportsTotalCalories,
+      });
+    }
+  }, [sports]);
 
   const showMoreFunctions_f = () => {
     // 顯示刪除和愛心按鈕
@@ -161,7 +216,9 @@ const Card = ({ type, date, category }) => {
       <div className="foodList__topContainer">
         <p className="foodList__type">{type}</p>
         <div className="foodList__topContainer__rightBox">
-          <p className="foodList__totalCalories">{typeTotalCalories}cal</p>
+          <p className="foodList__totalCalories">
+            {category === "sport" ? sportsCalories : typeTotalCalories}cal
+          </p>
           {!showFunctions ? (
             <MoreVertIcon onClick={showMoreFunctions_f} />
           ) : (
@@ -175,11 +232,21 @@ const Card = ({ type, date, category }) => {
       {foods?.map((food) => (
         <CardItem
           key={food.id}
-          food={food}
+          item={food}
           id={food.id}
           showFunctions={showFunctions}
         />
       ))}
+      {category === "sport" &&
+        sports.map((sport) => (
+          <CardItem
+            key={sport.id}
+            item={sport}
+            id={sport.id}
+            category={category}
+            showFunctions={showFunctions}
+          />
+        ))}
       <div className="foodList__bottomContainer">
         <button
           className="foodList__button foodList__addFoodButton"
@@ -209,7 +276,7 @@ const Card = ({ type, date, category }) => {
             />
             <SearchIcon onClick={searchFood} />
           </form>
-          <form onSubmit={handleSubmit(addFood)}>
+          <form onSubmit={handleSubmit(addItem)}>
             <input
               className="foodList__input"
               type="text"
@@ -261,7 +328,13 @@ const Card = ({ type, date, category }) => {
           <p>History</p>
           {/* a list that user has set the foods */}
           {historyItems?.map((item) => (
-            <CardItem food={item} id={item.id} key={item.id} clickable/>
+            <CardItem
+              type={type}
+              item={item}
+              id={item.id}
+              key={item.id}
+              clickable
+            />
           ))}
         </div>
       </Modal>

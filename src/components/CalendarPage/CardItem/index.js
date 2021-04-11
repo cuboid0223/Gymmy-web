@@ -10,81 +10,115 @@ import db, { auth } from "../../../firebase";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import { useStateValue } from "../../../StateProvider";
 import { actionTypes } from "../../../reducer";
-const CardItem = ({ food, id, showFunctions, clickable }) => {
+const CardItem = ({ category, item, id, showFunctions, clickable }) => {
   const [userLoggedIn] = useAuthState(auth);
-  const [like, setLike] = useState(food.data.like ? food.data.like : false);
-  const [deleteFood, setDeleteFood] = useState(false);
-  const [{ date, totalCalories }, dispatch] = useStateValue(); // 取得所選日期
+  //const [like, setLike] = useState(item?.data?.like ? item.data.like : false);
+  const [deleteItem, setDeleteItem] = useState(false);
+  const [
+    { date, totalCalories, sportsTotalCalories },
+    dispatch,
+  ] = useStateValue(); // 取得所選日期
   const foodRef = db
     .collection("users")
     .doc(userLoggedIn.uid)
     .collection("foods")
     .doc(id);
+  const sportRef = db
+    .collection("users")
+    .doc(userLoggedIn.uid)
+    .collection("sports")
+    .doc(id);
 
-  const deleteFood_f = () => {
-    setDeleteFood(deleteFood ? false : true);
-    foodRef
-      .delete()
-      .then(() => {
-        console.log("Document successfully deleted!");
-        // 刪除資料後要將 totalcalories 減去該刪除食物的卡路里
-        dispatch({
-          type: actionTypes.SET_TOTAL_CALORIES,
-          totalCalories: totalCalories - food.data.calories,
+  const delete_f = () => {
+    // setDeleteItem(deleteItem ? false : true);
+    if (category === "sport") {
+      sportRef
+        .delete()
+        .then(() => {
+          // 刪除資料後要將 totalcalories 減去該刪除食物的卡路里
+          dispatch({
+            type: actionTypes.SET_SPORTS_TOTAL_CALORIES,
+            sportsTotalCalories: sportsTotalCalories - item.data.calories,
+          });
+        })
+        .catch((error) => {
+          console.error("Error removing document: ", error);
         });
-      })
-      .catch((error) => {
-        console.error("Error removing document: ", error);
-      });
+    } else {
+      foodRef
+        .delete()
+        .then(() => {
+          // 刪除資料後要將 sports total calories 減去該刪除運動燃燒的卡路里
+          dispatch({
+            type: actionTypes.SET_TOTAL_CALORIES,
+            totalCalories: totalCalories - item.data.calories,
+          });
+        })
+        .catch((error) => {
+          console.error("Error removing document: ", error);
+        });
+    }
   };
 
-  const likeFood_f = () => {
-    if (like) {
+  const like_f = () => {
+    console.log(item.data.like);
+    const like = item.data.like;
+
+    if (like && category === "sport") {
+      sportRef.set({ like: false }, { merge: true });
+    } else if (!like && category === "sport") {
+      sportRef.set({ like: true }, { merge: true });
+    } else if (like) {
       foodRef.set({ like: false }, { merge: true });
-    } else {
+    } else if (!like) {
+      console.log("not like");
       foodRef.set({ like: true }, { merge: true });
     }
-    setLike(like ? false : true);
+
+    // setLike(like ? false : true);
   };
 
-  // 新增食物到 firestore
-  const addFood = () => {
-    console.log("object");
+  const addItem = () => {
+    const userRef = db.collection("users").doc(userLoggedIn.uid);
 
-    const addFoodRef = db
-      .collection("users")
-      .doc(userLoggedIn.uid)
-      .collection("foods");
-    addFoodRef.add({ ...food.data, time: date });
+    if (category === "sport") {
+      // 新增運動到 firestore
+      userRef.collection("sports").add({ ...item.data, time: date });
+    } else {
+      // 新增食物到 firestore
+      userRef.collection("foods").add({ ...item.data, time: date });
+    }
   };
 
   return (
-    <form className="foodListItem" onClick={clickable && addFood}>
+    <form className="foodListItem" onClick={clickable && addItem}>
       <div className="foodListItem__leftContainer">
         {showFunctions && (
-          <IconButton onClick={deleteFood_f}>
+          <IconButton onClick={delete_f}>
             <HighlightOffIcon />
           </IconButton>
         )}
         <div>
-          <p className="foodListItem__title">{food?.data?.name}</p>
+          <p className="foodListItem__title">{item?.data?.name}</p>
+
           <p className="foodListItem__brand-unit">
-            {food?.data?.brand} {food?.data?.serving}
-            {food?.data?.serving_unit}
+            {item?.data?.brand} {item?.data?.serving}
+            {item?.data?.serving_unit}
+            {item?.data?.desc}
           </p>
         </div>
       </div>
 
       <div className="foodListItem__caloriesContainer">
-        {parseInt(food?.data?.calories)} cal
+        {parseInt(item?.data?.calories)} cal
         {/* <FormControlLabel className="foodListItem__likeIcon" control={} /> */}
         {showFunctions && (
           <Checkbox
-            checked={like}
+            checked={item?.data?.like}
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
             name="checkedH"
-            onClick={likeFood_f}
+            onClick={like_f}
           />
         )}
       </div>

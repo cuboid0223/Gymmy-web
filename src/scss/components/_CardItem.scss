@@ -2,8 +2,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
+
   padding: 10px;
+  &__leftContainer {
+    display: flex;
+    align-items: center;
+  }
   &__title {
     font-size: 15px;
   }
@@ -11,8 +15,16 @@
     color: #444545;
     font-size: 13px;
   }
-  &__cal {
+  &__caloriesContainer {
     font-weight: 300;
     font-size: 13px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__likeIcon {
+    margin-right: 0 !important;
+    margin-left: 0 !important
+    ;
   }
 }

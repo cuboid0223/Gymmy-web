@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import FoodListItem from "../FoodListItem";
+import CardItem from "../CardItem";
 import Modal from "react-modal";
 import SearchIcon from "@material-ui/icons/Search";
 import { useForm } from "react-hook-form";
@@ -7,16 +7,16 @@ import { useStateValue } from "../../../StateProvider";
 import { actionTypes } from "../../../reducer";
 import axios from "axios";
 import db, { auth } from "../../../firebase";
-import firebase from "firebase";
 import "../../../api/fatSecret";
-import moment from "moment";
-import { useCollection } from "react-firebase-hooks/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 
-const FoodList = ({ type, date }) => {
+const Card = ({ type, date, category }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [searchFoodName, setSearchFoodName] = useState("");
   const [foods, setFoods] = useState([]);
+  const [historyItems, setHistoryItems] = useState([]);
+  const [showFunctions, setShowFunctions] = useState(false);
   const [typeTotalCalories, setTypeTotalCalories] = useState(0);
   const [inputFoodName, setInputFoodName] = useState("");
   const { register, errors, handleSubmit } = useForm({
@@ -81,10 +81,20 @@ const FoodList = ({ type, date }) => {
         setFoods(snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() })))
       );
   }, [date]);
-  // console.log(foods);
+  console.log(historyItems);
 
   function openModal() {
     setIsOpen(true);
+    // 找尋歷程食物
+    userFoodsRef
+      .where("time", "<", tomorrow)
+      .orderBy("time", "desc")
+      .limit(5)
+      .onSnapshot((snapshot) =>
+        setHistoryItems(
+          snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }))
+        )
+      );
   }
 
   function closeModal() {
@@ -119,44 +129,72 @@ const FoodList = ({ type, date }) => {
     // submit 完 清空 <input> 裡的值
   };
 
+  const onDeleteSubmit = (data) => {
+    console.log(data);
+  };
+
   // 取得總卡路里
   useEffect(() => {
     if (!foods) return;
+    if (!showFunctions) {
+      // 因為按愛心會重新 render foods
+      // 所以如果打開 showFunctions 就停止計算 TotalCalories
+      var getTotalCalories = 0;
+      for (let i = 0; i < foods.length; i++) {
+        getTotalCalories += parseInt(foods[i]?.data?.calories);
+      }
 
-    var getTotalCalories = 0;
-    for (let i = 0; i < foods.length; i++) {
-      getTotalCalories += parseInt(foods[i]?.data?.calories);
+      // 顯示每一餐的總熱量
+      setTypeTotalCalories(getTotalCalories);
+      // 為了顯示每一天每一餐加總的總熱量
+      dispatch({
+        type: actionTypes.SET_TOTAL_CALORIES,
+        totalCalories: totalCalories + getTotalCalories,
+      });
     }
-
-    // 顯示每一餐的總熱量
-    setTypeTotalCalories(getTotalCalories);
-    // 為了顯示每一天每一餐加總的總熱量
-    console.log("send");
-    dispatch({
-      type: actionTypes.SET_TOTAL_CALORIES,
-      totalCalories: totalCalories + getTotalCalories,
-    });
     //console.log("totalCalories: ", totalCalories);
   }, [foods]);
+
+  const showMoreFunctions_f = () => {
+    // 顯示刪除和愛心按鈕
+    setShowFunctions(showFunctions ? false : true);
+  };
 
   return (
     <div className="foodList">
       <div className="foodList__topContainer">
         <p className="foodList__type">{type}</p>
-        <p className="foodList__totalCalories">{typeTotalCalories}cal</p>
+        <div className="foodList__topContainer__rightBox">
+          <p className="foodList__totalCalories">{typeTotalCalories}cal</p>
+          <MoreVertIcon onClick={showMoreFunctions_f} />
+        </div>
       </div>
 
       {/* list.map */}
 
       {foods?.map((food) => (
-        <FoodListItem food={food} key={food.id} />
+        <CardItem
+          key={food.id}
+          food={food}
+          id={food.id}
+          showFunctions={showFunctions}
+        />
       ))}
-      <button
-        className="foodList__addFoodButton"
-        onClick={() => setIsOpen(true)}
-      >
-        Add Food
-      </button>
+      <div className="foodList__bottomContainer">
+        <button
+          className="foodList__button foodList__addFoodButton"
+          onClick={openModal}
+        >
+          Add {type}
+        </button>
+        <button
+          className="foodList__button foodList__deleteFoodButton"
+          onClick={handleSubmit(onDeleteSubmit)}
+        >
+          Delete
+        </button>
+      </div>
+
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -166,7 +204,7 @@ const FoodList = ({ type, date }) => {
         {/* modal search form */}
         <div className="foodList__ModalContainer">
           {/* search food form */}
-          <form className="foodList__searchFoodForm" action="">
+          <form className="foodList__searchFoodForm">
             {/* I need api to get food nutrition */}
             <input
               className="foodList__input"
@@ -177,14 +215,11 @@ const FoodList = ({ type, date }) => {
             />
             <SearchIcon onClick={searchFood} />
           </form>
-
-          {/* add custom food tag  */}
-          <button className="openAddCustomFoodFormButton btn">open</button>
           <form onSubmit={handleSubmit(addFood)}>
             <input
               className="foodList__input"
               type="text"
-              placeholder="enter food name"
+              placeholder={`enter ${type} name`}
               name="name"
               ref={register({ required: true })}
             />
@@ -197,37 +232,42 @@ const FoodList = ({ type, date }) => {
               ref={register({ required: true, pattern: /^[0-9]*$/ })}
             />
             {errors.calories && "calories is required."}
-            <input
-              className="foodList__input"
-              type="text"
-              placeholder="enter food brand"
-              name="brand"
-              ref={register()}
-            />
-            <input
-              className="foodList__input"
-              type="number"
-              placeholder="enter food serving"
-              name="serving"
-              ref={register({ required: true, pattern: /^[0-9]*$/ })}
-            />
-            {errors.serving && "serving is a number."}
-            <input
-              className="foodList__input"
-              type="text"
-              placeholder="enter food serving unit"
-              name="serving_unit"
-              ref={register({ required: true })}
-            />
-            {errors.serving_unit && "serving_unit is required."}
+            {/*  */}
+            {category == "food" && (
+              <>
+                <input
+                  className="foodList__input"
+                  type="text"
+                  placeholder="enter food brand"
+                  name="brand"
+                  ref={register()}
+                />
+                <input
+                  className="foodList__input"
+                  type="number"
+                  placeholder="enter food serving"
+                  name="serving"
+                  ref={register({ required: true, pattern: /^[0-9]*$/ })}
+                />
+                {errors.serving && "serving is a number."}
+                <input
+                  className="foodList__input"
+                  type="text"
+                  placeholder="enter food serving unit"
+                  name="serving_unit"
+                  ref={register({ required: true })}
+                />
+                {errors.serving_unit && "serving_unit is required."}
+              </>
+            )}
 
             <input type="submit" value="submit" className="btn" />
           </form>
 
-          <p>歷程</p>
+          <p>History</p>
           {/* a list that user has set the foods */}
-          {foods?.map((food) => (
-            <FoodListItem food={food.data} key={food.id} />
+          {historyItems?.map((item) => (
+            <CardItem food={item} id={item.id} key={item.id} />
           ))}
         </div>
       </Modal>
@@ -235,4 +275,4 @@ const FoodList = ({ type, date }) => {
   );
 };
 
-export default FoodList;
+export default Card;

@@ -3,7 +3,7 @@ import Calendar from "react-calendar";
 // import "react-calendar/dist/Calendar.css";
 import { actionTypes } from "../../reducer";
 import { useStateValue } from "../../StateProvider";
-import FoodList from "./FoodList";
+import Card from "./Card";
 
 const CalendarPage = () => {
   const [{ totalCalories }, dispatch] = useStateValue();
@@ -12,7 +12,7 @@ const CalendarPage = () => {
 
   useEffect(() => {
     if (!date) return;
-    console.log('send date');
+    console.log("send date");
     // 傳送日期
     dispatch({
       type: actionTypes.SET_DATE,
@@ -56,15 +56,18 @@ const CalendarPage = () => {
       </div>
 
       {/* 早餐 */}
-      <FoodList type="breakfast" date={date}/>
+      <Card type="breakfast" date={date} category="food" />
       {/* 中餐 */}
-      <FoodList type="lunch" date={date}/>
+      <Card type="lunch" date={date} category="food" />
       {/* 晚餐 */}
-      <FoodList type="dinner" date={date}/>
+      <Card type="dinner" date={date} category="food" />
       {/* 點心 */}
-      <FoodList type="snack" date={date}/>
+      <Card type="snack" date={date} category="food" />
+      <hr />
       {/* 運動 */}
-      <FoodList type="sports" date={date}/>
+      <Card type="sports" date={date} />
+      {/* 其他 */}
+      <Card type="others" date={date} />
     </div>
   );
 };

@@ -21,6 +21,10 @@
     align-items: center;
     padding: 10px;
     border-bottom: 1px solid $primary-color;
+    &__rightBox {
+      display: flex;
+      align-items: center;
+    }
   }
   &__type {
     font-weight: bold;
@@ -29,8 +33,13 @@
   &__totalCalories {
   }
 
-  &__addFoodButton {
-    color: $third-color;
+  &__bottomContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__button {
     font-size: 15px;
     font-weight: bold;
     border: none;
@@ -38,4 +47,11 @@
     background-color: transparent;
   }
 
+  &__addFoodButton {
+    color: $third-color;
+  }
+
+  &__deleteFoodButton {
+    color: red;
+  }
 }

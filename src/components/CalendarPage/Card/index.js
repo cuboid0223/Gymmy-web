@@ -10,7 +10,7 @@ import db, { auth } from "../../../firebase";
 import "../../../api/fatSecret";
 import { useAuthState } from "react-firebase-hooks/auth";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-
+import CloseIcon from "@material-ui/icons/Close";
 const Card = ({ type, date, category }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [searchFoodName, setSearchFoodName] = useState("");
@@ -81,15 +81,15 @@ const Card = ({ type, date, category }) => {
         setFoods(snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() })))
       );
   }, [date]);
-  console.log(historyItems);
+  // console.log(historyItems);
 
   function openModal() {
     setIsOpen(true);
     // 找尋歷程食物
     userFoodsRef
       .where("time", "<", tomorrow)
-      .orderBy("time", "desc")
-      .limit(5)
+      .orderBy("time", "asc")
+      .limit(7)
       .onSnapshot((snapshot) =>
         setHistoryItems(
           snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }))
@@ -129,10 +129,6 @@ const Card = ({ type, date, category }) => {
     // submit 完 清空 <input> 裡的值
   };
 
-  const onDeleteSubmit = (data) => {
-    console.log(data);
-  };
-
   // 取得總卡路里
   useEffect(() => {
     if (!foods) return;
@@ -166,7 +162,11 @@ const Card = ({ type, date, category }) => {
         <p className="foodList__type">{type}</p>
         <div className="foodList__topContainer__rightBox">
           <p className="foodList__totalCalories">{typeTotalCalories}cal</p>
-          <MoreVertIcon onClick={showMoreFunctions_f} />
+          {!showFunctions ? (
+            <MoreVertIcon onClick={showMoreFunctions_f} />
+          ) : (
+            <CloseIcon onClick={showMoreFunctions_f} />
+          )}
         </div>
       </div>
 
@@ -186,12 +186,6 @@ const Card = ({ type, date, category }) => {
           onClick={openModal}
         >
           Add {type}
-        </button>
-        <button
-          className="foodList__button foodList__deleteFoodButton"
-          onClick={handleSubmit(onDeleteSubmit)}
-        >
-          Delete
         </button>
       </div>
 
@@ -267,7 +261,7 @@ const Card = ({ type, date, category }) => {
           <p>History</p>
           {/* a list that user has set the foods */}
           {historyItems?.map((item) => (
-            <CardItem food={item} id={item.id} key={item.id} />
+            <CardItem food={item} id={item.id} key={item.id} clickable/>
           ))}
         </div>
       </Modal>

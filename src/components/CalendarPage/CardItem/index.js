@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import StarIcon from "@material-ui/icons/Star";
-import { Checkbox } from "@material-ui/core";
+import { Checkbox, IconButton } from "@material-ui/core";
 import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import { useForm } from "react-hook-form";
 import { useAuthState } from "react-firebase-hooks/auth";
 import db, { auth } from "../../../firebase";
-
-const CardItem = ({ food, id, showFunctions }) => {
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import { useStateValue } from "../../../StateProvider";
+import { actionTypes } from "../../../reducer";
+const CardItem = ({ food, id, showFunctions, clickable }) => {
   const [userLoggedIn] = useAuthState(auth);
   const [like, setLike] = useState(food.data.like ? food.data.like : false);
   const [deleteFood, setDeleteFood] = useState(false);
-
+  const [{ date, totalCalories }, dispatch] = useStateValue(); // 取得所選日期
   const foodRef = db
     .collection("users")
     .doc(userLoggedIn.uid)
@@ -21,6 +23,19 @@ const CardItem = ({ food, id, showFunctions }) => {
 
   const deleteFood_f = () => {
     setDeleteFood(deleteFood ? false : true);
+    foodRef
+      .delete()
+      .then(() => {
+        console.log("Document successfully deleted!");
+        // 刪除資料後要將 totalcalories 減去該刪除食物的卡路里
+        dispatch({
+          type: actionTypes.SET_TOTAL_CALORIES,
+          totalCalories: totalCalories - food.data.calories,
+        });
+      })
+      .catch((error) => {
+        console.error("Error removing document: ", error);
+      });
   };
 
   const likeFood_f = () => {
@@ -31,13 +46,26 @@ const CardItem = ({ food, id, showFunctions }) => {
     }
     setLike(like ? false : true);
   };
-  // console.log('like: ',like);
+
+  // 新增食物到 firestore
+  const addFood = () => {
+    console.log("object");
+
+    const addFoodRef = db
+      .collection("users")
+      .doc(userLoggedIn.uid)
+      .collection("foods");
+    addFoodRef.add({ ...food.data, time: date });
+  };
 
   return (
-    <form className="foodListItem">
+    <form className="foodListItem" onClick={clickable && addFood}>
       <div className="foodListItem__leftContainer">
-        {showFunctions && <Checkbox onClick={deleteFood_f} />}
-
+        {showFunctions && (
+          <IconButton onClick={deleteFood_f}>
+            <HighlightOffIcon />
+          </IconButton>
+        )}
         <div>
           <p className="foodListItem__title">{food?.data?.name}</p>
           <p className="foodListItem__brand-unit">

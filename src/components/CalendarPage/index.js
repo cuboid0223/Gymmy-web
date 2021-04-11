@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 // import "react-calendar/dist/Calendar.css";
@@ -34,7 +35,7 @@ const CalendarPage = () => {
       />
 
       <div className="caloriesCalculator">
-        <h3>surplus calories</h3>
+        <h3>{moment(date).format("L")} surplus calories</h3>
         <div className="caloriesCalculator__container">
           <div>
             2390 <p>target</p>

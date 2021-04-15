@@ -76,8 +76,7 @@ const CalendarPage = () => {
       <hr />
       {/* 運動 */}
       <Card type="sports" date={date} category="sport" />
-      {/* 其他 */}
-      <Card type="others" date={date} />
+     
     </div>
   );
 };

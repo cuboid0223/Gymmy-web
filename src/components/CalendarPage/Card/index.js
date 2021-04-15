@@ -136,7 +136,7 @@ const Card = ({ type, date, category }) => {
     closeModal(false);
   };
 
-  // 新增食物到 firestore
+  // 新增項目到 firestore
   const addItem = (data) => {
     const foodData = Object.assign(
       {
@@ -212,11 +212,11 @@ const Card = ({ type, date, category }) => {
   };
 
   return (
-    <div className="foodList">
-      <div className="foodList__topContainer">
-        <p className="foodList__type">{type}</p>
-        <div className="foodList__topContainer__rightBox">
-          <p className="foodList__totalCalories">
+    <div className="card">
+      <div className="card__topContainer">
+        <p className="card__type">{type}</p>
+        <div className="card__topContainer__rightBox">
+          <p className="card__totalCalories">
             {category === "sport" ? sportsCalories : typeTotalCalories}cal
           </p>
           {!showFunctions ? (
@@ -247,9 +247,9 @@ const Card = ({ type, date, category }) => {
             showFunctions={showFunctions}
           />
         ))}
-      <div className="foodList__bottomContainer">
+      <div className="card__bottomContainer">
         <button
-          className="foodList__button foodList__addFoodButton"
+          className="card__button card__addFoodButton"
           onClick={openModal}
         >
           Add {type}
@@ -263,12 +263,12 @@ const Card = ({ type, date, category }) => {
         contentLabel="Add Food Modal"
       >
         {/* modal search form */}
-        <div className="foodList__ModalContainer">
+        <div className="card__ModalContainer">
           {/* search food form */}
-          <form className="foodList__searchFoodForm">
+          <form className="card__searchFoodForm">
             {/* I need api to get food nutrition */}
             <input
-              className="foodList__input"
+              className="card__input card__searchInput"
               type="text"
               placeholder="Search Food Calories"
               value={searchFoodName}
@@ -278,7 +278,7 @@ const Card = ({ type, date, category }) => {
           </form>
           <form onSubmit={handleSubmit(addItem)}>
             <input
-              className="foodList__input"
+              className="card__input"
               type="text"
               placeholder={`enter ${type} name`}
               name="name"
@@ -286,25 +286,33 @@ const Card = ({ type, date, category }) => {
             />
             {errors.name && "name is required."}
             <input
-              className="foodList__input"
+              className="card__input"
               type="number"
               placeholder="enter calories"
               name="calories"
               ref={register({ required: true, pattern: /^[0-9]*$/ })}
             />
             {errors.calories && "calories is required."}
-            {/*  */}
-            {category == "food" && (
+            {category === "sport" && (
+              <input
+                className="card__input"
+                type="text"
+                placeholder="enter description"
+                name="desc"
+                ref={register()}
+              />
+            )}
+            {category === "food" && (
               <>
                 <input
-                  className="foodList__input"
+                  className="card__input"
                   type="text"
                   placeholder="enter food brand"
                   name="brand"
                   ref={register()}
                 />
                 <input
-                  className="foodList__input"
+                  className="card__input"
                   type="number"
                   placeholder="enter food serving"
                   name="serving"
@@ -312,7 +320,7 @@ const Card = ({ type, date, category }) => {
                 />
                 {errors.serving && "serving is a number."}
                 <input
-                  className="foodList__input"
+                  className="card__input"
                   type="text"
                   placeholder="enter food serving unit"
                   name="serving_unit"
@@ -322,10 +330,18 @@ const Card = ({ type, date, category }) => {
               </>
             )}
 
-            <input type="submit" value="submit" className="btn" />
+            <input
+              type="submit"
+              value="submit"
+              className="btn card__submitButton"
+            />
           </form>
+          <div className="card__listName">
+            <p className="active">History</p>
+            <p>Like</p>
+            <p>Search Result</p>
+          </div>
 
-          <p>History</p>
           {/* a list that user has set the foods */}
           {historyItems?.map((item) => (
             <CardItem
@@ -333,6 +349,7 @@ const Card = ({ type, date, category }) => {
               item={item}
               id={item.id}
               key={item.id}
+              category={category}
               clickable
             />
           ))}

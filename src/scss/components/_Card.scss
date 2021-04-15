@@ -1,4 +1,4 @@
-.foodList {
+.card {
   background-color: #fff;
   margin-top: 10px;
 
@@ -10,10 +10,13 @@
     padding: 10px;
     // margin-top: 10px;
   }
+  &__searchInput {
+  }
   &__searchFoodForm {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 2rem;
   }
   &__topContainer {
     display: flex;
@@ -47,11 +50,37 @@
     background-color: transparent;
   }
 
+  &__submitButton {
+    margin-top: 1rem;
+    width: 100%;
+  }
+
   &__addFoodButton {
     color: $third-color;
   }
 
   &__deleteFoodButton {
     color: red;
+  }
+
+  &__listName {
+    margin-top: 2rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    // background-color: red;
+
+    & > p {
+      border-radius: 10px;
+      background-color: $primary-color;
+      padding: 10px;
+      color: #444545;
+      // margin-right: 10px;
+    }
+    & .active {
+      background-color: $secondary-color;
+      color: black;
+    }
   }
 }

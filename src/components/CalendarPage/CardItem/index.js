@@ -83,6 +83,7 @@ const CardItem = ({ category, item, id, showFunctions, clickable }) => {
 
     if (category === "sport") {
       // 新增運動到 firestore
+      console.log('add')
       userRef.collection("sports").add({ ...item.data, time: date });
     } else {
       // 新增食物到 firestore

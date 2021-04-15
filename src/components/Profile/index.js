@@ -12,6 +12,7 @@ import AlertMessage from "../AlertMessage";
 import db, { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { merge } from "lodash";
+import Loading from "react-loading";
 
 const Profile = () => {
   const [{ userInfo, user }, dispatch] = useStateValue();
@@ -21,9 +22,12 @@ const Profile = () => {
   const [BMIData, setBMIData] = useState(null);
   // const storage = window.localStorage;
   const [idealWeight, setIdealWeight] = useState(0);
+  const [user_BMR, setUser_BMR] = useState(0);
+  const [user_TDEE, setUser_TDEE] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false); // false
   const { register, handleSubmit, watch, errors } = useForm();
   const history = useHistory();
+  Modal.setAppElement(document.getElementById("root"));
 
   useEffect(() => {
     userRef
@@ -52,7 +56,9 @@ const Profile = () => {
 
   useEffect(() => {
     if (!userInfo) return;
+    getBMI(userInfo);
     getIdealWeights(userInfo);
+    getBMR_and_TDEE(userInfo);
   }, [userInfo]);
 
   const onModalFormSubmit = (data) => {
@@ -73,7 +79,6 @@ const Profile = () => {
     history.push("/profile");
   };
 
-  Modal.setAppElement(document.getElementById("root"));
   const customStyles = {
     content: {
       top: "50%",
@@ -85,10 +90,7 @@ const Profile = () => {
     },
   };
 
-  const isModalOpen = () => {
-    setIsOpen(modalIsOpen ? false : true);
-    // 修改使用者資料（userInfo）
-  };
+  const isModalOpen = () => setIsOpen(modalIsOpen ? false : true);
 
   const secondsToAge = (seconds) => {
     const year_birth = new Date(seconds * 1000).getFullYear();
@@ -125,19 +127,14 @@ const Profile = () => {
       });
   };
 
-  useEffect(() => {
-    // if (!userInfo) {
-    //   setIsOpen(true);
-    //   return;
-    // }
-
+  const getBMI = (data) => {
     const BMIOptions = {
       method: "GET",
       url: "https://fitness-calculator.p.rapidapi.com/bmi",
       params: {
-        age: parseInt(userInfo?.age),
-        weight: parseInt(userInfo?.weight),
-        height: Number(userInfo?.height),
+        age: parseInt(data?.age),
+        weight: parseInt(data?.weight),
+        height: Number(data?.height),
       },
       headers: {
         "x-rapidapi-key": "561ee6d36amshf73fd6455efaa12p1935aejsn0c7dc81a59b2",
@@ -153,113 +150,150 @@ const Profile = () => {
       .catch(function (error) {
         console.error(error);
       });
-  }, [userInfo]);
+  };
+
+  const getBMR_and_TDEE = (data) => {
+    /*
+  Men: (10 × weight in kg) + (6.25 × height in cm) - (5 × age in years) + 5. 
+  Women: (10 × weight in kg) + (6.25 × height in cm) - (5 × age in years) - 161.
+    */
+    const s = data?.gender === "male" ? 5 : -161;
+    // 基礎代謝率
+    const BMR = 10 * data?.weight + 6.25 * data?.height - 5 * data?.age + s;
+    // 每日總消耗熱量 (TDEE, Total Daily Energy Expenditure)
+    let TDEE = 0;
+    switch (data?.activity_level) {
+      case "久坐":
+        TDEE = BMR * 1.2;
+        break;
+      case "輕量活動":
+        TDEE = BMR * 1.2;
+        break;
+      case "中度活動量":
+        TDEE = BMR * 1.2;
+        break;
+      case "高度活動量":
+        TDEE = BMR * 1.2;
+        break;
+      case "非常高度活動量":
+        TDEE = BMR * 1.2;
+        break;
+      default:
+        TDEE = BMR * 1.0;
+    }
+    setUser_BMR(BMR);
+    setUser_TDEE(TDEE);
+  };
 
   return (
     <div className="profile">
-      {/* {user ? ( */}
-      <div>
-        <div className="profile__infoContainer personalBasicInfoContainer">
-          {userLoggedIn.photoURL ? (
-            <Avatar className="profile__avatar" src={userLoggedIn?.photoURL} />
-          ) : (
-            <Avatar className="profile__avatar">{userInfo?.name[0]}</Avatar>
-          )}
+      {userInfo ? (
+        <div>
+          <div className="profile__infoContainer personalBasicInfoContainer">
+            {userLoggedIn.photoURL ? (
+              <Avatar
+                className="profile__avatar"
+                src={userLoggedIn?.photoURL}
+              />
+            ) : (
+              <Avatar className="profile__avatar">{userInfo?.name[0]}</Avatar>
+            )}
 
-          <div className="profile__userInfo">
-            <p>Name: {userInfo?.name}</p>
-            <p>Account: {userLoggedIn?.email}</p>
-            <p>Gender: {userInfo?.gender}</p>
-            {/* 982857600 */}
-            {/* <p>{secondsFormats(user?.birth?.seconds)}</p> */}
-            <p>Age: {userInfo?.age}</p>
-            <p>
-              Height: {userInfo?.height} {userInfo?.height_unit}
-            </p>
-            <p>
-              Weight: {userInfo?.weight} {userInfo?.weight_unit}
-            </p>
-            <button onClick={isModalOpen}>open</button>
-          </div>
-          {/* a modal form to edit userInfo */}
-          <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={isModalOpen}
-            style={customStyles}
-            contentLabel="user info Modal"
-          >
-            <form onSubmit={handleSubmit(onModalFormSubmit)}>
-              <input
-                name="name"
-                placeholder="Name"
-                defaultValue={userInfo?.name}
-                ref={register({ required: true })}
-              />
+            <div className="profile__userInfo">
+              <p>Name: {userInfo?.name}</p>
+              <p>Account: {userLoggedIn?.email}</p>
+              <p>Gender: {userInfo?.gender}</p>
+              {/* 982857600 */}
+              {/* <p>{secondsFormats(user?.birth?.seconds)}</p> */}
+              <p>Age: {userInfo?.age}</p>
+              <p>
+                Height: {userInfo?.height} {userInfo?.height_unit}
+              </p>
+              <p>
+                Weight: {userInfo?.weight} {userInfo?.weight_unit}
+              </p>
+              <button onClick={isModalOpen}>open</button>
+            </div>
+            {/* a modal form to edit userInfo */}
+            <Modal
+              isOpen={modalIsOpen}
+              onRequestClose={isModalOpen}
+              style={customStyles}
+              contentLabel="user info Modal"
+            >
+              <form onSubmit={handleSubmit(onModalFormSubmit)}>
+                <input
+                  name="name"
+                  placeholder="Name"
+                  defaultValue={userInfo?.name}
+                  ref={register({ required: true })}
+                />
 
-              {/* {errors.name && <span> Name is required</span>} */}
-              <select
-                name="gender"
-                ref={register({ required: true })}
-                defaultValue={userInfo?.gender}
-              >
-                <option value="male">male</option>
-                <option value="female">female</option>
-                <option value="other">other</option>
-              </select>
-              <input
-                name="age"
-                type="number"
-                placeholder="Age"
-                defaultValue={userInfo?.age}
-                ref={register({ min: 15, max: 99, required: true })}
-              />
-              <input
-                name="height"
-                type="number"
-                placeholder="Height"
-                defaultValue={userInfo?.height}
-                ref={register({ required: true })}
-              />
-              <input
-                name="weight"
-                type="number"
-                placeholder="weight"
-                defaultValue={userInfo?.weight}
-                ref={register({ required: true })}
-              />
-              <input type="submit" value="submit" />
-            </form>
-            <AlertMessage message={errors?.age?.message} />
-            <button onClick={isModalOpen}>close</button>
-          </Modal>
-        </div>
-        <div className="profile__infoContainer">
-          {/* current state  */}
-          <div className="profile__weightContainer">
-            <h3>Current </h3>
-            <p>
-              Weight: {userInfo?.weight} {userInfo?.weight_unit}
-            </p>
-            {/* 取到第二位 */}
-            <p>BMI:{Math.round(BMIData?.bmi * 100) / 100}</p>
-            <p>Health: {BMIData?.health}</p>
-            <p>Healthy BMI Range: {BMIData?.healthy_bmi_range}</p>
+                {/* {errors.name && <span> Name is required</span>} */}
+                <select
+                  name="gender"
+                  ref={register({ required: true })}
+                  defaultValue={userInfo?.gender}
+                >
+                  <option value="male">male</option>
+                  <option value="female">female</option>
+                  <option value="other">other</option>
+                </select>
+                <input
+                  name="age"
+                  type="number"
+                  placeholder="Age"
+                  defaultValue={userInfo?.age}
+                  ref={register({ min: 15, max: 99, required: true })}
+                />
+                <input
+                  name="height"
+                  type="number"
+                  placeholder="Height"
+                  defaultValue={userInfo?.height}
+                  ref={register({ required: true })}
+                />
+                <input
+                  name="weight"
+                  type="number"
+                  placeholder="weight"
+                  defaultValue={userInfo?.weight}
+                  ref={register({ required: true })}
+                />
+                <input type="submit" value="submit" />
+              </form>
+              <AlertMessage message={errors?.age?.message} />
+              <button onClick={isModalOpen}>close</button>
+            </Modal>
           </div>
-          {/* <img src={ArrowIcon} alt="arrow" /> */}
-          {/* ideal state  */}
-          <div className="profile__weightContainer">
-            <h3>Ideal </h3>
-            <p>Weight: {Math.round(idealWeight)} kg</p>
-            <p>BMI: 30</p>
+          <div className="profile__infoContainer">
+            {/* current state  */}
+            <div className="profile__weightContainer">
+              <h3>Current </h3>
+              <p>
+                Weight: {userInfo?.weight} {userInfo?.weight_unit}
+              </p>
+              {/* 取到第二位 */}
+              <p>BMI:{Math.round(BMIData?.bmi * 100) / 100}</p>
+              <p>Health: {BMIData?.health}</p>
+              <p>BMR: {user_BMR}</p>
+              <p>TDEE: {user_TDEE}</p>
+            </div>
+            {/* <img src={ArrowIcon} alt="arrow" /> */}
+            {/* ideal state  */}
+            <div className="profile__weightContainer">
+              <h3>Ideal </h3>
+              <p>Weight: {Math.round(idealWeight * 100) / 100} kg</p>
+              <p>Healthy BMI Range: {BMIData?.healthy_bmi_range}</p>
+            </div>
+          </div>
+          <div className="profile__postsContainer">
+            {/* all posts create form user */}
           </div>
         </div>
-        <div className="profile__postsContainer">
-          {/* all posts create form user */}
-        </div>
-      </div>
-      {/* ) : (
-        <PleaseLoginPage />
-      )} */}
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 };

@@ -13,6 +13,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import CloseIcon from "@material-ui/icons/Close";
 const Card = ({ type, date, category }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
   const [searchFoodName, setSearchFoodName] = useState("");
   const [foods, setFoods] = useState([]);
   const [sports, setSports] = useState([]);
@@ -90,6 +91,7 @@ const Card = ({ type, date, category }) => {
     userSportsRef
       .where("time", ">=", yesterday)
       .where("time", "<", tomorrow)
+      .orderBy("time", "asc")
       .onSnapshot((snapshot) =>
         setSports(
           snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }))
@@ -211,6 +213,10 @@ const Card = ({ type, date, category }) => {
     setShowFunctions(showFunctions ? false : true);
   };
 
+  const IsAddFormShow = () => {
+    setShowAddForm(showAddForm ? false : true);
+  };
+
   return (
     <div className="card">
       <div className="card__topContainer">
@@ -276,7 +282,18 @@ const Card = ({ type, date, category }) => {
             />
             <SearchIcon onClick={searchFood} />
           </form>
-          <form onSubmit={handleSubmit(addItem)}>
+
+          <div className="card__listName">
+            <p className="active">History</p>
+            <p>Like</p>
+            <p>Search Result</p>
+            <p onClick={IsAddFormShow}>New</p>
+          </div>
+
+          <form
+            className={!showAddForm ? "card__hideAddForm" : ""}
+            onSubmit={handleSubmit(addItem)}
+          >
             <input
               className="card__input"
               type="text"
@@ -336,11 +353,6 @@ const Card = ({ type, date, category }) => {
               className="btn card__submitButton"
             />
           </form>
-          <div className="card__listName">
-            <p className="active">History</p>
-            <p>Like</p>
-            <p>Search Result</p>
-          </div>
 
           {/* a list that user has set the foods */}
           {historyItems?.map((item) => (

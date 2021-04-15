@@ -11,38 +11,66 @@ import { useForm } from "react-hook-form";
 import AlertMessage from "../AlertMessage";
 import db, { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { merge } from "lodash";
 
 const Profile = () => {
   const [{ userInfo, user }, dispatch] = useStateValue();
   const [userLoggedIn] = useAuthState(auth);
+  const userRef = db.collection("users").doc(userLoggedIn?.uid);
   console.log(userLoggedIn);
   const [BMIData, setBMIData] = useState(null);
   // const storage = window.localStorage;
+  const [idealWeight, setIdealWeight] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false); // false
   const { register, handleSubmit, watch, errors } = useForm();
   const history = useHistory();
 
+  useEffect(() => {
+    userRef
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          dispatch({
+            type: actionTypes.SET_USERINFO,
+            userInfo: doc.data(),
+          });
+          console.log("user info:", userInfo);
+
+          // storage.setItem("user", JSON.stringify(user));
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+          setIsOpen(true);
+          // history.push("./profile");
+          // sendNotice("go to profile and set your height and weight!");
+        }
+      })
+      .catch((error) => {
+        console.log("Error getting document:", error);
+      });
+  }, [userLoggedIn]);
+
+  useEffect(() => {
+    if (!userInfo) return;
+    getIdealWeights(userInfo);
+  }, [userInfo]);
+
   const onModalFormSubmit = (data) => {
-    if (!userInfo) {
-      // 如果沒有使用者資料（userInfo），則新增使用者資料（userInfo）
-      const newData = Object.assign(
-        {
-          email: userLoggedIn.email,
-          height_unit: "cm",
-          weight_unit: "kg",
-          user_auth: "normal",
-        },
-        data
-      );
-      console.log(newData);
-      db.collection("users").doc(userLoggedIn.uid).set(newData);
-      history.push("/login");
-    } else {
-      //如果有使用者資料（userInfo），則更新使用者資料（userInfo）
-      db.collection("users").doc(userLoggedIn.uid).update(data);
-      setIsOpen(false);
-      history.push("/");
-    }
+    // 如果沒有使用者資料（userInfo），則新增使用者資料（userInfo）
+    const newData = Object.assign(
+      {
+        photoURL: userLoggedIn.photoURL,
+        email: userLoggedIn.email,
+        height_unit: "cm",
+        weight_unit: "kg",
+        user_auth: "normal",
+      },
+      data
+    );
+    console.log(newData);
+    db.collection("users").doc(userLoggedIn.uid).set(newData, { merge: true });
+    setIsOpen(false);
+    history.push("/profile");
   };
 
   Modal.setAppElement(document.getElementById("root"));
@@ -60,29 +88,6 @@ const Profile = () => {
   const isModalOpen = () => {
     setIsOpen(modalIsOpen ? false : true);
     // 修改使用者資料（userInfo）
-    if (userInfo) {
-      var docRef = db.collection("users").doc(userLoggedIn?.uid);
-      docRef
-        .get()
-        .then((doc) => {
-          if (doc.exists) {
-            dispatch({
-              type: actionTypes.SET_USERINFO,
-              userInfo: doc.data(),
-            });
-            console.log("user info:", userInfo);
-            // storage.setItem("user", JSON.stringify(user));
-          } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-            history.push("./profile");
-            // sendNotice("go to profile and set your height and weight!");
-          }
-        })
-        .catch((error) => {
-          console.log("Error getting document:", error);
-        });
-    }
   };
 
   const secondsToAge = (seconds) => {
@@ -93,11 +98,38 @@ const Profile = () => {
     return parseInt(year_now - year_birth);
   };
 
+  const getIdealWeights = (data) => {
+    const options = {
+      method: "GET",
+      url: "https://fitness-calculator.p.rapidapi.com/idealweight",
+      params: {
+        gender: data?.gender,
+        weight: parseInt(data?.weight),
+        height: parseInt(data?.height),
+      },
+      headers: {
+        "x-rapidapi-key": "561ee6d36amshf73fd6455efaa12p1935aejsn0c7dc81a59b2",
+        "x-rapidapi-host": "fitness-calculator.p.rapidapi.com",
+      },
+    };
+    // console.log(options.params);
+
+    axios
+      .request(options)
+      .then(function (response) {
+        console.log(response.data);
+        setIdealWeight(response.data.Devine);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  };
+
   useEffect(() => {
-    if (!userInfo) {
-      setIsOpen(true);
-      return;
-    }
+    // if (!userInfo) {
+    //   setIsOpen(true);
+    //   return;
+    // }
 
     const BMIOptions = {
       method: "GET",
@@ -111,7 +143,7 @@ const Profile = () => {
         "x-rapidapi-key": "561ee6d36amshf73fd6455efaa12p1935aejsn0c7dc81a59b2",
         "x-rapidapi-host": "fitness-calculator.p.rapidapi.com",
       },
-    }
+    };
     axios
       .request(BMIOptions)
       .then(function (response) {
@@ -128,8 +160,8 @@ const Profile = () => {
       {/* {user ? ( */}
       <div>
         <div className="profile__infoContainer personalBasicInfoContainer">
-          {userLoggedIn.imageURL ? (
-            <Avatar className="profile__avatar" src={userLoggedIn?.imageURL} />
+          {userLoggedIn.photoURL ? (
+            <Avatar className="profile__avatar" src={userLoggedIn?.photoURL} />
           ) : (
             <Avatar className="profile__avatar">{userInfo?.name[0]}</Avatar>
           )}
@@ -217,7 +249,7 @@ const Profile = () => {
           {/* ideal state  */}
           <div className="profile__weightContainer">
             <h3>Ideal </h3>
-            <p>Weight: 80 kg</p>
+            <p>Weight: {Math.round(idealWeight)} kg</p>
             <p>BMI: 30</p>
           </div>
         </div>

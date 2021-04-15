@@ -1,9 +1,10 @@
 import React from "react";
-import { CubeGrid } from "better-react-spinkit";
+import ReactLoading from "react-loading";
+
 const Loading = () => {
   return (
     <div className="loading">
-      <CubeGrid color="#7bd1aa" size={100} />
+      <ReactLoading type="bars" color="#7bd1aa" height={"50%"} width={"50%"} />
     </div>
   );
 };

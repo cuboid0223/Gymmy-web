@@ -161,6 +161,7 @@ function App() {
             {/* home page */}
             <Route path="/">
               <div className="app__page homePage">
+                {/* <Loading /> */}
                 <Sidebar />
                 <SearchPage videos={videos} onVideoSelect={onVideoSelect} />
               </div>

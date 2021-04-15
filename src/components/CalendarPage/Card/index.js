@@ -332,7 +332,7 @@ const Card = ({ type, date, category }) => {
 
             <input
               type="submit"
-              value="submit"
+              value="Submit"
               className="btn card__submitButton"
             />
           </form>

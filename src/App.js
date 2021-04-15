@@ -16,10 +16,12 @@ import SignUp from "./components/Auth/SignUp";
 import NoticePage from "./pages/NoticePage";
 import { db, auth } from "./firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import Loading from "./pages/LoadingPage";
 
 function App() {
   const [{ userInfo }, dispatch] = useStateValue();
   const [user, loading, error] = useAuthState(auth);
+
   // console.log('user: ', user);
   const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -68,7 +70,7 @@ function App() {
     <div className="app">
       {loading ? (
         //need a loading page
-        <p>loading</p>
+        <Loading />
       ) : (
         <Router>
           <Header onFormSubmit={handleSubmit} />

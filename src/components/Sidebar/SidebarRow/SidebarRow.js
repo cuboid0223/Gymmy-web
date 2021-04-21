@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // React Context API
 import { useStateValue } from "../../../StateProvider";
 import { actionTypes } from "../../../reducer";
@@ -13,6 +13,7 @@ const SidebarRow = ({
   logout,
 }) => {
   const [{ isSidebarOpen }, dispatch] = useStateValue();
+  
   return (
     <div
       className={`sidebar-row ${selected && "selected"} ${

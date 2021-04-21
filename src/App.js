@@ -17,6 +17,8 @@ import NoticePage from "./pages/NoticePage";
 import { db, auth } from "./firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Loading from "./pages/LoadingPage";
+import SettingPage from "./pages/SettingPage";
+import HomePage from "./pages/HomePage";
 
 function App() {
   const [{ userInfo }, dispatch] = useStateValue();
@@ -27,25 +29,9 @@ function App() {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const history = useHistory();
 
-  useEffect(() => {
-    handleSubmit("健身");
-    // mock user data
-    // dispatch({
-    //   type: actionTypes.SET_USER,
-    //   user: user,
-    // });
-    // dispatch({
-    //   type: actionTypes.SET_USERINFO,
-    //   userInfo: {
-    //     name: "jeff",
-    //     account: 'mockdata@gmail.com',
-    //     gender: 'male',
-    //     weight: 60,
-    //     height: 177,
-    //     age: 23,
-    //   },
-    // });
-  }, []);
+  // useEffect(() => {
+  //   handleSubmit("健身");
+  // }, []);
 
   const onVideoSelect = (video) => {
     setSelectedVideo(video);
@@ -67,7 +53,7 @@ function App() {
   };
 
   return (
-    <div className="app">
+    <div className="app dark-app">
       {loading ? (
         //need a loading page
         <Loading />
@@ -108,6 +94,13 @@ function App() {
               <div className="app__page detailPage">
                 <Sidebar />
                 <Profile />
+              </div>
+            </Route>
+
+            <Route path="/setting">
+              <div className="app__page detailPage">
+                <Sidebar />
+                <SettingPage />
               </div>
             </Route>
 
@@ -161,9 +154,9 @@ function App() {
             {/* home page */}
             <Route path="/">
               <div className="app__page homePage">
-                {/* <Loading /> */}
                 <Sidebar />
-                <SearchPage videos={videos} onVideoSelect={onVideoSelect} />
+                <HomePage />
+                {/* <SearchPage videos={videos} onVideoSelect={onVideoSelect} /> */}
               </div>
             </Route>
           </Switch>

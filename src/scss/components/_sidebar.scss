@@ -75,6 +75,7 @@
 
 // sidebar-row components
 .sidebar-row {
+  color: black;
   display: flex;
   align-items: center;
   padding: 10px 20px;
@@ -114,13 +115,14 @@
 }
 
 .selected {
+  display: block;
   background-color: lightgray;
 
-  & > .sidebar-row__icon {
+  .sidebar-row > .sidebar-row__icon {
     color: $third-color;
   }
 
-  & > .sidebar-row__title {
+  .sidebar-row > .sidebar-row__title {
     font-weight: bold;
   }
 }

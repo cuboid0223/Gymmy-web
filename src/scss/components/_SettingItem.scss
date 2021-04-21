@@ -1,0 +1,50 @@
+.settingItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $primary-color;
+  border-radius: 10px;
+  margin: 10px;
+  height: 100px;
+  & > p {
+    margin-left: 1rem;
+    color: #444545;
+    font-family: $secondary-font;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  &__switch {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 60px;
+    height: 35px;
+    background-color: #c6c6c6;
+    border-radius: 30px;
+    //border: 1px solid gray;
+    outline: none;
+    position: relative;
+    transition: 200ms;
+    margin-right: 1rem;
+  }
+  &__switch:checked {
+    background-color: mediumseagreen;
+    //border: 1px solid mediumseagreen;
+  }
+
+  /*xem kien thuc ve switch before*/
+  &__switch:before {
+    content: "";
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    top: 5px;
+    left: 3px;
+    transition: 200ms;
+  }
+  &__switch:checked:before {
+    left: 30px;
+  }
+}

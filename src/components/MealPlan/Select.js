@@ -1,8 +1,14 @@
 import React from "react";
 
-const Select = ({ register, options, name, ...rest }) => {
+const Select = ({ defaultValue, register, options, name, ...rest }) => {
   return (
-    <select className='select' name={name} ref={register} {...rest}>
+    <select
+      className="select"
+      defaultValue={defaultValue}
+      name={name}
+      ref={register}
+      {...rest}
+    >
       {options.map((value) => (
         <option key={value} value={value}>
           {value}

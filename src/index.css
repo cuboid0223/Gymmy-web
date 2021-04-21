@@ -6,12 +6,16 @@
 }
 
 /* 黑夜模式 */
+/*  */
 /* html {
   filter: invert(1) hue-rotate(180deg);
 }
 img {
-  filter: invert(1) hue-rotate(180deg);
-} */
+    filter: invert(1) hue-rotate(180deg);
+  } */
+.dark-app {
+  
+}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",

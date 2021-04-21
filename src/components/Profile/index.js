@@ -13,12 +13,12 @@ import db, { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { merge } from "lodash";
 import Loading from "react-loading";
+import Select from "../MealPlan/Select";
 
 const Profile = () => {
   const [{ userInfo, user }, dispatch] = useStateValue();
   const [userLoggedIn] = useAuthState(auth);
   const userRef = db.collection("users").doc(userLoggedIn?.uid);
-  console.log(userLoggedIn);
   const [BMIData, setBMIData] = useState(null);
   // const storage = window.localStorage;
   const [idealWeight, setIdealWeight] = useState(0);
@@ -26,6 +26,7 @@ const Profile = () => {
   const [user_TDEE, setUser_TDEE] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false); // false
   const { register, handleSubmit, watch, errors } = useForm();
+
   const history = useHistory();
   Modal.setAppElement(document.getElementById("root"));
 
@@ -38,7 +39,6 @@ const Profile = () => {
             type: actionTypes.SET_USERINFO,
             userInfo: doc.data(),
           });
-          console.log("user info:", userInfo);
 
           // storage.setItem("user", JSON.stringify(user));
         } else {
@@ -87,6 +87,7 @@ const Profile = () => {
       bottom: "auto",
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
+      width: "90%",
     },
   };
 
@@ -119,7 +120,7 @@ const Profile = () => {
     axios
       .request(options)
       .then(function (response) {
-        console.log(response.data);
+        //console.log(response.data);
         setIdealWeight(response.data.Devine);
       })
       .catch(function (error) {
@@ -144,7 +145,7 @@ const Profile = () => {
     axios
       .request(BMIOptions)
       .then(function (response) {
-        console.log(response.data);
+        //console.log(response.data);
         setBMIData(response.data);
       })
       .catch(function (error) {
@@ -221,51 +222,90 @@ const Profile = () => {
               style={customStyles}
               contentLabel="user info Modal"
             >
-              <form onSubmit={handleSubmit(onModalFormSubmit)}>
-                <input
-                  name="name"
-                  placeholder="Name"
-                  defaultValue={userInfo?.name}
-                  ref={register({ required: true })}
-                />
+              <form
+                className="profile__modalForm"
+                onSubmit={handleSubmit(onModalFormSubmit)}
+              >
+                <div>
+                  <label>Name: </label>
+                  <input
+                    name="name"
+                    placeholder="Name"
+                    defaultValue={userInfo?.name}
+                    ref={register({ required: true })}
+                  />
+                </div>
 
-                {/* {errors.name && <span> Name is required</span>} */}
-                <select
-                  name="gender"
-                  ref={register({ required: true })}
-                  defaultValue={userInfo?.gender}
-                >
-                  <option value="male">male</option>
-                  <option value="female">female</option>
-                  <option value="other">other</option>
-                </select>
-                <input
-                  name="age"
-                  type="number"
-                  placeholder="Age"
-                  defaultValue={userInfo?.age}
-                  ref={register({ min: 15, max: 99, required: true })}
-                />
-                <input
-                  name="height"
-                  type="number"
-                  placeholder="Height"
-                  defaultValue={userInfo?.height}
-                  ref={register({ required: true })}
-                />
-                <input
-                  name="weight"
-                  type="number"
-                  placeholder="weight"
-                  defaultValue={userInfo?.weight}
-                  ref={register({ required: true })}
-                />
-                <input type="submit" value="submit" />
+                <div>
+                  <label>Gender: </label>
+                  <Select
+                    name="gender"
+                    options={["male", "female", "other"]}
+                    defaultValue={userInfo?.gender}
+                    register={register({ required: true })}
+                  />
+                </div>
+
+                <div>
+                  <label>Age: </label>
+                  <input
+                    name="age"
+                    type="number"
+                    placeholder="Age"
+                    defaultValue={userInfo?.age}
+                    ref={register({ max: 80, min: 15, required: true })}
+                  />
+                </div>
+                <AlertMessage message={errors?.age?.message} />
+
+                <div>
+                  <label>Height(cm): </label>
+                  <input
+                    name="height"
+                    type="number"
+                    placeholder="Height"
+                    defaultValue={userInfo?.height}
+                    ref={register({ required: true })}
+                  />
+                </div>
+
+                <div>
+                  <label>Weight(kg): </label>
+                  <input
+                    name="weight"
+                    type="number"
+                    placeholder="weight"
+                    defaultValue={userInfo?.weight}
+                    ref={register({ required: true })}
+                  />
+                </div>
+
+                <div>
+                  <label>Activity Level: </label>
+                  <Select
+                    name="activity_level"
+                    //defaultValue={userInfo?.activity_level}
+                    options={[
+                      "久坐",
+                      "輕量活動",
+                      "中度活動量",
+                      "高度活動量",
+                      "非常高度活動量",
+                    ]}
+                    defaultValue={userInfo?.activity_level}
+                    register={register({ required: true })}
+                  />
+                </div>
+                <div>
+                  <button className="btn" type="submit">submit</button>
+                  <button className="btn" onClick={isModalOpen}>
+                    cancel
+                  </button>
+                </div>
               </form>
-              <AlertMessage message={errors?.age?.message} />
-              <button onClick={isModalOpen}>close</button>
             </Modal>
           </div>
+
           <div className="profile__infoContainer">
             {/* current state  */}
             <div className="profile__weightContainer">
@@ -279,7 +319,6 @@ const Profile = () => {
               <p>BMR: {user_BMR}</p>
               <p>TDEE: {user_TDEE}</p>
             </div>
-            {/* <img src={ArrowIcon} alt="arrow" /> */}
             {/* ideal state  */}
             <div className="profile__weightContainer">
               <h3>Ideal </h3>
@@ -287,6 +326,7 @@ const Profile = () => {
               <p>Healthy BMI Range: {BMIData?.healthy_bmi_range}</p>
             </div>
           </div>
+
           <div className="profile__postsContainer">
             {/* all posts create form user */}
           </div>

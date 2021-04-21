@@ -16,11 +16,37 @@
     -webkit-box-shadow: 0px 3px 11px 0px rgba(50, 50, 50, 0.69);
     -moz-box-shadow: 0px 3px 11px 0px rgba(50, 50, 50, 0.69);
     box-shadow: 0px 3px 11px 0px rgba(50, 50, 50, 0.69);
-   
   }
   &__avatar {
     width: 80px !important;
     height: 80px !important;
+  }
+  &__modalForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    & > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+    }
+    & > div > label {
+      font-family: $secondary-font;
+    }
+    & > div > input {
+      border: none;
+     
+      background-color: $primary-color;
+      border-radius: 5px;
+    }
+
+    & > div > input,
+    & > div > .select {
+      // flex: 1;
+       padding: 5px;
+      min-width: 150px;
+    }
   }
   &__weightContainer {
     background-color: $secondary-color;

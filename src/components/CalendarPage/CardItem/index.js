@@ -10,14 +10,25 @@ import db, { auth } from "../../../firebase";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import { useStateValue } from "../../../StateProvider";
 import { actionTypes } from "../../../reducer";
-const CardItem = ({ category, item, id, showFunctions, clickable }) => {
+const CardItem = ({
+  category,
+  item,
+  id,
+  showFunctions,
+  clickable,
+  showLikeIcon,
+}) => {
   const [userLoggedIn] = useAuthState(auth);
-  //const [like, setLike] = useState(item?.data?.like ? item.data.like : false);
+  const [like, setLike] = useState(false);
+  const [isLikeFoodExit, setIsLikeFoodExit] = useState(false);
+  const [likeFoodId, setLikeFoodId] = useState("");
+  const [likeIconClick, setLikeIconClick] = useState(false);
   const [deleteItem, setDeleteItem] = useState(false);
+  let { name, brand, serving_unit, serving, desc, calories } = item?.data;
   const [
     { date, totalCalories, sportsTotalCalories },
     dispatch,
-  ] = useStateValue(); // 取得所選日期
+  ] = useStateValue();
   const foodRef = db
     .collection("users")
     .doc(userLoggedIn.uid)
@@ -28,6 +39,10 @@ const CardItem = ({ category, item, id, showFunctions, clickable }) => {
     .doc(userLoggedIn.uid)
     .collection("sports")
     .doc(id);
+  const userLikeFoodsRef = db
+    .collection("users")
+    .doc(userLoggedIn.uid)
+    .collection("likeFoods");
 
   const delete_f = () => {
     // setDeleteItem(deleteItem ? false : true);
@@ -60,30 +75,65 @@ const CardItem = ({ category, item, id, showFunctions, clickable }) => {
     }
   };
 
+  useEffect(() => {
+    // if (!showFunctions) return;
+    // 先找尋使用者有無曾經將此食物加入到 likeFoods
+    const IsLikeFoodExitQuery = userLikeFoodsRef.where("data.name", "==", name);
+    IsLikeFoodExitQuery.get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id);
+        if (doc.exists) {
+          // 方便之後刪除
+          setLikeFoodId(doc.id);
+          // 有資料  setIsLikeFoodExit(true)
+          setIsLikeFoodExit(true);
+          // 有資料 代表之前有加入過喜愛清單內，所以在顯示中要將愛心塗紅
+          setLike(true);
+        } else {
+          setIsLikeFoodExit(false);
+        }
+      });
+    });
+  }, [showFunctions, showLikeIcon, likeIconClick]);
+
   const like_f = () => {
-    console.log(item.data.like);
-    const like = item.data.like;
+    // 新增 likeFoods collection
+    // 先找尋使用者有無曾經加入到 likeFoods
+    // （喜歡）有資料，則不新增進去
+    // （喜歡）沒有資料，則新增進去
+    // （不喜歡）有資料，刪除
 
-    if (like && category === "sport") {
-      sportRef.set({ like: false }, { merge: true });
-    } else if (!like && category === "sport") {
-      sportRef.set({ like: true }, { merge: true });
-    } else if (like) {
-      foodRef.set({ like: false }, { merge: true });
-    } else if (!like) {
-      console.log("not like");
-      foodRef.set({ like: true }, { merge: true });
-    }
-
-    // setLike(like ? false : true);
+    setLikeIconClick(likeIconClick ? false : true);
+    setLike(like ? false : true);
   };
+
+  useEffect(() => {
+    // console.log("isLikeFoodExit: ", isLikeFoodExit);
+    // console.log("like: ", like);
+    if (!isLikeFoodExit && like) {
+      // 如果 喜愛清單中沒有資料且按下喜歡，則新增進去
+      userLikeFoodsRef.add(item);
+    } else if (isLikeFoodExit) {
+      // 如果 喜愛清單中有資料（代表已按愛心）-> 刪除資料，並把愛心取消， setIsLikeFoodExit(false)
+      userLikeFoodsRef
+        .doc(likeFoodId)
+        .delete()
+        .then(() => {
+          console.log("Document successfully deleted!");
+        });
+      setLike(false);
+      setIsLikeFoodExit(false);
+    } else {
+      return;
+    }
+  }, [likeIconClick]);
 
   const addItem = () => {
     const userRef = db.collection("users").doc(userLoggedIn.uid);
 
     if (category === "sport") {
       // 新增運動到 firestore
-      console.log('add')
+      console.log("add");
       userRef.collection("sports").add({ ...item.data, time: date });
     } else {
       // 新增食物到 firestore
@@ -92,30 +142,42 @@ const CardItem = ({ category, item, id, showFunctions, clickable }) => {
   };
 
   return (
-    <form className="foodListItem" onClick={clickable && addItem}>
-      <div className="foodListItem__leftContainer">
+    <form className="foodListItem">
+      <div
+        className="foodListItem__leftContainer"
+        onClick={clickable && addItem}
+      >
         {showFunctions && (
           <IconButton onClick={delete_f}>
             <HighlightOffIcon />
           </IconButton>
         )}
         <div>
-          <p className="foodListItem__title">{item?.data?.name}</p>
+          <p className="foodListItem__title">{name}</p>
 
           <p className="foodListItem__brand-unit">
-            {item?.data?.brand} {item?.data?.serving}
-            {item?.data?.serving_unit}
-            {item?.data?.desc}
+            {brand} {serving}
+            {serving_unit}
+            {desc}
           </p>
         </div>
       </div>
 
       <div className="foodListItem__caloriesContainer">
-        {parseInt(item?.data?.calories)} cal
+        {parseInt(calories)} cal
         {/* <FormControlLabel className="foodListItem__likeIcon" control={} /> */}
         {showFunctions && (
           <Checkbox
-            checked={item?.data?.like}
+            checked={like}
+            icon={<FavoriteBorder />}
+            checkedIcon={<Favorite />}
+            name="checkedH"
+            onClick={like_f}
+          />
+        )}
+        {showLikeIcon && (
+          <Checkbox
+            checked={like}
             icon={<FavoriteBorder />}
             checkedIcon={<Favorite />}
             name="checkedH"

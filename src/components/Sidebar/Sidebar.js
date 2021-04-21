@@ -21,7 +21,7 @@ import EventIcon from "@material-ui/icons/Event";
 import DirectionsBikeIcon from "@material-ui/icons/DirectionsBike";
 import PoolIcon from "@material-ui/icons/Pool";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import { Link, useHistory } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
 import { auth } from "../../firebase";
 import { actionTypes } from "../../reducer";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -79,14 +79,17 @@ const Sidebar = () => {
         isSidebarOpen ? "sidebarActive" : "sidebarDisabled"
       }`}
     >
-      <SidebarRow selected Icon={HomeIcon} title="Homepage" />
-      <Link to="/calendar">
+      <NavLink exact to="/" activeClassName="selected">
+        <SidebarRow Icon={HomeIcon} title="Homepage" />
+      </NavLink>
+
+      <NavLink exact to="/calendar" activeClassName="selected">
         <SidebarRow Icon={EventIcon} title="Calendar" />
-      </Link>
+      </NavLink>
 
       <hr />
       <h4>Video Categories</h4>
-      <Link to="/search">
+      <NavLink exact to="/search" activeClassName="selected">
         {user &&
           newSidebarNames.map((newSidebarName) => (
             <SidebarRow
@@ -107,7 +110,7 @@ const Sidebar = () => {
           tutorial={true}
         />
         <SidebarRow Icon={PoolIcon} title="Swimming" tutorial={true} />
-      </Link>
+      </NavLink>
 
       {/* user can add own sidebar after login*/}
       {userLoggedIn && (
@@ -141,12 +144,12 @@ const Sidebar = () => {
 
       <hr />
       <h4>More GYMMY functions</h4>
-      <Link to="/guessMealNutrition">
+      <NavLink exact to="/guessMealNutrition" activeClassName="selected">
         <SidebarRow
           imageUrl="https://img.icons8.com/ios-filled/100/000000/light-on.png"
           title="GuessMealNutrition"
         />
-      </Link>
+      </NavLink>
 
       <Link to="/mealPlan">
         <SidebarRow
@@ -161,11 +164,16 @@ const Sidebar = () => {
         />
       </Link>
       <hr />
-      <SidebarRow Icon={SettingsIcon} title="Settings" />
+
       {userLoggedIn && (
-        <Link to="/profile">
-          <SidebarRow Icon={AccountCircleIcon} title="Profile" />
-        </Link>
+        <>
+          <Link to="/setting">
+            <SidebarRow Icon={SettingsIcon} title="Settings" />
+          </Link>
+          <Link to="/profile">
+            <SidebarRow Icon={AccountCircleIcon} title="Profile" />
+          </Link>
+        </>
       )}
 
       {!userLoggedIn ? ( // 沒有登入才顯示登入按鈕

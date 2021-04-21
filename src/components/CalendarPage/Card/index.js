@@ -11,10 +11,12 @@ import "../../../api/fatSecret";
 import { useAuthState } from "react-firebase-hooks/auth";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import CloseIcon from "@material-ui/icons/Close";
+import CardList from "../CardList";
 const Card = ({ type, date, category }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
   const [searchFoodName, setSearchFoodName] = useState("");
+  const [likeItems, setLikeItems] = useState([]);
   const [foods, setFoods] = useState([]);
   const [sports, setSports] = useState([]);
   const [historyItems, setHistoryItems] = useState([]);
@@ -91,7 +93,7 @@ const Card = ({ type, date, category }) => {
     userSportsRef
       .where("time", ">=", yesterday)
       .where("time", "<", tomorrow)
-      .orderBy("time", "asc")
+      .orderBy("time", "desc")
       .onSnapshot((snapshot) =>
         setSports(
           snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }))
@@ -217,6 +219,23 @@ const Card = ({ type, date, category }) => {
     setShowAddForm(showAddForm ? false : true);
   };
 
+  const listLikeItems = () => {
+    // 點選 like 顯示喜愛食物清單
+    const userLikeFoodsRef = db
+      .collection("users")
+      .doc(userLoggedIn.uid)
+      .collection("likeFoods");
+    userLikeFoodsRef
+      .where("data.meal_type", "==", type)
+      .onSnapshot((snapshot) =>
+        setLikeItems(
+          snapshot.docs.map((doc) => ( doc.data() ))
+        )
+      );
+  };
+
+  console.log(likeItems);
+
   return (
     <div className="card">
       <div className="card__topContainer">
@@ -285,8 +304,8 @@ const Card = ({ type, date, category }) => {
 
           <div className="card__listName">
             <p className="active">History</p>
-            <p>Like</p>
-            <p>Search Result</p>
+            <p onClick={listLikeItems}>Like</p>
+            <p>Result</p>
             <p onClick={IsAddFormShow}>New</p>
           </div>
 
@@ -355,7 +374,14 @@ const Card = ({ type, date, category }) => {
           </form>
 
           {/* a list that user has set the foods */}
-          {historyItems?.map((item) => (
+          {/* <CardList items={historyItems} category={category} type={type} /> */}
+          <CardList
+            items={likeItems}
+            category={category}
+            type={type}
+            showLikeIcon
+          />
+          {/* {historyItems?.map((item) => (
             <CardItem
               type={type}
               item={item}
@@ -364,7 +390,7 @@ const Card = ({ type, date, category }) => {
               category={category}
               clickable
             />
-          ))}
+          ))} */}
         </div>
       </Modal>
     </div>

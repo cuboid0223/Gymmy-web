@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import CardItem from "../CardItem";
 import Modal from "react-modal";
 import SearchIcon from "@material-ui/icons/Search";
 import { useForm } from "react-hook-form";
@@ -11,7 +10,9 @@ import "../../../api/fatSecret";
 import { useAuthState } from "react-firebase-hooks/auth";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import CloseIcon from "@material-ui/icons/Close";
-import CardList from "../CardList";
+import CardItemList from "../CardItemList";
+import CardItem from "../CardItem";
+
 const Card = ({ type, date, category }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -23,11 +24,11 @@ const Card = ({ type, date, category }) => {
   const [showFunctions, setShowFunctions] = useState(false);
   const [typeTotalCalories, setTypeTotalCalories] = useState(0);
   const [sportsCalories, setSportsCalories] = useState(0);
-  const [inputFoodName, setInputFoodName] = useState("");
+  const [whichListNameActive, setWhichListNameActive] = useState("historyList");
   const { register, errors, handleSubmit } = useForm({
     criteriaMode: "all",
   });
-  const [{ totalCalories, sportsTotalCalories }, dispatch] = useStateValue(); // 取得所選日期
+  const [{ totalCalories }, dispatch] = useStateValue(); // 取得所選日期
   const [userLoggedIn] = useAuthState(auth);
   const userFoodsRef = db
     .collection("users")
@@ -70,17 +71,17 @@ const Card = ({ type, date, category }) => {
 
   useEffect(() => {
     if (!date) return;
-    const config = {
-      url:
-        "https://blooming-stream-76058.herokuapp.com/https://platform.fatsecret.com/rest/server.api", // 只有此為必需
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
+    // const config = {
+    //   url:
+    //     "https://blooming-stream-76058.herokuapp.com/https://platform.fatsecret.com/rest/server.api", // 只有此為必需
+    //   method: "post",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: "Bearer " + token,
+    //   },
 
-      params: { method: "food.get.v2", food_id: "33691", format: "json" },
-    };
+    //   params: { method: "food.get.v2", food_id: "33691", format: "json" },
+    // };
     // 找尋選定當日的食物
     userFoodsRef
       .where("time", ">=", yesterday)
@@ -100,7 +101,7 @@ const Card = ({ type, date, category }) => {
         )
       );
   }, [date]);
-  // console.log(historyItems);
+  console.log(likeItems);
 
   function openModal() {
     setIsOpen(true);
@@ -217,6 +218,8 @@ const Card = ({ type, date, category }) => {
 
   const IsAddFormShow = () => {
     setShowAddForm(showAddForm ? false : true);
+
+    setWhichListNameActive("newAddForm");
   };
 
   const listLikeItems = () => {
@@ -226,15 +229,14 @@ const Card = ({ type, date, category }) => {
       .doc(userLoggedIn.uid)
       .collection("likeFoods");
     userLikeFoodsRef
-      .where("data.meal_type", "==", type)
+      .where("meal_type", "==", type)
       .onSnapshot((snapshot) =>
         setLikeItems(
-          snapshot.docs.map((doc) => ( doc.data() ))
+          snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }))
         )
       );
+    setWhichListNameActive("likeList");
   };
-
-  console.log(likeItems);
 
   return (
     <div className="card">
@@ -254,6 +256,11 @@ const Card = ({ type, date, category }) => {
 
       {/* list.map */}
 
+      {/* <CardItemList
+        items={foods}
+        category={category}
+        showFunctions={showFunctions}
+      /> */}
       {foods?.map((food) => (
         <CardItem
           key={food.id}
@@ -262,16 +269,13 @@ const Card = ({ type, date, category }) => {
           showFunctions={showFunctions}
         />
       ))}
-      {category === "sport" &&
-        sports.map((sport) => (
-          <CardItem
-            key={sport.id}
-            item={sport}
-            id={sport.id}
-            category={category}
-            showFunctions={showFunctions}
-          />
-        ))}
+      {category === "sport" && (
+        <CardItemList
+          items={sports}
+          category={category}
+          showFunctions={showFunctions}
+        />
+      )}
       <div className="card__bottomContainer">
         <button
           className="card__button card__addFoodButton"
@@ -287,7 +291,6 @@ const Card = ({ type, date, category }) => {
         style={customStyles}
         contentLabel="Add Food Modal"
       >
-        {/* modal search form */}
         <div className="card__ModalContainer">
           {/* search food form */}
           <form className="card__searchFoodForm">
@@ -301,14 +304,31 @@ const Card = ({ type, date, category }) => {
             />
             <SearchIcon onClick={searchFood} />
           </form>
-
+          {/* modal select list name */}
           <div className="card__listName">
-            <p className="active">History</p>
-            <p onClick={listLikeItems}>Like</p>
-            <p>Result</p>
-            <p onClick={IsAddFormShow}>New</p>
+            <p
+              className={whichListNameActive === "historyList" ? "active" : ""}
+              onClick={() => setWhichListNameActive("historyList")}
+            >
+              History
+            </p>
+            <p
+              className={whichListNameActive === "likeList" ? "active" : ""}
+              onClick={listLikeItems}
+            >
+              Like
+            </p>
+            <p className={whichListNameActive === "resultList" ? "active" : ""}>
+              Result
+            </p>
+            <p
+              className={whichListNameActive === "newAddForm" ? "active" : ""}
+              onClick={IsAddFormShow}
+            >
+              New
+            </p>
           </div>
-
+          {/* add new item form */}
           <form
             className={!showAddForm ? "card__hideAddForm" : ""}
             onSubmit={handleSubmit(addItem)}
@@ -373,24 +393,26 @@ const Card = ({ type, date, category }) => {
             />
           </form>
 
-          {/* a list that user has set the foods */}
-          {/* <CardList items={historyItems} category={category} type={type} /> */}
-          <CardList
-            items={likeItems}
-            category={category}
-            type={type}
-            showLikeIcon
-          />
-          {/* {historyItems?.map((item) => (
-            <CardItem
-              type={type}
-              item={item}
-              id={item.id}
-              key={item.id}
+          {/* a list that user has select the list name */}
+          {whichListNameActive === "historyList" && (
+            <CardItemList
+              items={historyItems}
               category={category}
+              type={type}
               clickable
             />
-          ))} */}
+          )}
+          {whichListNameActive === "likeList" && (
+            <CardItemList
+              items={likeItems}
+              category={category}
+              type={type}
+              clickable
+              showLikeIcon
+            />
+          )}
+
+          {/* <CardList items={historyItems} category={category} type={type} /> */}
         </div>
       </Modal>
     </div>

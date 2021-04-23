@@ -53,7 +53,7 @@ const CardItem = ({
           // 刪除資料後要將 totalcalories 減去該刪除食物的卡路里
           dispatch({
             type: actionTypes.SET_SPORTS_TOTAL_CALORIES,
-            sportsTotalCalories: sportsTotalCalories - item.data.calories,
+            sportsTotalCalories: sportsTotalCalories - calories,
           });
         })
         .catch((error) => {
@@ -66,7 +66,7 @@ const CardItem = ({
           // 刪除資料後要將 sports total calories 減去該刪除運動燃燒的卡路里
           dispatch({
             type: actionTypes.SET_TOTAL_CALORIES,
-            totalCalories: totalCalories - item.data.calories,
+            totalCalories: totalCalories - calories,
           });
         })
         .catch((error) => {
@@ -75,14 +75,15 @@ const CardItem = ({
     }
   };
 
-  useEffect(() => {
-    // if (!showFunctions) return;
+  const IsDataInLikeList = () => {
     // 先找尋使用者有無曾經將此食物加入到 likeFoods
-    const IsLikeFoodExitQuery = userLikeFoodsRef.where("data.name", "==", name);
+    const IsLikeFoodExitQuery = userLikeFoodsRef.where("name", "==", name);
+    console.log("name: ", name);
     IsLikeFoodExitQuery.get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         console.log(doc.id);
         if (doc.exists) {
+          console.log("exist");
           // 方便之後刪除
           setLikeFoodId(doc.id);
           // 有資料  setIsLikeFoodExit(true)
@@ -90,11 +91,11 @@ const CardItem = ({
           // 有資料 代表之前有加入過喜愛清單內，所以在顯示中要將愛心塗紅
           setLike(true);
         } else {
-          setIsLikeFoodExit(false);
+          console.log("not exist");
         }
       });
     });
-  }, [showFunctions, showLikeIcon, likeIconClick]);
+  };
 
   const like_f = () => {
     // 新增 likeFoods collection
@@ -108,12 +109,23 @@ const CardItem = ({
   };
 
   useEffect(() => {
-    // console.log("isLikeFoodExit: ", isLikeFoodExit);
-    // console.log("like: ", like);
+    if (!showFunctions) return;
+    IsDataInLikeList();
+    // 點擊 showFunctions 觸發，是因為要將愛心變紅色
+    // likeIconClick 觸發，判斷 該項目有無在  likeList 裡
+  }, [likeIconClick, showFunctions, showLikeIcon]);
+
+  useEffect(() => {
+    // 有愛心圖案可以點的才觸發此 useEffect
+    //if (!showLikeIcon) return;
+    IsDataInLikeList();
+
+    console.log("isLikeFoodExit: ", isLikeFoodExit);
+    console.log("like: ", like);
     if (!isLikeFoodExit && like) {
       // 如果 喜愛清單中沒有資料且按下喜歡，則新增進去
-      userLikeFoodsRef.add(item);
-    } else if (isLikeFoodExit) {
+      userLikeFoodsRef.add(item?.data);
+    } else if (isLikeFoodExit && !like) {
       // 如果 喜愛清單中有資料（代表已按愛心）-> 刪除資料，並把愛心取消， setIsLikeFoodExit(false)
       userLikeFoodsRef
         .doc(likeFoodId)
@@ -126,7 +138,7 @@ const CardItem = ({
     } else {
       return;
     }
-  }, [likeIconClick]);
+  }, [likeIconClick, showLikeIcon]);
 
   const addItem = () => {
     const userRef = db.collection("users").doc(userLoggedIn.uid);

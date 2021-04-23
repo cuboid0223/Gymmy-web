@@ -28,7 +28,7 @@ const Card = ({ type, date, category }) => {
   const { register, errors, handleSubmit } = useForm({
     criteriaMode: "all",
   });
-  const [{ totalCalories }, dispatch] = useStateValue(); // 取得所選日期
+  const [{ totalCalories, cardModalOpen }, dispatch] = useStateValue(); // 取得所選日期
   const [userLoggedIn] = useAuthState(auth);
   const userFoodsRef = db
     .collection("users")
@@ -101,7 +101,14 @@ const Card = ({ type, date, category }) => {
         )
       );
   }, [date]);
-  console.log(likeItems);
+  //console.log(likeItems);
+  useEffect(() => {
+    if (!cardModalOpen) {
+      setIsOpen(false);
+    } else {
+      return;
+    }
+  }, [cardModalOpen]);
 
   function openModal() {
     setIsOpen(true);

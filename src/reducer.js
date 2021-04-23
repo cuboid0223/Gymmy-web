@@ -9,6 +9,7 @@ export const initialState = {
   isSidebarOpen: false,
   totalCalories: 0,
   sportsTotalCalories: 0,
+  cardModalOpen: true,
 };
 export const actionTypes = {
   SET_SEARCH_TERM: "SET_SEARCH_TERM", // YouTube 搜尋字元
@@ -21,6 +22,7 @@ export const actionTypes = {
   SET_IS_SIDEBAR_OPEN: "SET_IS_SIDEBAR_OPEN", // 打開 sidebar
   SET_TOTAL_CALORIES: "SET_TOTAL_CALORIES", // foods total  calories
   SET_SPORTS_TOTAL_CALORIES: "SET_SPORTS_TOTAL_CALORIES", // sports total calories
+  SET_CARD_MODAL_OPEN: "SET_CARD_MODAL_OPEN", // 將 card modal 關閉
 };
 const reducer = (state, action) => {
   console.log(action); //debug
@@ -35,6 +37,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         term: action.term,
+      };
+
+    case "SET_CARD_MODAL_OPEN":
+      return {
+        ...state,
+        cardModalOpen: action.cardModalOpen,
       };
 
     case "SET_NEWSIDEBARROW_NAMES":

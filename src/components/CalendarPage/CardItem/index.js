@@ -26,7 +26,7 @@ const CardItem = ({
   const [deleteItem, setDeleteItem] = useState(false);
   let { name, brand, serving_unit, serving, desc, calories } = item?.data;
   const [
-    { date, totalCalories, sportsTotalCalories },
+    { date, totalCalories, sportsTotalCalories, cardModalOpen },
     dispatch,
   ] = useStateValue();
   const foodRef = db
@@ -151,6 +151,11 @@ const CardItem = ({
       // 新增食物到 firestore
       userRef.collection("foods").add({ ...item.data, time: date });
     }
+    // 將 Modal 關掉
+    dispatch({
+      type: actionTypes.SET_CARD_MODAL_OPEN,
+      cardModalOpen: false,
+    });
   };
 
   return (

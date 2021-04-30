@@ -7,7 +7,10 @@ import { useStateValue } from "../../StateProvider";
 import Card from "./Card";
 
 const CalendarPage = () => {
-  const [{ totalCalories, sportsTotalCalories }, dispatch] = useStateValue();
+  const [
+    { totalCalories, sportsTotalCalories, targetCalories },
+    dispatch,
+  ] = useStateValue();
   const [date, onDateChange] = useState(new Date());
   const [surplusCalories, setSurplusCalories] = useState(0);
   // console.log(date); // 日期
@@ -28,10 +31,9 @@ const CalendarPage = () => {
   }, [date]);
 
   useEffect(() => {
-    const targetCalories = 2390;
     const calories = targetCalories - totalCalories + sportsTotalCalories;
     setSurplusCalories(calories);
-  }, [totalCalories, sportsTotalCalories]);
+  }, [totalCalories, sportsTotalCalories, targetCalories]);
 
   return (
     <div className="calendarPage">
@@ -39,13 +41,14 @@ const CalendarPage = () => {
         className="calendarPage__calendar"
         onChange={onDateChange}
         value={date}
+        selectRange={true}
       />
 
       <div className="caloriesCalculator">
         <h3>{moment(date).format("L")} surplus calories</h3>
         <div className="caloriesCalculator__container">
           <div>
-            2390 <p>target</p>
+            {targetCalories} <p>target</p>
           </div>
           <pre> - </pre>
           <div>

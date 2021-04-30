@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useStateValue } from "../../StateProvider";
 import { actionTypes } from "../../reducer";
-import { Avatar } from "@material-ui/core";
+import { Avatar, Button } from "@material-ui/core";
 import Modal from "react-modal";
 
 import { useHistory } from "react-router-dom";
@@ -14,18 +14,24 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { merge } from "lodash";
 import Loading from "react-loading";
 import Select from "../MealPlan/Select";
+import PlanModal from "./PlanModal";
 
 const Profile = () => {
   const [{ userInfo, user }, dispatch] = useStateValue();
   const [userLoggedIn] = useAuthState(auth);
   const userRef = db.collection("users").doc(userLoggedIn?.uid);
   const [BMIData, setBMIData] = useState(null);
+  localStorage.setItem("BMI", BMIData?.bmi);
+  localStorage.setItem("health", BMIData?.health);
+  const bmi = localStorage.getItem("BMI");
+  const health = localStorage.getItem("health");
   // const storage = window.localStorage;
   const [idealWeight, setIdealWeight] = useState(0);
   const [user_BMR, setUser_BMR] = useState(0);
   const [user_TDEE, setUser_TDEE] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false); // false
   const { register, handleSubmit, watch, errors } = useForm();
+  const [planModalOpen, setPlanModalOpen] = useState(false);
 
   const history = useHistory();
   Modal.setAppElement(document.getElementById("root"));
@@ -129,28 +135,36 @@ const Profile = () => {
   };
 
   const getBMI = (data) => {
-    const BMIOptions = {
-      method: "GET",
-      url: "https://fitness-calculator.p.rapidapi.com/bmi",
-      params: {
-        age: parseInt(data?.age),
-        weight: parseInt(data?.weight),
-        height: Number(data?.height),
-      },
-      headers: {
-        "x-rapidapi-key": "561ee6d36amshf73fd6455efaa12p1935aejsn0c7dc81a59b2",
-        "x-rapidapi-host": "fitness-calculator.p.rapidapi.com",
-      },
-    };
-    axios
-      .request(BMIOptions)
-      .then(function (response) {
-        //console.log(response.data);
-        setBMIData(response.data);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+    const weight = parseInt(data?.weight);
+    const height = parseInt(data?.height);
+    let bmi = weight / (height / 100) ** 2;
+    bmi = Math.round(bmi * 100) / 100;
+    let health = "";
+
+    switch (true) {
+      case bmi < 18.5:
+        health = "體重過輕";
+        break;
+      case 18.8 <= bmi && bmi < 24:
+        health = "正常";
+        break;
+      case 24 <= bmi && bmi < 27:
+        health = "過重";
+        break;
+      case 27 <= bmi && bmi < 30:
+        health = "輕度肥胖";
+        break;
+      case 30 <= bmi && bmi < 35:
+        health = "中度肥胖";
+        break;
+      case bmi >= 35:
+        health = "重度肥胖";
+        break;
+      default:
+        health = "hh";
+    }
+
+    setBMIData({ bmi: bmi, health: health });
   };
 
   const getBMR_and_TDEE = (data) => {
@@ -168,172 +182,187 @@ const Profile = () => {
         TDEE = BMR * 1.2;
         break;
       case "輕量活動":
-        TDEE = BMR * 1.2;
+        TDEE = BMR * 1.375;
         break;
       case "中度活動量":
-        TDEE = BMR * 1.2;
+        TDEE = BMR * 1.55;
         break;
       case "高度活動量":
-        TDEE = BMR * 1.2;
+        TDEE = BMR * 1.725;
         break;
       case "非常高度活動量":
-        TDEE = BMR * 1.2;
+        TDEE = BMR * 1.9;
         break;
       default:
         TDEE = BMR * 1.0;
     }
     setUser_BMR(BMR);
-    setUser_TDEE(TDEE);
+    setUser_TDEE(parseInt(TDEE));
+    dispatch({
+      type: actionTypes.SET_TARGET_CALORIES,
+      targetCalories: parseInt(TDEE),
+    });
   };
 
+  
+
+  const planModalOpen_f = () => {
+    setPlanModalOpen(planModalOpen ? false : true);
+  };
   return (
     <div className="profile">
-      {userInfo ? (
-        <div>
-          <div className="profile__infoContainer personalBasicInfoContainer">
-            {userLoggedIn.photoURL ? (
-              <Avatar
-                className="profile__avatar"
-                src={userLoggedIn?.photoURL}
-              />
-            ) : (
-              <Avatar className="profile__avatar">{userInfo?.name[0]}</Avatar>
-            )}
+      <div>
+        <div className="profile__infoContainer personalBasicInfoContainer">
+          {userLoggedIn.photoURL ? (
+            <Avatar className="profile__avatar" src={userLoggedIn?.photoURL} />
+          ) : (
+            <Avatar className="profile__avatar">{userInfo?.name[0]}</Avatar>
+          )}
 
-            <div className="profile__userInfo">
-              <p>Name: {userInfo?.name}</p>
-              <p>Account: {userLoggedIn?.email}</p>
-              <p>Gender: {userInfo?.gender}</p>
-              {/* 982857600 */}
-              {/* <p>{secondsFormats(user?.birth?.seconds)}</p> */}
-              <p>Age: {userInfo?.age}</p>
-              <p>
-                Height: {userInfo?.height} {userInfo?.height_unit}
-              </p>
-              <p>
-                Weight: {userInfo?.weight} {userInfo?.weight_unit}
-              </p>
-              <button onClick={isModalOpen}>open</button>
-            </div>
-            {/* a modal form to edit userInfo */}
-            <Modal
-              isOpen={modalIsOpen}
-              onRequestClose={isModalOpen}
-              style={customStyles}
-              contentLabel="user info Modal"
-            >
-              <form
-                className="profile__modalForm"
-                onSubmit={handleSubmit(onModalFormSubmit)}
-              >
-                <div>
-                  <label>Name: </label>
-                  <input
-                    name="name"
-                    placeholder="Name"
-                    defaultValue={userInfo?.name}
-                    ref={register({ required: true })}
-                  />
-                </div>
-
-                <div>
-                  <label>Gender: </label>
-                  <Select
-                    name="gender"
-                    options={["male", "female", "other"]}
-                    defaultValue={userInfo?.gender}
-                    register={register({ required: true })}
-                  />
-                </div>
-
-                <div>
-                  <label>Age: </label>
-                  <input
-                    name="age"
-                    type="number"
-                    placeholder="Age"
-                    defaultValue={userInfo?.age}
-                    ref={register({ max: 80, min: 15, required: true })}
-                  />
-                </div>
-                <AlertMessage message={errors?.age?.message} />
-
-                <div>
-                  <label>Height(cm): </label>
-                  <input
-                    name="height"
-                    type="number"
-                    placeholder="Height"
-                    defaultValue={userInfo?.height}
-                    ref={register({ required: true })}
-                  />
-                </div>
-
-                <div>
-                  <label>Weight(kg): </label>
-                  <input
-                    name="weight"
-                    type="number"
-                    placeholder="weight"
-                    defaultValue={userInfo?.weight}
-                    ref={register({ required: true })}
-                  />
-                </div>
-
-                <div>
-                  <label>Activity Level: </label>
-                  <Select
-                    name="activity_level"
-                    //defaultValue={userInfo?.activity_level}
-                    options={[
-                      "久坐",
-                      "輕量活動",
-                      "中度活動量",
-                      "高度活動量",
-                      "非常高度活動量",
-                    ]}
-                    defaultValue={userInfo?.activity_level}
-                    register={register({ required: true })}
-                  />
-                </div>
-                <div>
-                  <button className="btn" type="submit">submit</button>
-                  <button className="btn" onClick={isModalOpen}>
-                    cancel
-                  </button>
-                </div>
-              </form>
-            </Modal>
+          <div className="profile__userInfo">
+            <p>Name: {userInfo?.name}</p>
+            <p>Account: {userLoggedIn?.email}</p>
+            <p>Gender: {userInfo?.gender}</p>
+            {/* 982857600 */}
+            {/* <p>{secondsFormats(user?.birth?.seconds)}</p> */}
+            <p>Age: {userInfo?.age}</p>
+            <p>
+              Height: {userInfo?.height} {userInfo?.height_unit}
+            </p>
+            <p>
+              Weight: {userInfo?.weight} {userInfo?.weight_unit}
+            </p>
+            <button onClick={isModalOpen}>open</button>
           </div>
+          {/* a modal form to edit userInfo */}
+          <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={isModalOpen}
+            style={customStyles}
+            contentLabel="user info Modal"
+          >
+            <form
+              className="profile__modalForm"
+              onSubmit={handleSubmit(onModalFormSubmit)}
+            >
+              <div>
+                <label>Name: </label>
+                <input
+                  name="name"
+                  placeholder="Name"
+                  defaultValue={userInfo?.name}
+                  ref={register({ required: true })}
+                />
+              </div>
 
-          <div className="profile__infoContainer">
-            {/* current state  */}
-            <div className="profile__weightContainer">
-              <h3>Current </h3>
-              <p>
-                Weight: {userInfo?.weight} {userInfo?.weight_unit}
-              </p>
-              {/* 取到第二位 */}
-              <p>BMI:{Math.round(BMIData?.bmi * 100) / 100}</p>
-              <p>Health: {BMIData?.health}</p>
-              <p>BMR: {user_BMR}</p>
-              <p>TDEE: {user_TDEE}</p>
-            </div>
-            {/* ideal state  */}
-            <div className="profile__weightContainer">
+              <div>
+                <label>Gender: </label>
+                <Select
+                  name="gender"
+                  options={["male", "female", "other"]}
+                  defaultValue={userInfo?.gender}
+                  register={register({ required: true })}
+                />
+              </div>
+
+              <div>
+                <label>Age: </label>
+                <input
+                  name="age"
+                  type="number"
+                  placeholder="Age"
+                  defaultValue={userInfo?.age}
+                  ref={register({ max: 80, min: 15, required: true })}
+                />
+              </div>
+              <AlertMessage message={errors?.age?.message} />
+
+              <div>
+                <label>Height(cm): </label>
+                <input
+                  name="height"
+                  type="number"
+                  placeholder="Height"
+                  defaultValue={userInfo?.height}
+                  ref={register({ required: true })}
+                />
+              </div>
+
+              <div>
+                <label>Weight(kg): </label>
+                <input
+                  name="weight"
+                  type="number"
+                  placeholder="weight"
+                  defaultValue={userInfo?.weight}
+                  ref={register({ required: true })}
+                />
+              </div>
+
+              <div>
+                <label>Activity Level: </label>
+                <Select
+                  name="activity_level"
+                  //defaultValue={userInfo?.activity_level}
+                  options={[
+                    "久坐",
+                    "輕量活動",
+                    "中度活動量",
+                    "高度活動量",
+                    "非常高度活動量",
+                  ]}
+                  defaultValue={userInfo?.activity_level}
+                  register={register({ required: true })}
+                />
+              </div>
+              <div>
+                <button className="btn" type="submit">
+                  submit
+                </button>
+                <button className="btn" onClick={isModalOpen}>
+                  cancel
+                </button>
+              </div>
+            </form>
+          </Modal>
+        </div>
+
+        <div className="profile__infoContainer">
+          {/* current state  */}
+          <div className="profile__weightContainer">
+            <h3>Current </h3>
+            <p>
+              Weight: {userInfo?.weight} {userInfo?.weight_unit}
+            </p>
+            {/* 取到第二位 */}
+            <p>BMI:{BMIData?.bmi}</p>
+            <p>Health: {BMIData?.health}</p>
+            <p>Activity: {userInfo?.activity_level}</p>
+            <p>BMR: {user_BMR} cal</p>
+            <p>TDEE (Total Daily Energy Expenditure): {user_TDEE} cal</p>
+          </div>
+          {/* ideal state  */}
+          {/* <div className="profile__weightContainer">
               <h3>Ideal </h3>
               <p>Weight: {Math.round(idealWeight * 100) / 100} kg</p>
               <p>Healthy BMI Range: {BMIData?.healthy_bmi_range}</p>
-            </div>
-          </div>
-
-          <div className="profile__postsContainer">
-            {/* all posts create form user */}
-          </div>
+            </div> */}
         </div>
-      ) : (
-        <Loading />
-      )}
+
+        <div className="profile__plansContainer">
+          {/* a btn to  pop up a modal  */}
+          <Button onClick={planModalOpen_f}>Start a new plan</Button>
+          {/* the modal */}
+          <PlanModal
+            TDEE={user_TDEE}
+            planModalOpen={planModalOpen}
+            planModalOpen_f={planModalOpen_f}
+            userCurrentWeight={userInfo?.weight}
+          />
+
+          {/* list of user plans */}
+        </div>
+      </div>
     </div>
   );
 };

@@ -10,6 +10,7 @@ export const initialState = {
   totalCalories: 0,
   sportsTotalCalories: 0,
   cardModalOpen: true,
+  targetCalories: 0,
 };
 export const actionTypes = {
   SET_SEARCH_TERM: "SET_SEARCH_TERM", // YouTube 搜尋字元
@@ -23,6 +24,7 @@ export const actionTypes = {
   SET_TOTAL_CALORIES: "SET_TOTAL_CALORIES", // foods total  calories
   SET_SPORTS_TOTAL_CALORIES: "SET_SPORTS_TOTAL_CALORIES", // sports total calories
   SET_CARD_MODAL_OPEN: "SET_CARD_MODAL_OPEN", // 將 card modal 關閉
+  SET_TARGET_CALORIES: "SET_TARGET_CALORIES", // target calories
 };
 const reducer = (state, action) => {
   console.log(action); //debug
@@ -68,6 +70,13 @@ const reducer = (state, action) => {
         ...state,
         totalCalories: action.totalCalories,
       };
+
+    case "SET_TARGET_CALORIES":
+      return {
+        ...state,
+        targetCalories: action.targetCalories,
+      };
+
     case "SET_SPORTS_TOTAL_CALORIES":
       return {
         ...state,

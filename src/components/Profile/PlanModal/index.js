@@ -4,6 +4,8 @@ import Select from "../../MealPlan/Select";
 import Modal from "react-modal";
 import { Button, Input } from "@material-ui/core";
 import moment from "moment";
+import db, { auth } from "../../../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const PlanModal = ({
   planModalOpen,
@@ -11,7 +13,8 @@ const PlanModal = ({
   TDEE,
   userCurrentWeight,
 }) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, watch, errors, getValues } = useForm();
+  const [planName, setPlanName] = useState("");
   const [planTarget, setPlanTarget] = useState("維持體重");
   const [newTDEE, setNewTDEE] = useState(0);
   const [planDay, setPlanDay] = useState(1);
@@ -22,7 +25,13 @@ const PlanModal = ({
   const [planEndDate, setPlanEndDate] = useState(
     moment().add(30, "days").format("YYYY-MM-DD")
   );
-  const [targetWeight, setTargetWeight] = useState("");
+  const [targetWeight, setTargetWeight] = useState(0);
+  const [totalTargetCalories, setTotalTargetCalories] = useState(0);
+  const [userLoggedIn] = useAuthState(auth);
+  const planRef = db
+    .collection("users")
+    .doc(userLoggedIn?.uid)
+    .collection("plans");
   const customStyles = {
     content: {
       top: "50%",
@@ -61,6 +70,7 @@ const PlanModal = ({
     //console.log(targetWeight, currentWeight);
     // 達成目標的總卡路里
     const targetTotalNeedCalories = (targetWeight - currentWeight) * 7700;
+    setTotalTargetCalories(targetTotalNeedCalories);
     const targetPlanDay = await getPlanDay_f(startDate, endDate);
     // targetTotalNeedCalories / 天數  --> 每日多或少攝取的卡路里
     const dayAverageSurplusCalories = targetTotalNeedCalories / targetPlanDay;
@@ -80,7 +90,7 @@ const PlanModal = ({
     setPlanDay(planDay);
     return planDay;
   };
-
+  const getPlanName = (e) => setPlanName(e.target.value);
   const getPlanTarget_f = (e) => setPlanTarget(e.target.value);
 
   const getTargetWeight_f = (e) => {
@@ -95,8 +105,21 @@ const PlanModal = ({
     // }
   };
 
-  const onModalFormSubmit = (data) => {
-    console.log(data);
+  const onModalFormSubmit = () => {
+    let startDate = getValues("start_date");
+    let endDate = getValues("end_date");
+    const data = {
+      start_date: new Date(startDate),
+      end_date: new Date(endDate),
+      total_target_cal: totalTargetCalories,
+      plan_name: planName,
+      plan_day: planDay,
+      plan_target: planTarget,
+      target_weight: targetWeight,
+      current_weight: userCurrentWeight,
+    };
+
+    planRef.add(data, { merge: true });
   };
 
   return (
@@ -107,6 +130,17 @@ const PlanModal = ({
       contentLabel="user info Modal"
     >
       <form className="planModal" onSubmit={handleSubmit(onModalFormSubmit)}>
+        <div>
+          <label>Plan Name: </label>
+          <input
+            name="plan_name"
+            value={planName}
+            onChange={getPlanName}
+            ref={register({
+              required: true,
+            })}
+          />
+        </div>
         <Select
           name="plan_target"
           //defaultValue={userInfo?.activity_level}
@@ -128,9 +162,9 @@ const PlanModal = ({
               onChange={getTargetWeight_f}
               //name="target_weight"
               ref={register({
-                // 如果選減重，則輸入不能大於原本體重，小於150kg
+                // 如果選減重，則輸入不能大於等於原本體重，小於150kg
                 max: planTarget === "減重" ? userCurrentWeight : 150,
-                // 如果選增重，則輸入不能小於原本體重，大於0kg
+                // 如果選增重，則輸入不能小於等於原本體重，大於0kg
                 min: planTarget === "增重" ? userCurrentWeight : 0,
                 required: true,
               })}
@@ -156,13 +190,11 @@ const PlanModal = ({
                 id="date"
                 name="start_date"
                 type="date"
-                //fullWidth
                 value={planStartDate}
                 onChange={(e) => setPlanStartDate(e.target.value)}
                 ref={register({
                   required: true,
                 })}
-                //defaultValue={moment().format("YYYY-MM-DD")}
               />
             </div>
             <div>
@@ -171,7 +203,6 @@ const PlanModal = ({
                 id="date"
                 name="end_date"
                 type="date"
-                //fullWidth
                 value={planEndDate}
                 onChange={(e) => setPlanEndDate(e.target.value)}
                 ref={register({

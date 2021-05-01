@@ -15,16 +15,13 @@ import { merge } from "lodash";
 import Loading from "react-loading";
 import Select from "../MealPlan/Select";
 import PlanModal from "./PlanModal";
-
+import ListOfPlans from "./ListOfPlans";
 const Profile = () => {
   const [{ userInfo, user }, dispatch] = useStateValue();
   const [userLoggedIn] = useAuthState(auth);
   const userRef = db.collection("users").doc(userLoggedIn?.uid);
   const [BMIData, setBMIData] = useState(null);
-  localStorage.setItem("BMI", BMIData?.bmi);
-  localStorage.setItem("health", BMIData?.health);
-  const bmi = localStorage.getItem("BMI");
-  const health = localStorage.getItem("health");
+
   // const storage = window.localStorage;
   const [idealWeight, setIdealWeight] = useState(0);
   const [user_BMR, setUser_BMR] = useState(0);
@@ -79,7 +76,7 @@ const Profile = () => {
       },
       data
     );
-    console.log(newData);
+    //console.log(newData);
     db.collection("users").doc(userLoggedIn.uid).set(newData, { merge: true });
     setIsOpen(false);
     history.push("/profile");
@@ -203,8 +200,6 @@ const Profile = () => {
       targetCalories: parseInt(TDEE),
     });
   };
-
-  
 
   const planModalOpen_f = () => {
     setPlanModalOpen(planModalOpen ? false : true);
@@ -361,6 +356,7 @@ const Profile = () => {
           />
 
           {/* list of user plans */}
+          <ListOfPlans />
         </div>
       </div>
     </div>

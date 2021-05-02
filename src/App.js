@@ -19,6 +19,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Loading from "./pages/LoadingPage";
 import SettingPage from "./pages/SettingPage";
 import HomePage from "./pages/HomePage";
+import PlanDetailPage from "./pages/PlanDetailPage";
 
 function App() {
   const [{ userInfo }, dispatch] = useStateValue();
@@ -94,6 +95,13 @@ function App() {
               <div className="app__page detailPage">
                 <Sidebar />
                 <Profile />
+              </div>
+            </Route>
+
+            <Route path="/planDetail">
+              <div className="app__page detailPage">
+                <Sidebar />
+                <PlanDetailPage />
               </div>
             </Route>
 

@@ -19,7 +19,7 @@ const ListOfPlans = () => {
     );
   }, []);
 
-  console.log(plans);
+  // console.log(plans);
   return (
     <div className="listOfPlans">
       {plans

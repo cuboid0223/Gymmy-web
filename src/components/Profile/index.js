@@ -345,8 +345,15 @@ const Profile = () => {
         </div>
 
         <div className="profile__plansContainer">
+          {/* list of user plans */}
+          <ListOfPlans />
           {/* a btn to  pop up a modal  */}
-          <Button onClick={planModalOpen_f}>Start a new plan</Button>
+          <Button
+            className="profile__planModalBtn"
+            onClick={planModalOpen_f}
+          >
+            Start a new plan
+          </Button>
           {/* the modal */}
           <PlanModal
             TDEE={user_TDEE}
@@ -354,9 +361,6 @@ const Profile = () => {
             planModalOpen_f={planModalOpen_f}
             userCurrentWeight={userInfo?.weight}
           />
-
-          {/* list of user plans */}
-          <ListOfPlans />
         </div>
       </div>
     </div>

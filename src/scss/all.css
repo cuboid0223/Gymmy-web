@@ -1697,6 +1697,19 @@
   width: 100%;
 }
 
+.planDetailPage {
+  margin-top: 70px;
+}
+
+.planChart {
+  width: 100%;
+  max-width: 800px;
+  min-width: 300px;
+  max-height: 500px;
+  min-height: 300px;
+  margin: 20px;
+}
+
 .react-resizable {
   position: relative;
 }

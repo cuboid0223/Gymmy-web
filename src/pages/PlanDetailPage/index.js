@@ -4,7 +4,7 @@ import PlanChart from "./PlanChart";
 
 const PlanDetailPage = () => {
   return (
-    <div>
+    <div className="planDetailPage">
       {/* <ResizableBox
         children={}
         width={200}

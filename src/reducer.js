@@ -11,6 +11,7 @@ export const initialState = {
   sportsTotalCalories: 0,
   cardModalOpen: true,
   targetCalories: 0,
+  planUID: "",
 };
 export const actionTypes = {
   SET_SEARCH_TERM: "SET_SEARCH_TERM", // YouTube 搜尋字元
@@ -25,6 +26,7 @@ export const actionTypes = {
   SET_SPORTS_TOTAL_CALORIES: "SET_SPORTS_TOTAL_CALORIES", // sports total calories
   SET_CARD_MODAL_OPEN: "SET_CARD_MODAL_OPEN", // 將 card modal 關閉
   SET_TARGET_CALORIES: "SET_TARGET_CALORIES", // target calories
+  SET_PLANUID: "SET_PLANUID", // send plan uid to show the chart from firebase
 };
 const reducer = (state, action) => {
   console.log(action); //debug
@@ -99,6 +101,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         noticesCount: action.noticesCount,
+      };
+
+    case "SET_PLANUID":
+      return {
+        ...state,
+        planUID: action.planUID,
       };
     default:
       return state;

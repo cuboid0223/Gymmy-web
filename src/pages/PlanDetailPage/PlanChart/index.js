@@ -3,21 +3,24 @@ import React, { useState, useEffect } from "react";
 import { Chart } from "react-charts";
 import { useAuthState } from "react-firebase-hooks/auth";
 import db, { auth } from "../../../firebase";
+import { useStateValue } from "../../../StateProvider";
 
 const PlanChart = () => {
   const [userLoggedIn] = useAuthState(auth);
+  const [{ planUID }, dispatch] = useStateValue();
   const [data, setData] = useState([]);
   const [caloriesData, setCaloriesData] = useState([]);
   const [AVGCaloriesData, setAVGCaloriesData] = useState([]);
   const [weightData, setWeightData] = useState([]);
-  const planRef = db
-    .collection("users")
-    .doc(userLoggedIn?.uid)
-    .collection("plans")
-    .doc("C3cub3Jc5iPzRk9OtMfU")
-    .collection("dates");
 
   useEffect(() => {
+    if (!planUID) return;
+    const planRef = db
+      .collection("users")
+      .doc(userLoggedIn?.uid)
+      .collection("plans")
+      .doc(planUID)
+      .collection("dates");
     planRef
       .orderBy("date")
       .onSnapshot((snapshot) =>
@@ -25,7 +28,7 @@ const PlanChart = () => {
           snapshot.docs.map((doc) => Object.assign({ id: doc.id }, doc.data()))
         )
       );
-  }, []);
+  }, [planUID]);
 
   useEffect(() => {
     if (!data) return;
@@ -73,7 +76,7 @@ const PlanChart = () => {
         data: AVGCaloriesData,
       },
       {
-        label: "kg",
+        label: "weight",
         data: weightData,
       },
     ],
@@ -100,26 +103,19 @@ const PlanChart = () => {
     []
   );
   return (
-    <div
-      style={{
-        marginTop: "70px",
-        width: "100%",
-        height: "300px",
-        // background: "rgba(0, 27, 45, 0.9)",
-        // padding: ".2rem",
-        //   borderRadius: "5px",
-      }}
-    >
-      <Chart
-        data={mockData}
-        axes={axes}
-        tooltip
-        getSeriesStyle={getSeriesStyle}
-        getDatumStyle={getDatumStyle}
-        primaryCursor
-        secondaryCursor
-        // dark
-      />
+    <div className="planChart">
+      {data.length !== 0 ? (
+        <Chart
+          data={mockData}
+          axes={axes}
+          tooltip
+          getSeriesStyle={getSeriesStyle}
+          getDatumStyle={getDatumStyle}
+          primaryCursor
+          secondaryCursor
+          // dark
+        />
+      ) : null}
     </div>
   );
 };

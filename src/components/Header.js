@@ -18,7 +18,7 @@ const Header = ({ onFormSubmit }) => {
     { term, noticesCount, notices, isSidebarOpen },
     dispatch,
   ] = useStateValue(); // 取得 header__NoticeIconCount
-  console.log("noticesCount: ", noticesCount);
+  //console.log("noticesCount: ", noticesCount);
 
   const handleSubmit = (e) => {
     e.preventDefault();

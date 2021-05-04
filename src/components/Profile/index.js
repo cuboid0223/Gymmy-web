@@ -195,10 +195,12 @@ const Profile = () => {
     }
     setUser_BMR(BMR);
     setUser_TDEE(parseInt(TDEE));
-    dispatch({
-      type: actionTypes.SET_TARGET_CALORIES,
-      targetCalories: parseInt(TDEE),
-    });
+    // dispatch({
+    //   type: actionTypes.SET_TARGET_CALORIES,
+    //   targetCalories: parseInt(TDEE),
+    // });
+    localStorage.setItem("TDEE", TDEE);
+    localStorage.setItem("BMR", BMR);
   };
 
   const planModalOpen_f = () => {
@@ -348,10 +350,7 @@ const Profile = () => {
           {/* list of user plans */}
           <ListOfPlans />
           {/* a btn to  pop up a modal  */}
-          <Button
-            className="profile__planModalBtn"
-            onClick={planModalOpen_f}
-          >
+          <Button className="profile__planModalBtn" onClick={planModalOpen_f}>
             Start a new plan
           </Button>
           {/* the modal */}

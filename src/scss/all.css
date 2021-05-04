@@ -1192,6 +1192,11 @@
   border: none !important;
 }
 
+.tile_active {
+  background: #7bd1aa !important;
+  opacity: 0.7;
+}
+
 .caloriesCalculator {
   background-color: #fff;
   margin-top: 10px;
@@ -1277,7 +1282,7 @@
 }
 
 .react-calendar__navigation__arrow {
-  color: #7bd1aa;
+  color: #2a7cb3 !important;
 }
 
 .react-calendar__navigation button:enabled:hover,

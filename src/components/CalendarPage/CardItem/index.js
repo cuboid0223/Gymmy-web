@@ -152,6 +152,7 @@ const CardItem = ({
       userRef.collection("foods").add({ ...item.data, time: date });
     }
     // 將 Modal 關掉
+
     dispatch({
       type: actionTypes.SET_CARD_MODAL_OPEN,
       cardModalOpen: false,

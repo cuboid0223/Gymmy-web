@@ -12,6 +12,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import CloseIcon from "@material-ui/icons/Close";
 import CardItemList from "../CardItemList";
 import CardItem from "../CardItem";
+import moment from "moment";
 
 const Card = ({ type, date, category }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -38,6 +39,7 @@ const Card = ({ type, date, category }) => {
     .collection("users")
     .doc(userLoggedIn.uid) // <- user.uid
     .collection("sports");
+  //console.log(date[0]);
   const yesterday = new Date(
     date.getFullYear(),
     date.getMonth(),
@@ -46,6 +48,7 @@ const Card = ({ type, date, category }) => {
     0,
     0
   );
+
   const tomorrow = new Date(
     date.getFullYear(),
     date.getMonth(),
@@ -54,7 +57,8 @@ const Card = ({ type, date, category }) => {
     0,
     0
   );
-  const token = window.localStorage.getItem("token");
+
+  // const token = window.localStorage.getItem("token");
   Modal.setAppElement(document.getElementById("root"));
   const customStyles = {
     content: {
@@ -113,40 +117,40 @@ const Card = ({ type, date, category }) => {
   function openModal() {
     setIsOpen(true);
 
-    if (category === "sport") {
-      // 找尋歷程運動
-      userSportsRef
-        .where("time", "<", tomorrow)
-        .orderBy("time", "asc")
-        .limit(7)
-        .onSnapshot((snapshot) =>
-          setHistoryItems(
-            snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }))
-          )
-        );
-    } else {
-      // 找尋歷程食物
-      userFoodsRef
-        .where("time", "<", tomorrow)
-        .orderBy("time", "asc")
-        .limit(7)
-        .onSnapshot((snapshot) =>
-          setHistoryItems(
-            snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }))
-          )
-        );
-    }
+    // if (category === "sport") {
+    //   // 找尋歷程運動
+    //   userSportsRef
+    //     .where("time", "<", tomorrow)
+    //     .orderBy("time", "asc")
+    //     .limit(7)
+    //     .onSnapshot((snapshot) =>
+    //       setHistoryItems(
+    //         snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }))
+    //       )
+    //     );
+    // } else {
+    // 找尋歷程食物 and 歷程運動
+    (category === "sport" ? userSportsRef : userFoodsRef)
+      .where("time", "<", tomorrow)
+      .orderBy("time", "asc")
+      .limit(7)
+      .onSnapshot((snapshot) =>
+        setHistoryItems(
+          snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }))
+        )
+      );
+    // }
   }
 
   function closeModal() {
     setIsOpen(false);
   }
 
-  const searchFood = (e) => {
-    e.preventDefault();
+  // const searchFood = (e) => {
+  //   e.preventDefault();
 
-    closeModal(false);
-  };
+  //   closeModal(false);
+  // };
 
   // 新增項目到 firestore
   const addItem = (data) => {
@@ -309,7 +313,7 @@ const Card = ({ type, date, category }) => {
               value={searchFoodName}
               onChange={setSearchFoodName}
             />
-            <SearchIcon onClick={searchFood} />
+            <SearchIcon />
           </form>
           {/* modal select list name */}
           <div className="card__listName">

@@ -147,7 +147,9 @@
 .react-calendar__tile--active {
   background: $third-color;
   color: white;
+  font-weight: bold;
   opacity: 0.7;
+  border: 1px solid $white !important;
 }
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {

@@ -21,6 +21,7 @@ const CalendarPage = () => {
   const [userLoggedIn] = useAuthState(auth);
   const [plans, setPlans] = useState(null);
   const [plansDateRange, setPlansDateRange] = useState([]);
+
   useEffect(() => {
     if (!date) return;
 
@@ -45,11 +46,6 @@ const CalendarPage = () => {
   }, [totalCalories, sportsTotalCalories, targetCalories]);
 
   const getThisMonthPlans = (date) => {
-    // month = date.getMonth()
-    // find the plans in the {month} from db
-    // list the date from startDate to endDate(array) (date.getDate())
-    // like [22,23,24,25,26,27,28,29,30,1,2]
-
     const planRef = db
       .collection("users")
       .doc(userLoggedIn.uid) // <- user.uid
@@ -61,6 +57,7 @@ const CalendarPage = () => {
     // console.log(monthLastDay);
 
     // 取得所有計畫dateRange有到達當月任一日期
+    // 計畫在每個月可能不只一個
     planRef
       .where("start_date", ">=", monthFirstDay)
       .where("start_date", "<=", monthLastDay)
@@ -69,53 +66,44 @@ const CalendarPage = () => {
       );
   };
 
-  const changePlanDayRangeColor = (date, plansDateRange, view) => {
-    for (let i = plansDateRange[0]; i <= plansDateRange[1]; i++) {
-      if (view === "month" && date.getDate() === i) {
-        return "tile_active";
-      }
-      return;
-    }
-  };
-
   useEffect(() => {
+    // 在當月有找到符合區間的計劃才計算
     if (!plans) return;
+    //取得 計畫開始與結束的秒數 (from 1970 (unix))
+    setPlansDateRange(
+      plans.map((plan) => [
+        ...plansDateRange,
+        {
+          start: plan.data.start_date.seconds * 1000,
+          end: plan.data.end_date.seconds * 1000,
+        },
+      ])
+    );
 
-    //取得 秒數 from 1970 (unix)
-    const plansStartDate = plans[0].data.start_date.seconds * 1000;
-    const plansEndDate = plans[0].data.end_date.seconds * 1000;
-
-    setPlansDateRange([plansStartDate, plansEndDate]);
+    // setPlansDateRange([plansStartDate, plansEndDate]);
   }, [plans]);
   //console.log(plansDateRange);
-  //console.log(plans);
+  console.log(plansDateRange);
   return (
     <div className="calendarPage">
       <Calendar
         className="calendarPage__calendar"
         onChange={onDateChange}
         value={date}
-        allowPartialRange={true}
+        // allowPartialRange={true}
         // selectRange={true}
-        tileClassName={
-          ({ date, view }) => {
-            if (!plansDateRange) {
-              return;
-            } else {
+        tileClassName={({ date, view }) => {
+          if (plansDateRange && view === "month") {
+            for (let i = 0; i < plansDateRange.length; i++) {
               if (
-                date.valueOf() >= plansDateRange[0] &&
-                date.valueOf() <= plansDateRange[1]
+                date.valueOf() >= plansDateRange[i][0].start &&
+                date.valueOf() <= plansDateRange[i][0].end
               ) {
                 return "tile_active";
               }
-              return;
             }
           }
-
-          // view === "month" && date.getDate() === 3 && date.getMonth() === 4
-          //   ? "tile_active"
-          //   : null
-        }
+        }}
       />
 
       <div className="caloriesCalculator">

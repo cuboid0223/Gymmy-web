@@ -15,11 +15,11 @@ const PlanItem = ({ data }) => {
   return (
     <Link to="/planDetail">
       <div className="planItem" onClick={sendPlanData}>
-        <p>{data.plan_name}</p>
+        <p>{data?.plan_name}</p>
         {/* 完成率 */}
         <div className="planItem__rightBox">
           <p>完成率: 80%</p>
-          <ArrowForwardIosIcon />
+          <ArrowForwardIosIcon fontSize="small" />
         </div>
       </div>
     </Link>

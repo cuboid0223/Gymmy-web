@@ -17,7 +17,7 @@ import Select from "../MealPlan/Select";
 import PlanModal from "./PlanModal";
 import ListOfPlans from "./ListOfPlans";
 const Profile = () => {
-  const [{ userInfo, user }, dispatch] = useStateValue();
+  const [{ userInfo }, dispatch] = useStateValue();
   const [userLoggedIn] = useAuthState(auth);
   const userRef = db.collection("users").doc(userLoggedIn?.uid);
   const [BMIData, setBMIData] = useState(null);
@@ -29,6 +29,11 @@ const Profile = () => {
   const [modalIsOpen, setIsOpen] = useState(false); // false
   const { register, handleSubmit, watch, errors } = useForm();
   const [planModalOpen, setPlanModalOpen] = useState(false);
+  const [plans, setPlans] = useState([]);
+  const plansRef = db
+    .collection("users")
+    .doc(userLoggedIn?.uid)
+    .collection("plans");
 
   const history = useHistory();
   Modal.setAppElement(document.getElementById("root"));
@@ -55,6 +60,12 @@ const Profile = () => {
       .catch((error) => {
         console.log("Error getting document:", error);
       });
+
+    plansRef.onSnapshot((snapshot) =>
+      setPlans(
+        snapshot.docs.map((doc) => Object.assign({ id: doc.id }, doc.data()))
+      )
+    );
   }, [userLoggedIn]);
 
   useEffect(() => {
@@ -348,7 +359,7 @@ const Profile = () => {
 
         <div className="profile__plansContainer">
           {/* list of user plans */}
-          <ListOfPlans />
+          <ListOfPlans plans={plans} />
           {/* a btn to  pop up a modal  */}
           <Button className="profile__planModalBtn" onClick={planModalOpen_f}>
             Start a new plan

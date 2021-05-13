@@ -117,6 +117,7 @@ const PlanModal = ({
       plan_target: planTarget,
       target_weight: targetWeight,
       current_weight: userCurrentWeight,
+      plan_TDEE: newTDEE
     };
 
     planRef.add(data, { merge: true });

@@ -1,27 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import db, { auth } from "../../../firebase";
+import React from "react";
+
 import PlanItem from "../PlanItem";
 
-const ListOfPlans = () => {
-  const [userLoggedIn] = useAuthState(auth);
-  const [plans, setPlans] = useState([]);
-  const plansRef = db
-    .collection("users")
-    .doc(userLoggedIn?.uid)
-    .collection("plans");
-
-  useEffect(() => {
-    plansRef.onSnapshot((snapshot) =>
-      setPlans(
-        snapshot.docs.map((doc) => Object.assign({ id: doc.id }, doc.data()))
-      )
-    );
-  }, []);
-
+const ListOfPlans = ({ plans, backgroundColor }) => {
   // console.log(plans);
   return (
-    <div className="listOfPlans">
+    <div className="listOfPlans" style={{backgroundColor: backgroundColor}}>
       {plans
         ? plans.map((plan) => <PlanItem key={plan.id} data={plan} />)
         : null}

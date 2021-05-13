@@ -1192,9 +1192,34 @@
   border: none !important;
 }
 
+.calendarPage__functionsContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #fff;
+}
+
+.calendarPage__rightFunctionsContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-left: auto;
+}
+
+.calendarPage__rightFunctionsContainer > .icon {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.calendarPage__rightFunctionsContainer > .icon-active {
+  background-color: #7bd1aa !important;
+}
+
 .tile_active {
   background: #7bd1aa !important;
-  opacity: 0.7;
+  opacity: 0.5 !important;
 }
 
 .caloriesCalculator {
@@ -1374,8 +1399,9 @@
 .react-calendar__tile--active {
   background: #2a7cb3;
   color: white;
+  font-weight: bold;
   opacity: 0.7;
-  border: 1px solid;
+  border: 1px solid white !important;
 }
 
 .react-calendar__tile--active:enabled:hover,
@@ -1701,6 +1727,7 @@
 
 .listOfPlans {
   width: 100%;
+  margin-top: 1rem;
 }
 
 .planDetailPage {

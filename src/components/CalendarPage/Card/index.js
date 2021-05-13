@@ -6,7 +6,7 @@ import { useStateValue } from "../../../StateProvider";
 import { actionTypes } from "../../../reducer";
 import axios from "axios";
 import db, { auth } from "../../../firebase";
-import "../../../api/fatSecret";
+// import "../../../api/fatSecret";
 import { useAuthState } from "react-firebase-hooks/auth";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import CloseIcon from "@material-ui/icons/Close";
@@ -197,10 +197,12 @@ const Card = ({ type, date, category }) => {
       // 顯示每一餐的總熱量
       setTypeTotalCalories(getTotalCalories);
       // 為了顯示每一天每一餐加總的總熱量
-      dispatch({
-        type: actionTypes.SET_TOTAL_CALORIES,
-        totalCalories: totalCalories + getTotalCalories,
-      });
+      if (getTotalCalories !== 0 || totalCalories !== 0) {
+        dispatch({
+          type: actionTypes.SET_TOTAL_CALORIES,
+          totalCalories: totalCalories + getTotalCalories,
+        });
+      }
     }
   }, [foods]);
 
@@ -215,10 +217,12 @@ const Card = ({ type, date, category }) => {
       // 顯示每一項運動當天加總的總熱量
       setSportsCalories(getSportsTotalCalories);
       // 直接傳送 getSportsTotalCalories
-      dispatch({
-        type: actionTypes.SET_SPORTS_TOTAL_CALORIES,
-        sportsTotalCalories: getSportsTotalCalories,
-      });
+      if (getSportsTotalCalories !== 0) {
+        dispatch({
+          type: actionTypes.SET_SPORTS_TOTAL_CALORIES,
+          sportsTotalCalories: getSportsTotalCalories,
+        });
+      }
     }
   }, [sports]);
 

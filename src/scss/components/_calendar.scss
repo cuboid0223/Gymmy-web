@@ -7,11 +7,32 @@
     width: 100% !important;
     border: none !important;
   }
+
+  &__functionsContainer {
+    display: flex;
+    background-color: #fff;
+  }
+
+  &__rightFunctionsContainer {
+    display: flex;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: auto;
+
+    & > .icon {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
+    & > .icon-active {
+      background-color: $secondary-color !important;
+    }
+  }
 }
 
 .tile_active {
   background: $secondary-color !important;
-  opacity: 0.7;
+  opacity: 0.5 !important;
 }
 
 .caloriesCalculator {
@@ -149,7 +170,7 @@
   color: white;
   font-weight: bold;
   opacity: 0.7;
-  border: 1px solid $white !important;
+  border: 1px solid white !important;
 }
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {

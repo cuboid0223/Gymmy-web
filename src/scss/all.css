@@ -1731,16 +1731,40 @@
 }
 
 .planDetailPage {
-  margin-top: 70px;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
 }
 
 .planChart {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   width: 100%;
-  max-width: 800px;
+  margin: 10px;
+}
+
+.planChart .chart {
+  -webkit-box-flex: 0.8;
+      -ms-flex: 0.8;
+          flex: 0.8;
   min-width: 300px;
-  max-height: 500px;
-  min-height: 300px;
-  margin: 20px;
+  max-height: 300px;
+  min-height: 100px;
+}
+
+.planChart__settingContainer {
+  padding: 2rem;
+  -webkit-box-flex: 0.2;
+      -ms-flex: 0.2;
+          flex: 0.2;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
 .react-resizable {

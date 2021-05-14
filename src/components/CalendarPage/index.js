@@ -69,9 +69,6 @@ const CalendarPage = () => {
     const tdee = plans.map((plan) => {
       // console.log(new Date(date).valueOf());
 
-      console.log("dateSeconds: ", dateSeconds);
-      console.log("start date: ", plan.start_date.seconds * 1000);
-      console.log("end date: ", plan.end_date.seconds * 1000);
       if (
         dateSeconds >= new Date(plan.start_date.seconds * 1000).valueOf() &&
         dateSeconds <= new Date(plan.end_date.seconds * 1000).valueOf()
@@ -81,7 +78,6 @@ const CalendarPage = () => {
         //setPlanTDEE(plan.plan_TDEE);
         return plan.plan_TDEE;
       } else {
-        console.log("out");
         setPlanTDEE(0);
       }
     });
@@ -93,8 +89,6 @@ const CalendarPage = () => {
       setPlanTDEE(tdeeRemoveUndefined);
     }
   };
-
-  console.log(parseInt(TDEE));
 
   useEffect(() => {
     let calories = 0;

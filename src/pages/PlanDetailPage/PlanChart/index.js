@@ -1,94 +1,28 @@
-import moment from "moment";
-import React, { useState, useEffect } from "react";
+import { Button } from "@material-ui/core";
+import React, { useState } from "react";
 import { Chart } from "react-charts";
-import { useAuthState } from "react-firebase-hooks/auth";
-import db, { auth } from "../../../firebase";
-import { useStateValue } from "../../../StateProvider";
-
-const PlanChart = () => {
-  const [userLoggedIn] = useAuthState(auth);
-  const [{ planUID }, dispatch] = useStateValue();
-  const [data, setData] = useState([]);
-  const [caloriesData, setCaloriesData] = useState([]);
-  const [AVGCaloriesData, setAVGCaloriesData] = useState([]);
-  const [weightData, setWeightData] = useState([]);
-
-  useEffect(() => {
-    if (!planUID) return;
-    const planRef = db
-      .collection("users")
-      .doc(userLoggedIn?.uid)
-      .collection("plans")
-      .doc(planUID)
-      .collection("dates");
-    planRef
-      .orderBy("date")
-      .onSnapshot((snapshot) =>
-        setData(
-          snapshot.docs.map((doc) => Object.assign({ id: doc.id }, doc.data()))
-        )
-      );
-  }, [planUID]);
-
-  useEffect(() => {
-    if (!data) return;
-    console.log("data: ", data);
-
-    setCaloriesData(
-      data.map((doc) => ({
-        x:
-          (new Date(doc.date.seconds * 1000).getMonth() + 1).toString() +
-          "/" +
-          new Date(doc.date.seconds * 1000).getDate(),
-        y: doc.today_calories,
-      }))
-    );
-    setAVGCaloriesData(
-      data.map((doc) => ({
-        x:
-          (new Date(doc.date.seconds * 1000).getMonth() + 1).toString() +
-          "/" +
-          new Date(doc.date.seconds * 1000).getDate(),
-        y: doc.avg_calories,
-      }))
-    );
-    setWeightData(
-      data.map((doc) => ({
-        x:
-          (new Date(doc.date.seconds * 1000).getMonth() + 1).toString() +
-          "/" +
-          new Date(doc.date.seconds * 1000).getDate(),
-        y: doc.current_weight,
-      }))
-    );
-  }, [data]);
-
+import Select from "../../../components/MealPlan/Select";
+const PlanChart = ({ data }) => {
   //console.log(new Date(data[1]?.date?.seconds * 1000).getDate());
   //console.log(moment(data[1]?.date?.seconds * 1000).format("MMM / YY"));
-  const mockData = React.useMemo(
-    () => [
-      {
-        label: "Calories",
-        data: caloriesData,
-      },
-      {
-        label: "avg Calories",
-        data: AVGCaloriesData,
-      },
-      {
-        label: "weight",
-        data: weightData,
-      },
-    ],
-    [caloriesData, AVGCaloriesData, weightData]
+  const [xAxesPosition, setXAxesPosition] = useState("bottom");
+  const [yAxesPosition, setYAxesPosition] = useState("left");
+  const [chartType, setChartType] = useState("line");
+  const series = React.useMemo(
+    () => ({
+      //type: "area",
+      type: chartType,
+    }),
+    [chartType]
   );
+
   const axes = React.useMemo(
     () => [
-      { primary: true, type: "ordinal", position: "bottom" },
-      { type: "linear", position: "left" },
+      { primary: true, type: "ordinal", position: xAxesPosition },
+      { type: "linear", position: yAxesPosition },
       // stacked: true -> 兩線值相加
     ],
-    []
+    [yAxesPosition, xAxesPosition]
   );
   const getSeriesStyle = React.useCallback(
     () => ({
@@ -102,20 +36,59 @@ const PlanChart = () => {
     }),
     []
   );
+
+  const setSettingToDefault = () => {
+    setYAxesPosition("left");
+    setXAxesPosition("bottom");
+    setChartType("line");
+  };
   return (
     <div className="planChart">
-      {data.length !== 0 ? (
-        <Chart
-          data={mockData}
-          axes={axes}
-          tooltip
-          getSeriesStyle={getSeriesStyle}
-          getDatumStyle={getDatumStyle}
-          primaryCursor
-          secondaryCursor
-          // dark
-        />
+      {data ? (
+        <div className="chart">
+          <Chart
+            data={data}
+            series={series}
+            axes={axes}
+            tooltip
+            getSeriesStyle={getSeriesStyle}
+            getDatumStyle={getDatumStyle}
+            primaryCursor
+            secondaryCursor
+            // dark
+          />
+        </div>
       ) : null}
+      <div className="planChart__settingContainer">
+        <label>chart type</label>
+        <Select
+          name="chart_type"
+          options={["line", "bar", "area", "bubble"]}
+          value={chartType}
+          onChange_f={(e) => setChartType(e.target.value)}
+          //register={register({ required: true })}
+        />
+
+        <label>x-axes position</label>
+        <Select
+          name="x_axes_position"
+          options={["bottom", "top", "left", "right"]}
+          value={xAxesPosition}
+          onChange_f={(e) => setXAxesPosition(e.target.value)}
+          // defaultValue={null}
+          //register={register({ required: true })}
+        />
+        <label>y-axes position</label>
+        <Select
+          name="y_axes_position"
+          options={["left", "top", "bottom", "right"]}
+          value={yAxesPosition}
+          onChange_f={(e) => setYAxesPosition(e.target.value)}
+          // defaultValue={null}
+          //register={register({ required: true })}
+        />
+        <Button onClick={() => setSettingToDefault()}>Default</Button>
+      </div>
     </div>
   );
 };

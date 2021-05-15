@@ -3,7 +3,7 @@ import NoticeCard from "./NoticeCard";
 import { actionTypes } from "../../reducer";
 import { useStateValue } from "../../StateProvider";
 
-import logo from "../.././assets/logo.jpg";
+import logo from "../.././assets/logo.JPG";
 const NoticePage = () => {
   //   events.map(({ name, start, logo, url, id, description }) => {
   //     const maxChar = 20

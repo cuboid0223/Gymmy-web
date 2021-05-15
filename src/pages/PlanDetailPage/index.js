@@ -20,8 +20,11 @@ const PlanDetailPage = () => {
   const [caloriesData, setCaloriesData] = useState([]);
   const [AVGCaloriesData, setAVGCaloriesData] = useState([]);
   const [weightData, setWeightData] = useState([]);
-
-  
+  const [{ primaryCursorValue, secondaryCursorValue }, setState] =
+    React.useState({
+      primaryCursorValue: null,
+      secondaryCursorValue: null,
+    });
   let planUID = "C3cub3Jc5iPzRk9OtMfU";
 
   useEffect(() => {
@@ -97,6 +100,27 @@ const PlanDetailPage = () => {
     ],
     [weightData]
   );
+
+  const primaryCursor = React.useMemo(
+    () => ({
+      value: primaryCursorValue,
+    }),
+    [primaryCursorValue]
+  );
+  const secondaryCursor = React.useMemo(
+    () => ({
+      value: secondaryCursorValue,
+    }),
+    [secondaryCursorValue]
+  );
+
+  const onFocus = React.useCallback((datum) => {
+    setState({
+      primaryCursorValue: datum ? datum.primary : null,
+      secondaryCursorValue: datum ? datum.secondary : null,
+    });
+  }, []);
+
   return (
     <div className="planDetailPage">
       {/* <ResizableBox
@@ -108,16 +132,16 @@ const PlanDetailPage = () => {
       /> */}
       <PlanChart
         data={mergeData}
-        chartType
-       
+        primaryCursor={primaryCursor}
+        secondaryCursor={secondaryCursor}
+        onFocus={onFocus}
       />
       <PlanChart
         data={weightChartData}
-        chartType
-       
+        primaryCursor={primaryCursor}
+        secondaryCursor={secondaryCursor}
+        onFocus={onFocus}
       />
-
-      
     </div>
   );
 };

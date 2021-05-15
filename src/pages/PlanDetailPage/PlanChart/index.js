@@ -2,12 +2,13 @@ import { Button } from "@material-ui/core";
 import React, { useState } from "react";
 import { Chart } from "react-charts";
 import Select from "../../../components/MealPlan/Select";
-const PlanChart = ({ data }) => {
+const PlanChart = ({ data, primaryCursor, secondaryCursor, onFocus }) => {
   //console.log(new Date(data[1]?.date?.seconds * 1000).getDate());
   //console.log(moment(data[1]?.date?.seconds * 1000).format("MMM / YY"));
   const [xAxesPosition, setXAxesPosition] = useState("bottom");
   const [yAxesPosition, setYAxesPosition] = useState("left");
   const [chartType, setChartType] = useState("line");
+  
   const series = React.useMemo(
     () => ({
       //type: "area",
@@ -42,6 +43,7 @@ const PlanChart = ({ data }) => {
     setXAxesPosition("bottom");
     setChartType("line");
   };
+
   return (
     <div className="planChart">
       {data ? (
@@ -53,8 +55,9 @@ const PlanChart = ({ data }) => {
             tooltip
             getSeriesStyle={getSeriesStyle}
             getDatumStyle={getDatumStyle}
-            primaryCursor
-            secondaryCursor
+            primaryCursor={primaryCursor}
+            secondaryCursor={secondaryCursor}
+            onFocus={onFocus}
             // dark
           />
         </div>

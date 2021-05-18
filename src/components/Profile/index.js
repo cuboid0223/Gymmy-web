@@ -48,7 +48,7 @@ const Profile = () => {
             userInfo: doc.data(),
           });
 
-          // storage.setItem("user", JSON.stringify(user));
+          localStorage.setItem("userInfo", JSON.stringify(doc.data()));
         } else {
           // doc.data() will be undefined in this case
           console.log("No such document!");

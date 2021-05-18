@@ -17,17 +17,20 @@ import LoadingPage from "../../pages/LoadingPage";
 import SettingItem from "../../pages/SettingPage/SettingItem";
 
 const CalendarPage = () => {
-  const [
-    { userInfo, totalCalories, sportsTotalCalories, targetCalories },
-    dispatch,
-  ] = useStateValue();
+  const [{ totalCalories, sportsTotalCalories, targetCalories }, dispatch] =
+    useStateValue();
   const [date, onDateChange] = useState(new Date());
+  const dateSeconds = new Date(date).valueOf();
   const [surplusCalories, setSurplusCalories] = useState(0);
   const TDEE = localStorage.getItem("TDEE");
+  const userInfo = localStorage.getItem("userInfo");
 
   const [userLoggedIn] = useAuthState(auth);
 
   const [plans, setPlans] = useState([]);
+
+  const [planUID, setPlanUID] = useState("");
+
   const [plansDateRange, setPlansDateRange] = useState([]);
   const [plansListOpen, setPlansListOpen] = useState(false);
   const [settingListOpen, setSettingListOpen] = useState(false);
@@ -92,19 +95,92 @@ const CalendarPage = () => {
 
   useEffect(() => {
     let calories = 0;
-    if (planTDEE) {
+    if (planTDEE.length !== 0) {
       calories = planTDEE - totalCalories + sportsTotalCalories;
     } else {
-      calories = TDEE - totalCalories + sportsTotalCalories;
+      calories = parseInt(TDEE) - totalCalories + sportsTotalCalories;
     }
+
     setSurplusCalories(calories);
   }, [totalCalories, sportsTotalCalories, targetCalories, planTDEE]);
+
+  useEffect(() => {
+    if (!plans || !date) return;
+
+    // 1. find the date is plan date, and in which plan? need the plan uid
+    // 當按下日期，取的此日期是否為 plan的日期，
+    // 是，傳送給我 該 plan uid
+    // 不是， return
+
+    const PLAN = plans.map((plan) => {
+      if (
+        plan.start_date.seconds * 1000 <= dateSeconds &&
+        plan.end_date.seconds * 1000 >= dateSeconds
+      ) {
+        // setPlanUID(plan.id);
+        return plan.id;
+      } else {
+        setPlanUID("");
+      }
+    });
+    if (PLAN) {
+      const PLANRemoveUndefined = PLAN.filter(function (el) {
+        return el != null;
+      });
+      setPlanUID(PLANRemoveUndefined.toString());
+    }
+  }, [plans, date]);
+
+  useEffect(() => {
+    if (!planUID || !date) return;
+    const weight = parseInt(JSON.parse(userInfo).weight);
+    const planRef = plansRef.doc(planUID).collection("dates");
+    // when every time, the surplusCalories change,
+    // we run below code
+    // 2. send or merge { date: date, today_calories: surplusCalories, current_weight: weight } to firestore
+    const firstTimeDateData = {
+      date: date,
+      today_calories: totalCalories,
+      current_weight: weight,
+      avg_calories: planTDEE ? parseInt(planTDEE.toString()) : TDEE,
+    };
+
+    //如果之後有更新只可更新卡路里，不能更新體重
+    const dateData = {
+      date: date,
+      today_calories: totalCalories,
+      avg_calories: planTDEE ? parseInt(planTDEE.toString()) : TDEE,
+    };
+
+    planRef
+      // .orderBy("date")
+      .where("date", "==", date)
+      .get()
+      .then((querySnapshot) => {
+        console.log(querySnapshot.empty);
+        if (querySnapshot.empty) {
+          //console.log("no record add item");
+          plansRef.doc(planUID).collection("dates").add(firstTimeDateData);
+        }
+        querySnapshot.forEach((doc) => {
+          if (doc.exists) {
+            //console.log(doc.id, " => ", doc.data());
+            planRef.doc(doc.id).set(firstTimeDateData, { merge: true });
+          }
+        });
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
+
+    //plansRef.doc(planUID).collection("dates").add(dateData, { merge: true });
+  }, [date, planUID]);
 
   const getThisMonthPlans = () => {
     // find the plan in this month
     const monthFirstDay = new Date(date.getFullYear(), date.getMonth(), 1);
     const monthLastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    // console.log(monthFirstDay);
+    //console.log(monthFirstDay);
     // console.log(monthLastDay);
 
     // 取得所有計畫dateRange有到達當月任一日期
@@ -134,31 +210,6 @@ const CalendarPage = () => {
     );
   }, [plans]);
 
-  // const [labelCount, setLabelCount] = useState(0);
-  // const onClickLabel = (type) => {
-  //   console.log(type);
-  //   if (type === "next") {
-  //     setLabelCount(labelCount + 1);
-  //   } else {
-  //     setLabelCount(labelCount - 1);
-  //   }
-  // };
-  // useEffect(() => {
-  //   // 為了動態顯示計畫
-  //   // 當按下 prevLabel 顯示 上個月的計畫
-  //   // if (labelCount === 0) {
-  //   //   onDateChange(date);
-  //   // }
-  //   const monthFirstDay = new Date(
-  //     date.getFullYear(),
-  //     date.getMonth() + labelCount,
-  //     1
-  //   );
-  //   console.log(monthFirstDay);
-
-  //   onDateChange(monthFirstDay);
-  // }, [labelCount]);
-  // console.log(labelCount);
   return (
     <div className="calendarPage">
       {plansDateRange && plans ? (

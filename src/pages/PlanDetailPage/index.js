@@ -15,7 +15,7 @@ const PlanDetailPage = () => {
   //the two axes can't qual to each other
 
   const [userLoggedIn] = useAuthState(auth);
-  //const [{ planUID }, dispatch] = useStateValue();
+  const [{ planUID }, dispatch] = useStateValue();
   const [data, setData] = useState([]);
   const [caloriesData, setCaloriesData] = useState([]);
   const [AVGCaloriesData, setAVGCaloriesData] = useState([]);
@@ -25,7 +25,7 @@ const PlanDetailPage = () => {
       primaryCursorValue: null,
       secondaryCursorValue: null,
     });
-  let planUID = "C3cub3Jc5iPzRk9OtMfU";
+  //let planUID = "C3cub3Jc5iPzRk9OtMfU";
 
   useEffect(() => {
     if (!planUID) return;

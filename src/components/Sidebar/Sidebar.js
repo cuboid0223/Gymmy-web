@@ -28,24 +28,34 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 const Sidebar = () => {
   const [newSidebarName, setNewSidebarName] = useState("");
-
-  console.log("newSidebarName: ", newSidebarName);
   const [newSidebarNames, setNewSidebarNames] = useState([]);
   const [editFormOpen, setEditFormOpen] = useState(false);
 
-  const [{ user, isSidebarOpen }, dispatch] = useStateValue();
+  const [{ isSidebarOpen }, dispatch] = useStateValue();
   const [userLoggedIn] = useAuthState(auth);
   const history = useHistory();
+  const userVideoCategoriesRef = db
+    .collection("users")
+    .doc(userLoggedIn.uid)
+    .collection("videoCategories");
   // when click submit -> (CheckBoxIcon)
   const addSidebarRow = () => {
-    console.log("submit: ", newSidebarName);
-    const userVideoCategoriesRef = db
-      .collection("users")
-      .doc(userLoggedIn.uid)
-      .collection("videoCategories");
-
     userVideoCategoriesRef.add({ name: newSidebarName });
   };
+
+  const findVideoCategories = () => {
+    userVideoCategoriesRef.onSnapshot((snapshot) =>
+      setNewSidebarNames(
+        snapshot.docs.map((doc) => Object.assign({ id: doc.id }, doc.data()))
+      )
+    );
+  };
+
+  console.log("NewSidebarNames: ", newSidebarNames);
+  // 每當 sidebar 出現我就執行裡面的程式碼
+  useEffect(() => {
+    findVideoCategories();
+  }, []);
 
   // 登出功能 傳給 sidebarRow component
   const logout = () => {
@@ -96,16 +106,17 @@ const Sidebar = () => {
       <hr />
       <h4>Video Categories</h4>
       <NavLink exact to="/search" activeClassName="selected">
-        {user &&
+        {userLoggedIn &&
           newSidebarNames.map((newSidebarName) => (
             <SidebarRow
+              key={newSidebarName.id}
               Icon={GradeIcon}
-              title={newSidebarName}
+              title={newSidebarName.name}
               tutorial={true}
             />
           ))}
 
-        <SidebarRow
+        {/* <SidebarRow
           Icon={FitnessCenterIcon}
           title="Weight Training"
           tutorial={true}
@@ -115,7 +126,7 @@ const Sidebar = () => {
           title="Spinning Bike"
           tutorial={true}
         />
-        <SidebarRow Icon={PoolIcon} title="Swimming" tutorial={true} />
+        <SidebarRow Icon={PoolIcon} title="Swimming" tutorial={true} /> */}
       </NavLink>
 
       {/* user can add own sidebar after login*/}

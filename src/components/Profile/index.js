@@ -30,6 +30,7 @@ const Profile = () => {
   const { register, handleSubmit, watch, errors } = useForm();
   const [planModalOpen, setPlanModalOpen] = useState(false);
   const [plans, setPlans] = useState([]);
+  
   const plansRef = db
     .collection("users")
     .doc(userLoggedIn?.uid)

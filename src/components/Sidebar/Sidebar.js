@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import SidebarRow from "./SidebarRow/SidebarRow";
+import SidebarRow from "./SidebarRow";
 import { useStateValue } from "../../StateProvider";
 
 import HomeIcon from "@material-ui/icons/Home";
-import GradeIcon from "@material-ui/icons/Grade";
 import WhatshotIcon from "@material-ui/icons/Whatshot";
 import FitnessCenterIcon from "@material-ui/icons/FitnessCenter";
 import HistoryIcon from "@material-ui/icons/History";
@@ -25,10 +24,11 @@ import { Link, NavLink, useHistory } from "react-router-dom";
 import db, { auth } from "../../firebase";
 import { actionTypes } from "../../reducer";
 import { useAuthState } from "react-firebase-hooks/auth";
+import SidebarRowsList from "./SidebarRowsList";
 
 const Sidebar = () => {
   const [newSidebarName, setNewSidebarName] = useState("");
-  const [newSidebarNames, setNewSidebarNames] = useState([]);
+
   const [editFormOpen, setEditFormOpen] = useState(false);
 
   const [{ isSidebarOpen }, dispatch] = useStateValue();
@@ -42,20 +42,6 @@ const Sidebar = () => {
   const addSidebarRow = () => {
     userVideoCategoriesRef.add({ name: newSidebarName });
   };
-
-  const findVideoCategories = () => {
-    userVideoCategoriesRef.onSnapshot((snapshot) =>
-      setNewSidebarNames(
-        snapshot.docs.map((doc) => Object.assign({ id: doc.id }, doc.data()))
-      )
-    );
-  };
-
-  console.log("NewSidebarNames: ", newSidebarNames);
-  // 每當 sidebar 出現我就執行裡面的程式碼
-  useEffect(() => {
-    findVideoCategories();
-  }, []);
 
   // 登出功能 傳給 sidebarRow component
   const logout = () => {
@@ -81,9 +67,10 @@ const Sidebar = () => {
   };
 
   // close the sidebar edit Form
-  useEffect(() => {
-    setEditFormOpen(false);
-  }, [newSidebarNames]);
+
+  // useEffect(() => {
+  //   setEditFormOpen(false);
+  // }, [newSidebarNames]);
 
   const addNewSidebarName = (event) => {
     setNewSidebarName(event.target.value);
@@ -106,15 +93,9 @@ const Sidebar = () => {
       <hr />
       <h4>Video Categories</h4>
       <NavLink exact to="/search" activeClassName="selected">
-        {userLoggedIn &&
-          newSidebarNames.map((newSidebarName) => (
-            <SidebarRow
-              key={newSidebarName.id}
-              Icon={GradeIcon}
-              title={newSidebarName.name}
-              tutorial={true}
-            />
-          ))}
+        {userLoggedIn && (
+          <SidebarRowsList isDeleteIconShow={false} IsDisabledSearch_f={false}/>
+        )}
 
         {/* <SidebarRow
           Icon={FitnessCenterIcon}

@@ -3,7 +3,6 @@ import React, { useState } from "react";
 const SettingItem = ({ name }) => {
   const localStorageValue = localStorage.getItem(name);
   const [itemBoolean, setItemBoolean] = useState(JSON.parse(localStorageValue));
-  const [check, setCheck] = useState(false);
 
   const setItem = () => {
     if (itemBoolean) {

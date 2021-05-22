@@ -6,6 +6,7 @@
   justify-content: center;
   align-items: center;
   background-color: $primary-color;
+
   &__alertMessage {
     background-color: red;
     color: $primary-color;
@@ -24,7 +25,7 @@
     justify-content: space-around;
     border-radius: 10px;
   }
-  &__formBox{
+  &__formBox {
     width: 100%;
   }
   &__formLabel {

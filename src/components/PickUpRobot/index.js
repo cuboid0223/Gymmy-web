@@ -28,8 +28,7 @@ const PickUpRobot = () => {
   useEffect(() => {
     const options = {
       method: "GET",
-      url:
-        "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/quickAnswer",
+      url: "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/quickAnswer",
       // 取得陣列最後一個元素，及最新的一條訊息
       params: { q: sendText[sendText.length - 1]?.message },
       headers: {
@@ -39,7 +38,7 @@ const PickUpRobot = () => {
       },
     };
     if (sendText == []) {
-      console.log('object')
+      console.log("object");
       return;
     } else {
       console.log(sendText);
@@ -89,7 +88,7 @@ const PickUpRobot = () => {
                 user ? "pickUpRobot__userText" : "pickUpRobot__robotText"
               }
             >
-              <p className={!message ? "message_display_none" : ""}>
+              <p className={!message ? "message_display_none" : ""} >
                 {message}
               </p>
               <p className={!answer ? "message_display_none" : ""}>{answer}</p>

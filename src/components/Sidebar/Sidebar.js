@@ -22,27 +22,29 @@ import DirectionsBikeIcon from "@material-ui/icons/DirectionsBike";
 import PoolIcon from "@material-ui/icons/Pool";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import { Link, NavLink, useHistory } from "react-router-dom";
-import { auth } from "../../firebase";
+import db, { auth } from "../../firebase";
 import { actionTypes } from "../../reducer";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 const Sidebar = () => {
   const [newSidebarName, setNewSidebarName] = useState("");
+
+  console.log("newSidebarName: ", newSidebarName);
   const [newSidebarNames, setNewSidebarNames] = useState([]);
   const [editFormOpen, setEditFormOpen] = useState(false);
+
   const [{ user, isSidebarOpen }, dispatch] = useStateValue();
   const [userLoggedIn] = useAuthState(auth);
   const history = useHistory();
   // when click submit -> (CheckBoxIcon)
-  const addSidebarRow = (e) => {
-    e.preventDefault();
-    // console.log("newSidebarName: ", newSidebarName);
-    // 將新的 newSidebarName 加入陣列，存入session 中 <- 待辦
-    setNewSidebarNames([...newSidebarNames, newSidebarName]);
-    // console.log("newSidebarNames: ", newSidebarNames);
-    // sessionStorage.setItem("newSidebarNames", [newSidebarName]);
+  const addSidebarRow = () => {
+    console.log("submit: ", newSidebarName);
+    const userVideoCategoriesRef = db
+      .collection("users")
+      .doc(userLoggedIn.uid)
+      .collection("videoCategories");
 
-    setNewSidebarName(""); // clear input when submit
+    userVideoCategoriesRef.add({ name: newSidebarName });
   };
 
   // 登出功能 傳給 sidebarRow component
@@ -72,6 +74,10 @@ const Sidebar = () => {
   useEffect(() => {
     setEditFormOpen(false);
   }, [newSidebarNames]);
+
+  const addNewSidebarName = (event) => {
+    setNewSidebarName(event.target.value);
+  };
 
   return (
     <div
@@ -135,7 +141,7 @@ const Sidebar = () => {
             <input
               type="text"
               value={newSidebarName}
-              onChange={(e) => setNewSidebarName(e.target.value)}
+              onChange={addNewSidebarName}
             />
             {newSidebarName && <CheckBoxIcon onClick={addSidebarRow} />}
           </form>

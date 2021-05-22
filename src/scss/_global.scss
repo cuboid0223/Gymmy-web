@@ -3,6 +3,9 @@ $secondary-color: #7bd1aa;
 $third-color: #2a7cb3;
 $alert-color: #db1f2a;
 
+// $font-large: 24px;
+// $font-mid: 18px;
+
 $primary-font: "Lobster", cursive;
 $secondary-font: "Open Sans", sans-serif;
 
@@ -16,6 +19,7 @@ $secondary-font: "Open Sans", sans-serif;
   font-size: 15px;
   font-weight: bold;
 }
+
 .input {
   border: none;
   background-color: $primary-color;

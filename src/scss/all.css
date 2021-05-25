@@ -41,6 +41,12 @@
   margin-top: 70px;
 }
 
+@media (min-width: 1025px) {
+  .app__page {
+    margin-top: 0;
+  }
+}
+
 .app img,
 .app svg {
   display: block;
@@ -1069,13 +1075,31 @@
   background-color: #f5f5f5;
 }
 
-.login__alertMessage {
-  background-color: red;
-  color: #f5f5f5;
+@media (min-width: 1025px) {
+  .login {
+    width: 100%;
+    height: 100vh;
+  }
 }
 
-.login__successMessage {
-  background-color: #7bd1aa;
+@media (min-width: 1025px) {
+  .login__item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+}
+
+.login__logo {
+  display: none;
+}
+
+@media (min-width: 1025px) {
+  .login__logo {
+    width: 300px;
+    position: absolute;
+    top: 0;
+  }
 }
 
 .login__form {
@@ -1096,6 +1120,13 @@
   -ms-flex-pack: distribute;
       justify-content: space-around;
   border-radius: 10px;
+}
+
+@media (min-width: 1025px) {
+  .login__form {
+    width: 300px;
+    margin-top: 180px;
+  }
 }
 
 .login__formBox {
@@ -1139,6 +1170,23 @@
   background-color: #f5f5f5;
 }
 
+@media (min-width: 1025px) {
+  .login__gandf {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    margin-left: 80px;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    margin-top: 150px;
+  }
+}
+
 .login__providerButton {
   width: 70%;
   padding: 10px !important;
@@ -1155,6 +1203,13 @@
   background-color: #4a91ff;
 }
 
+@media (min-width: 1025px) {
+  .login .google-color {
+    width: 200px;
+    height: 60px;
+  }
+}
+
 .login .googleIcon {
   width: 25px;
 }
@@ -1162,6 +1217,13 @@
 .login .facebook-color {
   color: #f5f5f5;
   background-color: #3f59a8;
+}
+
+@media (min-width: 1025px) {
+  .login .facebook-color {
+    width: 200px;
+    height: 60px;
+  }
 }
 
 .signUp {

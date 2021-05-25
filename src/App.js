@@ -60,7 +60,8 @@ function App() {
         <Loading />
       ) : (
         <Router>
-          <Header onFormSubmit={handleSubmit} />
+          {user && <Header onFormSubmit={handleSubmit} />}
+
           <Switch>
             {/* search detail page */}
             <Route path="/searchDetail">
@@ -137,12 +138,14 @@ function App() {
             </Route>
 
             {/* Login Page */}
-            <Route path="/login">
-              <div className="app__page detailPage">
-                <Sidebar />
-                <Login />
-              </div>
-            </Route>
+            {!user && (
+              <Route path="/login">
+                <div className="app__page detailPage">
+                  {/* <Sidebar /> */}
+                  <Login />
+                </div>
+              </Route>
+            )}
 
             <Route path="/noticePage">
               <div className="app__page detailPage">

@@ -139,7 +139,7 @@ function App() {
 
             {/* Login Page */}
             {!user && (
-              <Route path="/login">
+              <Route path="/">
                 <div className="app__page detailPage">
                   {/* <Sidebar /> */}
                   <Login />

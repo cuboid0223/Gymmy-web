@@ -197,7 +197,7 @@ const Login = () => {
       </form>
 
       
-      <div className="login__gandf">
+      <div className="login__Google-and-FB-box">
       {/* google 登入 */}
       <Button
         className="login__providerButton google-color"

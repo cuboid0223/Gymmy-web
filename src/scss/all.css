@@ -131,6 +131,17 @@
   background-color: #fff;
 }
 
+@media (min-width: 1025px) {
+  .header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+  }
+}
+
 .header__left {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -140,11 +151,23 @@
           align-items: center;
 }
 
+@media (min-width: 1025px) {
+  .header .burgerIcon {
+    margin-left: 20px;
+  }
+}
+
 .header__logo {
   height: 60px;
   -o-object-fit: contain;
      object-fit: contain;
   margin-left: 10px;
+}
+
+@media (min-width: 1025px) {
+  .header__logo {
+    height: 100px;
+  }
 }
 
 .header__center {
@@ -163,6 +186,12 @@
     -webkit-box-flex: 1;
         -ms-flex: 1;
             flex: 1;
+  }
+}
+
+@media (min-width: 1025px) {
+  .header__center {
+    margin-right: 20px;
   }
 }
 
@@ -208,6 +237,12 @@
 
 .header__NoticeIcon {
   color: #7bd1aa;
+}
+
+@media (min-width: 1025px) {
+  .header__NoticeIcon {
+    margin-right: 20px;
+  }
 }
 
 .header__NoticeIconCount {
@@ -757,10 +792,18 @@
           align-items: center;
 }
 
-.guessFoodNutrition > h1 {
-  font-family: "Lobster", cursive;
-  font-weight: normal;
-  color: #7bd1aa;
+@media (min-width: 1025px) {
+  .guessFoodNutrition {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    margin: auto;
+    padding-top: 70px;
+  }
 }
 
 .guessFoodNutrition__fileDrop {
@@ -772,6 +815,18 @@
   color: #f5f5f5;
   font-size: 20px;
   font-weight: bold;
+}
+
+.guessFoodNutrition__fileDrop > h1 {
+  font-family: "Lobster", cursive;
+  font-weight: normal;
+  color: #7bd1aa;
+}
+
+@media (min-width: 1025px) {
+  .guessFoodNutrition__fileDrop > h1 {
+    font-size: 30px;
+  }
 }
 
 .guessFoodNutrition .file-drop {
@@ -812,6 +867,12 @@
   text-align: center;
 }
 
+@media (min-width: 1025px) {
+  .guessFoodNutrition .file-drop > .file-drop-target {
+    height: 300px;
+  }
+}
+
 .guessFoodNutrition .file-drop > .file-drop-target.file-drop-dragging-over-frame {
   /* overlay a black mask when dragging over the frame */
   border: none;
@@ -839,6 +900,13 @@
   -o-object-fit: contain;
      object-fit: contain;
   width: 100%;
+}
+
+@media (min-width: 1025px) {
+  .guessFoodNutrition__image {
+    width: 300px;
+    margin-left: 50px;
+  }
 }
 
 .pickUpRobot {
@@ -1171,7 +1239,7 @@
 }
 
 @media (min-width: 1025px) {
-  .login__gandf {
+  .login__Google-and-FB-box {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;

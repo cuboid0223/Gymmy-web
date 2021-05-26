@@ -117,9 +117,10 @@ const GuessFoodNutrition = () => {
       });
   }, [base64]);
   return (
+    //from here
     <div className="guessFoodNutrition" id="guessFoodNutrition">
-      <h1>Guess Your Meal Nutrition</h1>
       <div className="guessFoodNutrition__fileDrop">
+      <h1>Guess Your Meal Nutrition</h1>
         <FileDrop
           onFrameDragEnter={(event) => console.log("onFrameDragEnter", event)}
           onFrameDragLeave={(event) => console.log("onFrameDragLeave", event)}
@@ -142,6 +143,9 @@ const GuessFoodNutrition = () => {
         <img className="guessFoodNutrition__image" src={imageUrl} alt="..." />
       )}
 
+      {/* <img className="guessFoodNutrition__image" src={'https://uploads-ssl.webflow.com/5d3a7aed4e11720246d46f49/5fcdfb3f1a52ef720e988b28_meta%20image%20(48).jpg'} /> */}
+
+
       {meal && (
         <div>
           <Modal
@@ -159,6 +163,7 @@ const GuessFoodNutrition = () => {
         </div>
       )}
     </div>
+    //to here
   );
 };
 

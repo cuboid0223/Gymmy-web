@@ -6,25 +6,9 @@
   justify-content: center;
   align-items: center;
   background-color: $primary-color;
-  @include desktop{
-    width: 100%;
-    height: 100vh;
-  }
 
-  &__item{
-    @include desktop{
-      display:flex;
-    }
-  }
-
-  &__logo{
+  &__logo {
     display: none;
-
-    @include desktop{
-      width: 300px;
-      position: absolute;
-      top: 0;
-    }
   }
 
   &__form {
@@ -37,11 +21,6 @@
     align-items: center;
     justify-content: space-around;
     border-radius: 10px;
-    @include desktop{
-      width:  300px;
-      margin-top: 180px;
-
-    }
   }
   &__formBox {
     width: 100%;
@@ -67,7 +46,6 @@
     &:hover {
       background-color: #28b351;
     }
-    
   }
 
   &__registerButton {
@@ -78,19 +56,6 @@
   &__forgetPasswordButton:hover {
     background-color: $primary-color;
   }
-
-
-
-  &__Google-and-FB-box{
-    @include desktop{
-      display: flex;
-      flex-direction: column;
-      margin-left: 80px;
-      justify-content: center;
-      margin-top: 150px;
-    }
-  }
-  
 
   &__providerButton {
     width: 70%;
@@ -103,10 +68,6 @@
   .google-color {
     color: $primary-color;
     background-color: #4a91ff;
-    @include desktop{
-      width: 200px;
-      height: 60px;
-    }
   }
 
   .googleIcon {
@@ -116,11 +77,5 @@
   .facebook-color {
     color: $primary-color;
     background-color: #3f59a8;
-    @include desktop{
-      width: 200px;
-      height: 60px;
-    }
   }
 }
-
-

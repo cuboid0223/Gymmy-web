@@ -4,11 +4,20 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  
   @include desktop{
     display: flex;
     flex-direction: row;
     margin: auto;
     padding-top: 70px;
+  }
+  @include pad{
+    margin: auto;
+  }
+
+  @include ipadPro{
+    margin: auto;
   }
   
 

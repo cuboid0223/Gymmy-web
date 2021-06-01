@@ -84,6 +84,7 @@ const CalendarPage = () => {
         setPlanTDEE(0);
       }
     });
+    console.log(tdee);
     if (tdee) {
       const tdeeRemoveUndefined = tdee.filter(function (el) {
         return el != null;
@@ -94,17 +95,14 @@ const CalendarPage = () => {
   };
 
   useEffect(() => {
-    let calories = 0;
-    if (planTDEE.length !== 0) {
-      calories = planTDEE - totalCalories + sportsTotalCalories;
-    } else {
-      calories = parseInt(TDEE) - totalCalories + sportsTotalCalories;
-    }
-
-    setSurplusCalories(calories);
+    getSurplusCalories_f();
   }, [totalCalories, sportsTotalCalories, targetCalories, planTDEE]);
 
   useEffect(() => {
+    getPlanUID_f();
+  }, [plans, date]);
+
+  const getPlanUID_f = () => {
     if (!plans || !date) return;
 
     // 1. find the date is plan date, and in which plan? need the plan uid
@@ -129,28 +127,38 @@ const CalendarPage = () => {
       });
       setPlanUID(PLANRemoveUndefined.toString());
     }
-  }, [plans, date]);
+  };
+
+  const getSurplusCalories_f = () => {
+    let calories = 0;
+    if (planTDEE.length !== 0) {
+      calories = planTDEE - totalCalories + sportsTotalCalories;
+    } else {
+      calories = parseInt(TDEE) - totalCalories + sportsTotalCalories;
+    }
+    console.log("calories: ", calories);
+    setSurplusCalories(calories);
+  };
 
   useEffect(() => {
     if (!planUID || !date) return;
+    console.log(planUID);
+    console.log("planTDEE: ", planTDEE);
     const weight = parseInt(JSON.parse(userInfo).weight);
     const planRef = plansRef.doc(planUID).collection("dates");
     // when every time, the surplusCalories change,
     // we run below code
     // 2. send or merge { date: date, today_calories: surplusCalories, current_weight: weight } to firestore
-    const firstTimeDateData = {
-      date: date,
-      today_calories: totalCalories,
-      current_weight: weight,
-      avg_calories: planTDEE ? parseInt(planTDEE.toString()) : TDEE,
-    };
 
     //如果之後有更新只可更新卡路里，不能更新體重
     const dateData = {
       date: date,
       today_calories: totalCalories,
-      avg_calories: planTDEE ? parseInt(planTDEE.toString()) : TDEE,
+      current_weight: weight,
+      avg_calories:
+        planTDEE.length !== 0 ? parseInt(planTDEE.toString()) : parseInt(TDEE),
     };
+    console.table(dateData);
 
     planRef
       // .orderBy("date")
@@ -160,7 +168,7 @@ const CalendarPage = () => {
         console.log(querySnapshot.empty);
         if (querySnapshot.empty) {
           //console.log("no record add item");
-          plansRef.doc(planUID).collection("dates").add(firstTimeDateData);
+          plansRef.doc(planUID).collection("dates").add(dateData);
         }
         querySnapshot.forEach((doc) => {
           if (doc.exists) {
@@ -174,7 +182,7 @@ const CalendarPage = () => {
       });
 
     //plansRef.doc(planUID).collection("dates").add(dateData, { merge: true });
-  }, [date, planUID]);
+  }, [date, planUID, surplusCalories]);
 
   const getThisMonthPlans = () => {
     // find the plan in this month

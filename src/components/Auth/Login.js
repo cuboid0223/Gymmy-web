@@ -152,6 +152,8 @@ const Login = () => {
 
   return (
     <div className="login">
+      <img className="login__logo" src={logo} alt="Logo" />
+      <div className="login__item">
       <form className="login__form">
         <div className="login__formBox">
           <label className="login__formLabel">E-mail:</label>
@@ -194,6 +196,8 @@ const Login = () => {
         </Button>
       </form>
 
+      
+      <div className="login__Google-and-FB-box">
       {/* google 登入 */}
       <Button
         className="login__providerButton google-color"
@@ -215,6 +219,8 @@ const Login = () => {
         <FacebookIcon />
         Sign up with Facebook
       </Button>
+      </div>
+      </div>
     </div>
   );
 };

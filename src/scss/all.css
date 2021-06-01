@@ -41,6 +41,12 @@
   margin-top: 70px;
 }
 
+@media (min-width: 1025px) {
+  .app__page {
+    margin-top: 0;
+  }
+}
+
 .app img,
 .app svg {
   display: block;
@@ -125,6 +131,17 @@
   background-color: #fff;
 }
 
+@media (min-width: 1025px) {
+  .header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+  }
+}
+
 .header__left {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -132,6 +149,12 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+}
+
+@media (min-width: 1025px) {
+  .header .burgerIcon {
+    margin-left: 20px;
+  }
 }
 
 .header__logo {
@@ -157,6 +180,12 @@
     -webkit-box-flex: 1;
         -ms-flex: 1;
             flex: 1;
+  }
+}
+
+@media (min-width: 1025px) {
+  .header__center {
+    margin-right: 20px;
   }
 }
 
@@ -204,6 +233,12 @@
   color: #7bd1aa;
 }
 
+@media (min-width: 1025px) {
+  .header__NoticeIcon {
+    margin-right: 20px;
+  }
+}
+
 .header__NoticeIconCount {
   position: absolute;
   background-color: #db1f2a;
@@ -232,7 +267,7 @@
   padding-bottom: 60px;
 }
 
-@media (max-width: 767px) and (min-width: 569px) {
+@media (max-width: 768px) and (min-width: 569px) {
   .sidebar {
     position: fixed;
     width: 100%;
@@ -404,7 +439,7 @@
   width: 270px;
 }
 
-@media (max-width: 767px) and (min-width: 569px) {
+@media (max-width: 768px) and (min-width: 569px) {
   .video__thumbnail {
     height: 80%;
     width: 100%;
@@ -450,7 +485,7 @@
   padding: 20px 20px;
 }
 
-@media (max-width: 767px) and (min-width: 569px) {
+@media (max-width: 768px) and (min-width: 569px) {
   .search-page {
     -webkit-box-flex: 1;
         -ms-flex: 1;
@@ -530,7 +565,7 @@
           flex: .7;
 }
 
-@media (max-width: 767px) and (min-width: 569px) {
+@media (max-width: 768px) and (min-width: 569px) {
   .videoDetail {
     -webkit-box-flex: 1;
         -ms-flex: 1;
@@ -641,6 +676,18 @@
   }
 }
 
+@media (max-width: 768px) and (min-width: 569px) {
+  .mealPlan {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .mealPlan {
+    width: 100%;
+  }
+}
+
 .mealPlan__logo {
   -o-object-fit: contain;
      object-fit: contain;
@@ -653,7 +700,8 @@
 
 @media (min-width: 1025px) {
   .mealPlan__logo {
-    display: none !important;
+    width: 20%;
+    left: 38%;
   }
 }
 
@@ -703,6 +751,12 @@
           justify-content: space-between;
 }
 
+@media (min-width: 1025px) {
+  .mealPlan__nutritionBox {
+    margin-top: 1rem;
+  }
+}
+
 .mealPlan > form {
   width: 100%;
   padding: 20px;
@@ -724,7 +778,34 @@
 
 @media (min-width: 1025px) {
   .mealPlan > form {
-    width: 80%;
+    width: 50%;
+    height: 100px;
+    bottom: 15%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    left: 25%;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  .mealPlan > form label {
+    font-size: 18px;
+    margin: 20px;
+  }
+  .mealPlan > form > input {
+    padding: 5px;
+    height: 30px;
+    width: 100px;
+    margin-left: 20px;
+  }
+  .mealPlan > form > select {
+    height: 50px;
+    width: 100px;
   }
 }
 
@@ -751,10 +832,30 @@
           align-items: center;
 }
 
-.guessFoodNutrition > h1 {
-  font-family: "Lobster", cursive;
-  font-weight: normal;
-  color: #7bd1aa;
+@media (min-width: 1025px) {
+  .guessFoodNutrition {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    margin: auto;
+    padding-top: 70px;
+  }
+}
+
+@media (max-width: 768px) and (min-width: 569px) {
+  .guessFoodNutrition {
+    margin: auto;
+  }
+}
+
+@media (max-width: 1024px) {
+  .guessFoodNutrition {
+    margin: auto;
+  }
 }
 
 .guessFoodNutrition__fileDrop {
@@ -766,6 +867,18 @@
   color: #f5f5f5;
   font-size: 20px;
   font-weight: bold;
+}
+
+.guessFoodNutrition__fileDrop > h1 {
+  font-family: "Lobster", cursive;
+  font-weight: normal;
+  color: #7bd1aa;
+}
+
+@media (min-width: 1025px) {
+  .guessFoodNutrition__fileDrop > h1 {
+    font-size: 30px;
+  }
 }
 
 .guessFoodNutrition .file-drop {
@@ -806,6 +919,12 @@
   text-align: center;
 }
 
+@media (min-width: 1025px) {
+  .guessFoodNutrition .file-drop > .file-drop-target {
+    height: 300px;
+  }
+}
+
 .guessFoodNutrition .file-drop > .file-drop-target.file-drop-dragging-over-frame {
   /* overlay a black mask when dragging over the frame */
   border: none;
@@ -835,6 +954,13 @@
   width: 100%;
 }
 
+@media (min-width: 1025px) {
+  .guessFoodNutrition__image {
+    width: 300px;
+    margin-left: 50px;
+  }
+}
+
 .pickUpRobot {
   height: 100vh;
   display: -webkit-box;
@@ -846,8 +972,32 @@
           flex-direction: column;
 }
 
+@media (min-width: 1025px) {
+  .pickUpRobot {
+    margin-top: 10%;
+    width: 60%;
+    height: 100vh;
+    margin: auto;
+  }
+}
+
+@media (max-width: 768px) and (min-width: 569px) {
+  .pickUpRobot {
+    width: 100%;
+    margin-top: -10%;
+    height: 100vh;
+  }
+}
+
+@media (max-width: 1024px) {
+  .pickUpRobot {
+    width: 100%;
+    margin-top: -8%;
+  }
+}
+
 .pickUpRobot__messageContainer {
-  margin-top: 60px;
+  margin-top: 100px;
   background-color: #f5f5f5;
   padding: 5px;
   -webkit-box-flex: 1;
@@ -1069,13 +1219,8 @@
   background-color: #f5f5f5;
 }
 
-.login__alertMessage {
-  background-color: red;
-  color: #f5f5f5;
-}
-
-.login__successMessage {
-  background-color: #7bd1aa;
+.login__logo {
+  display: none;
 }
 
 .login__form {
@@ -1745,7 +1890,7 @@
   }
 }
 
-@media (max-width: 767px) and (min-width: 569px) {
+@media (max-width: 768px) and (min-width: 569px) {
   .planDetailPage {
     padding-left: 20px;
     padding-right: 20px;

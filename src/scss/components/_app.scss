@@ -5,6 +5,9 @@
         display: flex;
         overflow: hidden;
         margin-top: 70px;
+    @include desktop{
+        margin-top: 0;
+    }
     }
 
     img,

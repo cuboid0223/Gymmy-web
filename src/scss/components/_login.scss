@@ -7,13 +7,10 @@
   align-items: center;
   background-color: $primary-color;
 
-  &__alertMessage {
-    background-color: red;
-    color: $primary-color;
+  &__logo {
+    display: none;
   }
-  &__successMessage {
-    background-color: $secondary-color;
-  }
+
   &__form {
     height: 300px;
     width: 100%;
@@ -72,9 +69,11 @@
     color: $primary-color;
     background-color: #4a91ff;
   }
+
   .googleIcon {
     width: 25px;
   }
+
   .facebook-color {
     color: $primary-color;
     background-color: #3f59a8;

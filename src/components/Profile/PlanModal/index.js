@@ -15,7 +15,7 @@ const PlanModal = ({
 }) => {
   const { register, handleSubmit, watch, errors, getValues } = useForm();
   const [planName, setPlanName] = useState("");
-  const [planTarget, setPlanTarget] = useState("維持體重");
+  const [planTarget, setPlanTarget] = useState("減重");
   const [newTDEE, setNewTDEE] = useState(0);
   const [planDay, setPlanDay] = useState(1);
   const [dayAverageSurplusCalories, setDayAverageSurplusCalories] = useState(0);
@@ -117,9 +117,9 @@ const PlanModal = ({
       plan_target: planTarget,
       target_weight: targetWeight,
       current_weight: userCurrentWeight,
-      plan_TDEE: newTDEE
+      plan_TDEE: newTDEE,
     };
-
+    console.log(data);
     planRef.add(data, { merge: true });
   };
 
@@ -145,7 +145,7 @@ const PlanModal = ({
         <Select
           name="plan_target"
           //defaultValue={userInfo?.activity_level}
-          options={["維持體重", "減重", "增重"]}
+          options={["減重", "增重"]}
           defaultValue={planTarget}
           register={register({ required: true })}
           onChange_f={getPlanTarget_f}

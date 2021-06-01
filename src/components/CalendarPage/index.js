@@ -165,7 +165,7 @@ const CalendarPage = () => {
         querySnapshot.forEach((doc) => {
           if (doc.exists) {
             //console.log(doc.id, " => ", doc.data());
-            planRef.doc(doc.id).set(firstTimeDateData, { merge: true });
+            planRef.doc(doc.id).set(dateData, { merge: true });
           }
         });
       })

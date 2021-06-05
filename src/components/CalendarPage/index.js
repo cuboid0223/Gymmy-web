@@ -142,15 +142,14 @@ const CalendarPage = () => {
 
   useEffect(() => {
     if (!planUID || !date) return;
-    console.log(planUID);
-    console.log("planTDEE: ", planTDEE);
-    const weight = parseInt(JSON.parse(userInfo).weight);
-    const planRef = plansRef.doc(planUID).collection("dates");
     // when every time, the surplusCalories change,
     // we run below code
-    // 2. send or merge { date: date, today_calories: surplusCalories, current_weight: weight } to firestore
 
-    //如果之後有更新只可更新卡路里，不能更新體重
+    //console.log(planUID);
+    //console.log("planTDEE: ", planTDEE);
+    const weight = parseInt(JSON.parse(userInfo).weight);
+    const planRef = plansRef.doc(planUID).collection("dates");
+
     const dateData = {
       date: date,
       today_calories: totalCalories,
@@ -158,21 +157,21 @@ const CalendarPage = () => {
       avg_calories:
         planTDEE.length !== 0 ? parseInt(planTDEE.toString()) : parseInt(TDEE),
     };
-    console.table(dateData);
+    //console.table(dateData);
 
     planRef
       // .orderBy("date")
       .where("date", "==", date)
       .get()
       .then((querySnapshot) => {
-        console.log(querySnapshot.empty);
+        //console.log(querySnapshot.empty);
         if (querySnapshot.empty) {
-          //console.log("no record add item");
+          //如果該日期未曾建檔，則新增
           plansRef.doc(planUID).collection("dates").add(dateData);
         }
         querySnapshot.forEach((doc) => {
           if (doc.exists) {
-            //console.log(doc.id, " => ", doc.data());
+            //如果該日期曾建檔，則合併
             planRef.doc(doc.id).set(dateData, { merge: true });
           }
         });
@@ -180,8 +179,6 @@ const CalendarPage = () => {
       .catch((error) => {
         console.log("Error getting documents: ", error);
       });
-
-    //plansRef.doc(planUID).collection("dates").add(dateData, { merge: true });
   }, [date, planUID, surplusCalories]);
 
   const getThisMonthPlans = () => {

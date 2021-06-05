@@ -135,20 +135,6 @@ const SignUp = () => {
           />
           {/* email error message */}
           <AlertMessage message={errors?.emailInput?.message} />
-          {/* <ErrorMessage
-            errors={errors}
-            name="emailInput"
-            render={({ messages }) => {
-              console.log("messages", messages);
-              return messages
-                ? _.entries(messages).map(([type, message]) => (
-                    <p className="alertMessage" key={type}>
-                      {message}
-                    </p>
-                  ))
-                : null;
-            }}
-          /> */}
         </div>
 
         {/* password input */}
@@ -209,22 +195,8 @@ const SignUp = () => {
           />
 
           {/* confirm password error message */}
-          <AlertMessage message={errors?.confirmPasswordInput?.message} />
+          {/* <AlertMessage message={errors?.confirmPasswordInput?.message} /> */}
           <AlertMessage message={alertMessage} />
-          {/* <ErrorMessage
-            errors={errors}
-            name="confirmPasswordInput"
-            render={({ messages }) => {
-              console.log("messages", messages);
-              return messages
-                ? _.entries(messages).map(([type, message]) => (
-                    <p className="alertMessage" key={type}>
-                      {message}
-                    </p>
-                  ))
-                : null;
-            }}
-          /> */}
         </div>
 
         {/* submit button */}

@@ -3,16 +3,13 @@ import { useStateValue } from "../../StateProvider";
 import { actionTypes } from "../../reducer";
 import { Avatar, Button, IconButton } from "@material-ui/core";
 import Modal from "react-modal";
-
+import SettingsIcon from "@material-ui/icons/Settings";
 import { useHistory } from "react-router-dom";
-import PleaseLoginPage from "../Auth/PleaseLoginPage";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import AlertMessage from "../AlertMessage";
 import db, { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { merge } from "lodash";
-import Loading from "react-loading";
 import Select from "../MealPlan/Select";
 import PlanModal from "./PlanModal";
 import ListOfPlans from "./ListOfPlans";
@@ -228,6 +225,12 @@ const Profile = () => {
   };
   return (
     <div className="profile">
+      <IconButton
+        className="profile__userInfo__settingButton"
+        onClick={isModalOpen}
+      >
+        <SettingsIcon />
+      </IconButton>
       <div>
         <div className="profile__infoContainer personalBasicInfoContainer">
           {userLoggedIn.photoURL ? (
@@ -235,22 +238,22 @@ const Profile = () => {
           ) : (
             <Avatar className="profile__avatar">{userInfo?.name[0]}</Avatar>
           )}
-
-          <div className="profile__userInfo">
-            <p>Name: {userInfo?.name}</p>
-            <p>Account: {userLoggedIn?.email}</p>
-            <p>Gender: {userInfo?.gender}</p>
-            {/* 982857600 */}
-            {/* <p>{secondsFormats(user?.birth?.seconds)}</p> */}
-            <p>Age: {userInfo?.age}</p>
-            <p>
-              Height: {userInfo?.height} {userInfo?.height_unit}
-            </p>
-            <p>
-              Weight: {userInfo?.weight} {userInfo?.weight_unit}
-            </p>
-            <button onClick={isModalOpen}>open</button>
-          </div>
+          <h2 className="profile__userName">{userInfo?.name}</h2>
+          <ul className="profile__userInfo">
+            <li>
+              <p>
+                {userInfo?.height} {userInfo?.height_unit}
+              </p>
+            </li>
+            <li>
+              <p>
+                {userInfo?.weight} {userInfo?.weight_unit}
+              </p>
+            </li>
+            <li>
+              <p>{userInfo?.gender}</p>
+            </li>
+          </ul>
           {/* a modal form to edit userInfo */}
           <Modal
             isOpen={modalIsOpen}
@@ -346,18 +349,20 @@ const Profile = () => {
 
         <div className="profile__infoContainer">
           {/* current state  */}
-          <div className="profile__weightContainer">
-            <h3>Current </h3>
-            <p>
-              Weight: {userInfo?.weight} {userInfo?.weight_unit}
-            </p>
-            {/* 取到第二位 */}
-            <p>BMI:{BMIData?.bmi}</p>
-            <p>Health: {BMIData?.health}</p>
-            <p>Activity: {userInfo?.activity_level}</p>
-            <p>BMR: {user_BMR} cal</p>
-            <p>TDEE (Total Daily Energy Expenditure): {user_TDEE} cal</p>
-          </div>
+          <ul className="profile__userInfo">
+            <li>
+              <span>BMI</span>
+              <p>{BMIData?.bmi}</p>
+            </li>
+            <li>
+              <span>activity</span>
+              <p>{userInfo?.activity_level}</p>
+            </li>
+            <li>
+              <span>TDEE</span>
+              <p>{user_TDEE} cal</p>
+            </li>
+          </ul>
           {/* ideal state  */}
           {/* <div className="profile__weightContainer">
               <h3>Ideal </h3>

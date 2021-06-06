@@ -46,7 +46,7 @@ const PlanDetailPage = () => {
 
   useEffect(() => {
     if (!data) return;
-    console.log("data: ", data);
+    // console.log("data: ", data);
 
     setCaloriesData(
       data.map((doc) => ({
@@ -130,18 +130,25 @@ const PlanDetailPage = () => {
         minConstraints={[100, 100]}
         maxConstraints={[500, 500]}
       /> */}
-      <PlanChart
-        data={mergeData}
-        primaryCursor={primaryCursor}
-        secondaryCursor={secondaryCursor}
-        onFocus={onFocus}
-      />
-      <PlanChart
-        data={weightChartData}
-        primaryCursor={primaryCursor}
-        secondaryCursor={secondaryCursor}
-        onFocus={onFocus}
-      />
+
+      {data.length ? (
+        <>
+          <PlanChart
+            data={mergeData}
+            primaryCursor={primaryCursor}
+            secondaryCursor={secondaryCursor}
+            onFocus={onFocus}
+          />
+          <PlanChart
+            data={weightChartData}
+            primaryCursor={primaryCursor}
+            secondaryCursor={secondaryCursor}
+            onFocus={onFocus}
+          />
+        </>
+      ) : (
+        <p>沒有資料... 怎麼顯示？</p>
+      )}
     </div>
   );
 };

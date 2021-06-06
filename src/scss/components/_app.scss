@@ -1,48 +1,44 @@
 .app {
-
-
-    &__page {
-        display: flex;
-        overflow: hidden;
-        margin-top: 70px;
-    @include desktop{
-        margin-top: 0;
+  &__page {
+    display: flex;
+    overflow: hidden;
+    // margin-top: 70px;
+    @include desktop {
+    //   margin-top: 60px;
     }
+  }
+
+  img,
+  svg {
+    display: block;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .link-react-router-dom {
+    text-decoration: none;
+    display: block;
+
+    @include desktop {
+      // width: 25%;
     }
+  }
 
-    img,
-    svg {
-        display: block;
+  .detailPage {
+    @include iphone {
+      display: unset;
     }
+  }
 
-    a {
-        text-decoration: none;
-        color: inherit;
-    }
+  .MuiButton-root {
+    padding: 0;
+    min-width: 0px;
+  }
 
-    .link-react-router-dom {
-        text-decoration: none;
-        display: block;
-
-        @include desktop {
-            // width: 25%;
-        }
-
-    }
-
-    .detailPage {
-        @include iphone {
-            display: unset;
-        }
-
-    }
-
-    .MuiButton-root {
-        padding: 0;
-        min-width: 0px;
-    }
-
-    .MuiButton-text {
-        padding: 0;
-    }
+  .MuiButton-text {
+    padding: 0;
+  }
 }

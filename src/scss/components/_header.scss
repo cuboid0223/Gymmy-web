@@ -4,12 +4,12 @@
   justify-content: space-between;
   width: 100%;
   padding: 5px 10px 5px 10px;
-  position: fixed;
+  // position: fixed;
   top: 0;
   z-index: 100;
   background-color: #fff;
 
-  @include desktop{
+  @include desktop {
     display: flex;
     justify-content: space-between;
   }
@@ -19,18 +19,20 @@
     align-items: center;
   }
 
-  .burgerIcon{
-    @include desktop{
+  .burgerIcon {
+    width: 40px;
+    @include desktop {
       margin-left: 20px;
     }
   }
 
   &__logo {
-    height: 60px;
+    width: 50px;
+    height: 50px;
     object-fit: contain;
-    margin-left: 10px;
+    margin-left: 20px;
     // border: 1px solid black;
-    @include desktop{
+    @include desktop {
       // height: 80px;
     }
   }
@@ -46,12 +48,10 @@
       flex: 1;
     }
 
-    @include desktop{
+    @include desktop {
       // margin-left: 20px;
       margin-right: 20px;
     }
-
-    
 
     & > input {
       flex: 1;
@@ -91,7 +91,7 @@
   }
   &__NoticeIcon {
     color: $secondary-color;
-    @include desktop{
+    @include desktop {
       margin-right: 20px;
     }
   }

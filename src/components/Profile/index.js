@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useStateValue } from "../../StateProvider";
 import { actionTypes } from "../../reducer";
-import { Avatar, Button } from "@material-ui/core";
+import { Avatar, Button, IconButton } from "@material-ui/core";
 import Modal from "react-modal";
 
 import { useHistory } from "react-router-dom";
@@ -16,6 +16,8 @@ import Loading from "react-loading";
 import Select from "../MealPlan/Select";
 import PlanModal from "./PlanModal";
 import ListOfPlans from "./ListOfPlans";
+import AddIcon from "@material-ui/icons/Add";
+
 const Profile = () => {
   const [{ userInfo }, dispatch] = useStateValue();
   const [userLoggedIn] = useAuthState(auth);
@@ -30,7 +32,9 @@ const Profile = () => {
   const { register, handleSubmit, watch, errors } = useForm();
   const [planModalOpen, setPlanModalOpen] = useState(false);
   const [plans, setPlans] = useState([]);
-  
+
+  const [isPlansContainerOpen, setIsPlansContainerOpen] = useState(false);
+
   const plansRef = db
     .collection("users")
     .doc(userLoggedIn?.uid)
@@ -218,6 +222,10 @@ const Profile = () => {
   const planModalOpen_f = () => {
     setPlanModalOpen(planModalOpen ? false : true);
   };
+
+  const plansContainerOpen_f = () => {
+    setIsPlansContainerOpen(isPlansContainerOpen ? false : true);
+  };
   return (
     <div className="profile">
       <div>
@@ -358,7 +366,19 @@ const Profile = () => {
             </div> */}
         </div>
 
-        <div className="profile__plansContainer">
+        <div
+          className={
+            isPlansContainerOpen
+              ? "profile__plansContainer"
+              : "profile__plansContainer-disabled"
+          }
+        >
+          <IconButton
+            className="profile__plansContainerOpenButton"
+            onClick={plansContainerOpen_f}
+          >
+            <AddIcon />
+          </IconButton>
           {/* list of user plans */}
           <ListOfPlans plans={plans} />
           {/* a btn to  pop up a modal  */}

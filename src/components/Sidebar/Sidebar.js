@@ -85,12 +85,12 @@ const Sidebar = () => {
           }`}
         >
           <NavLink exact to="/" activeClassName="selected">
-            <SidebarRow Icon={HomeIcon} title="Homepage" />
-          </NavLink>
-
-          <NavLink exact to="/calendar" activeClassName="selected">
             <SidebarRow Icon={EventIcon} title="Calendar" />
           </NavLink>
+
+          {/* <NavLink exact to="/calendar" activeClassName="selected">
+            <SidebarRow Icon={EventIcon} title="Calendar" />
+          </NavLink> */}
 
           <hr />
           <h4>Video Categories</h4>

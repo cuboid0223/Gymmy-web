@@ -166,8 +166,7 @@ function App() {
             <Route path="/">
               <div className="app__page homePage">
                 <Sidebar />
-                <HomePage />
-                {/* <SearchPage videos={videos} onVideoSelect={onVideoSelect} /> */}
+                <CalendarPage />
               </div>
             </Route>
           </Switch>

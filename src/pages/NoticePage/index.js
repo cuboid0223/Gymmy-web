@@ -18,7 +18,7 @@ const NoticePage = () => {
       {notices?.slice(0, 20).map((notice) => (
         <NoticeCard imageURL={logo} desc={notice?.message} />
       ))}
-      {!notices && <p>there is nothing notice</p>}
+      {!notices.length && <p>連系統都不會給你訊息....口連 ==</p>}
     </div>
   );
 };

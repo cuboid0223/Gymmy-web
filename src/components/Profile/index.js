@@ -30,8 +30,6 @@ const Profile = () => {
   const [planModalOpen, setPlanModalOpen] = useState(false);
   const [plans, setPlans] = useState([]);
 
-  const [isPlansContainerOpen, setIsPlansContainerOpen] = useState(false);
-
   const plansRef = db
     .collection("users")
     .doc(userLoggedIn?.uid)
@@ -220,9 +218,6 @@ const Profile = () => {
     setPlanModalOpen(planModalOpen ? false : true);
   };
 
-  const plansContainerOpen_f = () => {
-    setIsPlansContainerOpen(isPlansContainerOpen ? false : true);
-  };
   return (
     <div className="profile">
       <IconButton
@@ -371,19 +366,7 @@ const Profile = () => {
             </div> */}
         </div>
 
-        <div
-          className={
-            isPlansContainerOpen
-              ? "profile__plansContainer"
-              : "profile__plansContainer-disabled"
-          }
-        >
-          <IconButton
-            className="profile__plansContainerOpenButton"
-            onClick={plansContainerOpen_f}
-          >
-            <AddIcon />
-          </IconButton>
+        <div className="profile__plansContainer">
           {/* list of user plans */}
           <ListOfPlans plans={plans} />
           {/* a btn to  pop up a modal  */}

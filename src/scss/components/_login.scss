@@ -1,9 +1,9 @@
-$pcWidth:1440px;
+$pcWidth:768px;
 $padWidth:768px;
 $phoneWidth:320px;
 
 @mixin pc(){
-  @media all and (max-width: $pcWidth) {
+  @media all and (min-width: $pcWidth) {
     @content ;
   }
 }
@@ -33,17 +33,17 @@ $phoneWidth:320px;
   background-color: $primary-color;
   @include pc{
   width: 100%;
-  max-width:1400px;
+  max-width:2000px;
   margin: auto;
   }
   @include pad{
   width: 100%;
-  max-width:1400px;
+  max-width:2000px;
   margin: auto;
   }
   @include phone{
   width: 100%;
-  max-width:1400px;
+  max-width:2000px;
   margin: auto;
   }
 

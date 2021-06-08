@@ -1284,10 +1284,10 @@
   background-color: #f5f5f5;
 }
 
-@media all and (max-width: 1440px) {
+@media all and (min-width: 768px) {
   .login {
     width: 100%;
-    max-width: 1400px;
+    max-width: 2000px;
     margin: auto;
   }
 }
@@ -1295,7 +1295,7 @@
 @media all and (max-width: 768px) {
   .login {
     width: 100%;
-    max-width: 1400px;
+    max-width: 2000px;
     margin: auto;
   }
 }
@@ -1303,7 +1303,7 @@
 @media all and (max-width: 320px) {
   .login {
     width: 100%;
-    max-width: 1400px;
+    max-width: 2000px;
     margin: auto;
   }
 }

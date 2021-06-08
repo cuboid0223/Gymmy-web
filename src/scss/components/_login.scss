@@ -31,17 +31,20 @@ $phoneWidth:320px;
   justify-content: center;
   align-items: center;
   background-color: $primary-color;
+  @include pc{
   width: 100%;
   max-width:1400px;
   margin: auto;
-  @include pc{
-    background-color: #28b351;
   }
   @include pad{
-    background-color: #28b351;
+  width: 100%;
+  max-width:1400px;
+  margin: auto;
   }
   @include phone{
-    background-color: #28b351;
+  width: 100%;
+  max-width:1400px;
+  margin: auto;
   }
 
   &__logo {

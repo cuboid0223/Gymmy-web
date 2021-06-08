@@ -1282,26 +1282,29 @@
       -ms-flex-align: center;
           align-items: center;
   background-color: #f5f5f5;
-  width: 100%;
-  max-width: 1400px;
-  margin: auto;
 }
 
 @media all and (max-width: 1024px) {
   .login {
-    background-color: #28b351;
+    width: 100%;
+    max-width: 1400px;
+    margin: auto;
   }
 }
 
 @media all and (max-width: 768px) {
   .login {
-    background-color: #28b351;
+    width: 100%;
+    max-width: 1400px;
+    margin: auto;
   }
 }
 
 @media all and (max-width: 320px) {
   .login {
-    background-color: #28b351;
+    width: 100%;
+    max-width: 1400px;
+    margin: auto;
   }
 }
 

@@ -31,6 +31,9 @@ $phoneWidth:320px;
   justify-content: center;
   align-items: center;
   background-color: $primary-color;
+  width: 100%;
+  max-width:1400px;
+  margin: auto;
   @include pc{
     background-color: #28b351;
   }

@@ -1,3 +1,28 @@
+$pcWidth:1024px;
+$padWidth:768px;
+$phoneWidth:320px;
+
+@mixin pc(){
+  @media all and (max-width: $pcWidth) {
+    @content ;
+  }
+}
+
+
+@mixin pad(){
+  @media all and (max-width: $padWidth) {
+    @content ;
+    
+  }
+}
+
+@mixin phone(){
+  @media all and (max-width: $phoneWidth) {
+    @content ;
+    
+  }
+}
+
 .login {
   height: 100vh;
   padding: 20px;
@@ -6,6 +31,15 @@
   justify-content: center;
   align-items: center;
   background-color: $primary-color;
+  @include pc{
+    background-color: #28b351;
+  }
+  @include pad{
+    background-color: #28b351;
+  }
+  @include phone{
+    background-color: #28b351;
+  }
 
   &__logo {
     display: none;
@@ -79,3 +113,6 @@
     background-color: #3f59a8;
   }
 }
+
+
+

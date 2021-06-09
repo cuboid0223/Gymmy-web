@@ -3,50 +3,28 @@
   padding: 10px;
   background-color: $primary-color;
   font-family: $secondary-font;
-<<<<<<< HEAD
+
   @include desktop {
-=======
-  @include desktop{
->>>>>>> 2b150f9f4277dafb67328df1ba37137c61243642
     height: 100vh;
     display: flex;
     padding: 0 4rem;
   }
 
-<<<<<<< HEAD
-  &__desktopLeftContainer {
-    // background-color: blue;
+  &__Rightcalendar {
     @include desktop {
-      margin-top: 3rem;
+      margin-top: 6.7rem;
       padding: 1rem;
     }
     flex: 0.6;
   }
-  &__desktopRightContainer {
-    // background-color: red;
+  &__Leftcalendar {
     @include desktop {
-      margin-top: 3rem;
+      margin-top: 6rem;
       padding: 1rem;
     }
     flex: 0.4;
   }
 
-=======
-  &__Rightcalendar{
-    @include desktop{
-      margin-top: 6.7rem;
-      padding: 1rem;
-    }
-    flex:0.6;
-  }
-  &__Leftcalendar{
-    @include desktop{
-      margin-top: 6rem;
-      padding: 1rem;
-    }
-    flex:0.4;
-  }
->>>>>>> 2b150f9f4277dafb67328df1ba37137c61243642
   &__calendar {
     width: 100% !important;
     border: none !important;

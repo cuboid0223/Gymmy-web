@@ -1320,8 +1320,6 @@
   animation-iteration-count: infinite;
   -webkit-animation-direction: alternate;
   animation-direction: alternate;
-<<<<<<< HEAD
-=======
 }
 
 @media (min-width: 1025px) {
@@ -1350,7 +1348,6 @@
     width: 100%;
     margin: auto;
   }
->>>>>>> 2b150f9f4277dafb67328df1ba37137c61243642
 }
 
 .login__logo {
@@ -1517,46 +1514,28 @@
   }
 }
 
-<<<<<<< HEAD
-.calendarPage__desktopLeftContainer {
-=======
 .calendarPage__Rightcalendar {
->>>>>>> 2b150f9f4277dafb67328df1ba37137c61243642
   -webkit-box-flex: 0.6;
       -ms-flex: 0.6;
           flex: 0.6;
 }
 
 @media (min-width: 1025px) {
-<<<<<<< HEAD
-  .calendarPage__desktopLeftContainer {
-    margin-top: 3rem;
-=======
   .calendarPage__Rightcalendar {
     margin-top: 6.7rem;
->>>>>>> 2b150f9f4277dafb67328df1ba37137c61243642
     padding: 1rem;
   }
 }
 
-<<<<<<< HEAD
-.calendarPage__desktopRightContainer {
-=======
 .calendarPage__Leftcalendar {
->>>>>>> 2b150f9f4277dafb67328df1ba37137c61243642
   -webkit-box-flex: 0.4;
       -ms-flex: 0.4;
           flex: 0.4;
 }
 
 @media (min-width: 1025px) {
-<<<<<<< HEAD
-  .calendarPage__desktopRightContainer {
-    margin-top: 3rem;
-=======
   .calendarPage__Leftcalendar {
     margin-top: 6rem;
->>>>>>> 2b150f9f4277dafb67328df1ba37137c61243642
     padding: 1rem;
   }
 }

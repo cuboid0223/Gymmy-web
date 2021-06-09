@@ -1,8 +1,28 @@
 .calendarPage {
   width: 100%;
-  // padding: 10px;
+  padding: 10px;
   background-color: $primary-color;
   font-family: $secondary-font;
+  @include desktop{
+    height: 100vh;
+    display: flex;
+    padding: 0 4rem;
+  }
+
+  &__Rightcalendar{
+    @include desktop{
+      margin-top: 6.7rem;
+      padding: 1rem;
+    }
+    flex:0.6;
+  }
+  &__Leftcalendar{
+    @include desktop{
+      margin-top: 6rem;
+      padding: 1rem;
+    }
+    flex:0.4;
+  }
   &__calendar {
     width: 100% !important;
     border: none !important;

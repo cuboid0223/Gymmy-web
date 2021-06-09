@@ -3,6 +3,29 @@
   // padding: 10px;
   background-color: $primary-color;
   font-family: $secondary-font;
+  @include desktop {
+    height: 100vh;
+    display: flex;
+    padding: 0 4rem;
+  }
+
+  &__desktopLeftContainer {
+    // background-color: blue;
+    @include desktop {
+      margin-top: 3rem;
+      padding: 1rem;
+    }
+    flex: 0.6;
+  }
+  &__desktopRightContainer {
+    // background-color: red;
+    @include desktop {
+      margin-top: 3rem;
+      padding: 1rem;
+    }
+    flex: 0.4;
+  }
+
   &__calendar {
     width: 100% !important;
     border: none !important;

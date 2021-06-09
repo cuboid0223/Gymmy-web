@@ -1282,6 +1282,16 @@
       -ms-flex-align: center;
           align-items: center;
   background-color: #f5f5f5;
+  background-image: url("https://static.pexels.com/photos/414171/pexels-photo-414171.jpeg");
+  background-size: cover;
+  -webkit-animation: slidein 100s;
+  animation: slidein 100s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  animation-direction: alternate;
 }
 
 .login__logo {
@@ -1395,6 +1405,42 @@
   width: 100%;
   background-color: #f5f5f5;
   font-family: "Open Sans", sans-serif;
+}
+
+@media (min-width: 1025px) {
+  .calendarPage {
+    height: 100vh;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 0 4rem;
+  }
+}
+
+.calendarPage__desktopLeftContainer {
+  -webkit-box-flex: 0.6;
+      -ms-flex: 0.6;
+          flex: 0.6;
+}
+
+@media (min-width: 1025px) {
+  .calendarPage__desktopLeftContainer {
+    margin-top: 3rem;
+    padding: 1rem;
+  }
+}
+
+.calendarPage__desktopRightContainer {
+  -webkit-box-flex: 0.4;
+      -ms-flex: 0.4;
+          flex: 0.4;
+}
+
+@media (min-width: 1025px) {
+  .calendarPage__desktopRightContainer {
+    margin-top: 3rem;
+    padding: 1rem;
+  }
 }
 
 .calendarPage__calendar {

@@ -62,7 +62,7 @@ const Card = ({ type, date, category }) => {
   Modal.setAppElement(document.getElementById("root"));
   const customStyles = {
     content: {
-      width: "90%",
+      width: "35%",
       height: 400,
       top: "50%",
       left: "50%",

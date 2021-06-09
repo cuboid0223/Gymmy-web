@@ -1,5 +1,20 @@
 .settingPage {
-  background-color: #fff;
-  margin-top: 70px;
+  @include desktop {
+    padding: 150px 450px;
+    width:100% !important;
+    margin-top: auto;
+    height: 100vh;
+  }
+  @include pad {
+    padding: 50px 150px;
+    width:100% !important;
+    margin-top: auto;
+    height: 100vh;
+  }
+  padding: 2em;
+  background-color: rgb(255, 255, 255);
+  margin-top: auto;
   height: 100vh;
+  width: 100%;
+  
 }

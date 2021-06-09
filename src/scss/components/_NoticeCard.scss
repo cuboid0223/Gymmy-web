@@ -3,6 +3,7 @@
   width: 50%;
   display: flex;
   align-items: center;
+  top: 50%;
   background-color: #fefefe;
   padding: 10px;
   margin-top: 10px;
@@ -12,5 +13,7 @@
   }
   &__desc {
     margin-left: 10px;
+  
+    
   }
 }

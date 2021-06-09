@@ -219,7 +219,11 @@ const CalendarPage = () => {
     <div className="calendarPage">
       {plansDateRange && plans ? (
         <>
+<<<<<<< HEAD
           <div className="calendarPage__desktopLeftContainer">
+=======
+          <div className="calendarPage__Rightcalendar">
+>>>>>>> 2b150f9f4277dafb67328df1ba37137c61243642
             <Calendar
               className="calendarPage__calendar"
               onChange={onDateChange}
@@ -266,11 +270,18 @@ const CalendarPage = () => {
                 </IconButton>
               </div>
             </div>
+<<<<<<< HEAD
 
             {plansListOpen && (
               <ListOfPlans plans={plans} backgroundColor={"#fefefe"} />
             )}
 
+=======
+            {plansListOpen && (
+              <ListOfPlans plans={plans} backgroundColor={"#fefefe"} />
+            )}
+
+>>>>>>> 2b150f9f4277dafb67328df1ba37137c61243642
             {settingListOpen && (
               <div>
                 <SettingItem name="showDoubleView" />
@@ -302,8 +313,13 @@ const CalendarPage = () => {
               </div>
             </div>
           </div>
+<<<<<<< HEAD
 
           <div className="calendarPage__desktopRightContainer">
+=======
+          
+          <div className="calendarPage__Leftcalendar">
+>>>>>>> 2b150f9f4277dafb67328df1ba37137c61243642
             {/* 早餐 */}
             <Card type="breakfast" date={date} category="food" />
             {/* 中餐 */}

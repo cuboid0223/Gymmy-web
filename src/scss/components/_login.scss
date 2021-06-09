@@ -1,3 +1,4 @@
+  
 .login {
   height: 100vh;
   padding: 20px;
@@ -6,6 +7,7 @@
   justify-content: center;
   align-items: center;
   background-color: $primary-color;
+<<<<<<< HEAD
 
 
   // animation
@@ -20,13 +22,38 @@
   -webkit-animation-direction: alternate;
   animation-direction: alternate;
 
+=======
+  @include desktop{
+    width:100%;
+    margin: auto;
+  }
+  @include ipadPro{
+    width:100%;
+    margin: auto;
+  }
+  @include pad{
+    width:100%;
+    margin: auto;
+  }
+  @include iphone{
+    width:100%;
+    margin: auto;
+  }
+>>>>>>> 2b150f9f4277dafb67328df1ba37137c61243642
   &__logo {
     display: none;
   }
-
+  &__item{
+    @include desktop {
+    display:flex;
+    }
+  }
   &__form {
     height: 300px;
     width: 100%;
+    @include desktop{
+      max-width: 50%;
+    }
     background-color: #fefefe;
     padding: 10px;
     display: flex;
@@ -77,6 +104,15 @@
     display: flex !important;
     justify-content: space-around !important;
   }
+  &__Google-and-FB-box{
+    width: 100%;
+    @include desktop{
+      padding: 50px 0 0 30px;
+    }
+  }
+  &__providerButton{
+    width: 100% !important;
+  }
 
   .google-color {
     color: $primary-color;
@@ -91,6 +127,25 @@
     color: $primary-color;
     background-color: #3f59a8;
   }
+<<<<<<< HEAD
 }
 
 
+=======
+  
+  background-image: url("https://static.pexels.com/photos/414171/pexels-photo-414171.jpeg");
+  background-size: cover;
+  -webkit-animation: slidein 100s;
+  animation: slidein 100s;
+
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+
+  -webkit-animation-direction: alternate;
+  animation-direction: alternate;
+
+}
+>>>>>>> 2b150f9f4277dafb67328df1ba37137c61243642

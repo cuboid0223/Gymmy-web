@@ -232,7 +232,7 @@
 
 @media (min-width: 1025px) {
   .header__NoticeIcon {
-    margin-right: 20px;
+    margin-right: 6px;
   }
 }
 
@@ -240,8 +240,8 @@
   position: absolute;
   background-color: #db1f2a;
   color: #f5f5f5;
-  padding-left: 3px;
-  padding-right: 3px;
+  padding-left: 4px;
+  padding-right: 4px;
   border-radius: 50%;
   top: -2px;
   right: -2px;
@@ -1081,6 +1081,7 @@
 }
 
 .profile {
+  width: 100%;
   background-image: url("https://static.pexels.com/photos/414171/pexels-photo-414171.jpeg");
   background-size: cover;
   -webkit-animation: slidein 100s;
@@ -1097,6 +1098,26 @@
   font-family: "Open Sans", sans-serif;
   overflow: hidden;
   position: relative;
+}
+
+@media (min-width: 1025px) {
+  .profile {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+}
+
+@media (min-width: 1025px) {
+  .profile__leftContainer {
+    -webkit-box-flex: 0.5;
+        -ms-flex: 0.5;
+            flex: 0.5;
+    margin-top: 6rem;
+  }
 }
 
 .profile__infoContainer {
@@ -1222,10 +1243,6 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -1234,8 +1251,19 @@
   transition: 0.5s;
 }
 
+@media (min-width: 1025px) {
+  .profile__plansContainer {
+    -webkit-box-flex: 0.5;
+        -ms-flex: 0.5;
+            flex: 0.5;
+    margin-top: 6rem;
+  }
+}
+
 .profile__planModalBtn {
   width: 90%;
+  margin-left: 1rem !important;
+  margin-right: 1rem !important;
   padding: 0.5rem !important;
   background-color: #7bd1aa !important;
   position: absolute !important;
@@ -1292,10 +1320,49 @@
   animation-iteration-count: infinite;
   -webkit-animation-direction: alternate;
   animation-direction: alternate;
+<<<<<<< HEAD
+=======
+}
+
+@media (min-width: 1025px) {
+  .login {
+    width: 100%;
+    margin: auto;
+  }
+}
+
+@media (max-width: 1024px) {
+  .login {
+    width: 100%;
+    margin: auto;
+  }
+}
+
+@media (max-width: 768px) and (min-width: 569px) {
+  .login {
+    width: 100%;
+    margin: auto;
+  }
+}
+
+@media (max-width: 568px) {
+  .login {
+    width: 100%;
+    margin: auto;
+  }
+>>>>>>> 2b150f9f4277dafb67328df1ba37137c61243642
 }
 
 .login__logo {
   display: none;
+}
+
+@media (min-width: 1025px) {
+  .login__item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
 }
 
 .login__form {
@@ -1316,6 +1383,12 @@
   -ms-flex-pack: distribute;
       justify-content: space-around;
   border-radius: 10px;
+}
+
+@media (min-width: 1025px) {
+  .login__form {
+    max-width: 50%;
+  }
 }
 
 .login__formBox {
@@ -1370,6 +1443,20 @@
       justify-content: space-around !important;
 }
 
+.login__Google-and-FB-box {
+  width: 100%;
+}
+
+@media (min-width: 1025px) {
+  .login__Google-and-FB-box {
+    padding: 50px 0 0 30px;
+  }
+}
+
+.login__providerButton {
+  width: 100% !important;
+}
+
 .login .google-color {
   color: #f5f5f5;
   background-color: #4a91ff;
@@ -1385,6 +1472,8 @@
 }
 
 .signUp {
+  width: 100%;
+  margin: auto;
   height: 100vh;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1399,10 +1488,21 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  background-image: url("https://static.pexels.com/photos/414171/pexels-photo-414171.jpeg");
+  background-size: cover;
+  -webkit-animation: slidein 100s;
+  animation: slidein 100s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  animation-direction: alternate;
 }
 
 .calendarPage {
   width: 100%;
+  padding: 10px;
   background-color: #f5f5f5;
   font-family: "Open Sans", sans-serif;
 }
@@ -1417,28 +1517,46 @@
   }
 }
 
+<<<<<<< HEAD
 .calendarPage__desktopLeftContainer {
+=======
+.calendarPage__Rightcalendar {
+>>>>>>> 2b150f9f4277dafb67328df1ba37137c61243642
   -webkit-box-flex: 0.6;
       -ms-flex: 0.6;
           flex: 0.6;
 }
 
 @media (min-width: 1025px) {
+<<<<<<< HEAD
   .calendarPage__desktopLeftContainer {
     margin-top: 3rem;
+=======
+  .calendarPage__Rightcalendar {
+    margin-top: 6.7rem;
+>>>>>>> 2b150f9f4277dafb67328df1ba37137c61243642
     padding: 1rem;
   }
 }
 
+<<<<<<< HEAD
 .calendarPage__desktopRightContainer {
+=======
+.calendarPage__Leftcalendar {
+>>>>>>> 2b150f9f4277dafb67328df1ba37137c61243642
   -webkit-box-flex: 0.4;
       -ms-flex: 0.4;
           flex: 0.4;
 }
 
 @media (min-width: 1025px) {
+<<<<<<< HEAD
   .calendarPage__desktopRightContainer {
     margin-top: 3rem;
+=======
+  .calendarPage__Leftcalendar {
+    margin-top: 6rem;
+>>>>>>> 2b150f9f4277dafb67328df1ba37137c61243642
     padding: 1rem;
   }
 }
@@ -1836,6 +1954,10 @@
 }
 
 .noticePage {
+  margin-top: 0 auto;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   width: 100%;
   height: 100vh;
   padding: 10px;
@@ -1850,12 +1972,15 @@
 }
 
 .noticeCard {
+  margin-top: 0 auto;
+  width: 50%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  top: 50%;
   background-color: #fefefe;
   padding: 10px;
   margin-top: 10px;
@@ -1947,9 +2072,29 @@
 }
 
 .settingPage {
-  background-color: #fff;
-  margin-top: 70px;
+  padding: 2em;
+  background-color: white;
+  margin-top: auto;
   height: 100vh;
+  width: 100%;
+}
+
+@media (min-width: 1025px) {
+  .settingPage {
+    padding: 150px 450px;
+    width: 100% !important;
+    margin-top: auto;
+    height: 100vh;
+  }
+}
+
+@media (max-width: 768px) and (min-width: 569px) {
+  .settingPage {
+    padding: 50px 150px;
+    width: 100% !important;
+    margin-top: auto;
+    height: 100vh;
+  }
 }
 
 .planItem {

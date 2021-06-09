@@ -19,7 +19,6 @@ const NoticeCard = ({ imageURL, desc }) => {
       onClick={clickCard}
     >
       <Avatar src={imageURL} alt="logo" />
-
       {/* hide the text to "..." when the text is too long */}
       {/* https://dev.to/javaofdoom/neatly-shorten-text-that-is-too-long-to-display-l84 */}
       <p className="noticeCard__desc">{desc}</p>

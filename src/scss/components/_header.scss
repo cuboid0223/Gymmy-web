@@ -92,15 +92,15 @@
   &__NoticeIcon {
     color: $secondary-color;
     @include desktop {
-      margin-right: 20px;
+      margin-right: 6px;
     }
   }
   &__NoticeIconCount {
     position: absolute;
     background-color: $alert-color;
     color: $primary-color;
-    padding-left: 3px;
-    padding-right: 3px;
+    padding-left: 4px;
+    padding-right: 4px;
     border-radius: 50%;
     top: -2px;
     right: -2px;

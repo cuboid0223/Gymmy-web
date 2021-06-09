@@ -219,97 +219,102 @@ const CalendarPage = () => {
     <div className="calendarPage">
       {plansDateRange && plans ? (
         <>
-          <Calendar
-            className="calendarPage__calendar"
-            onChange={onDateChange}
-            showDoubleView={JSON.parse(showDoubleView)}
-            showWeekNumbers={JSON.parse(showWeekNumbers)}
-            value={date}
-            //nextLabel={<ArrowRightIcon onClick={() => onClickLabel("next")} />}
-            nextLabel={<ArrowRightIcon />}
-            next2Label={null}
-            //prevLabel={<ArrowLeftIcon onClick={() => onClickLabel("prev")} />}
-            prevLabel={<ArrowLeftIcon />}
-            prev2Label={null}
-            // showNavigation={false}
-            // onClickMonth={getThisMonthPlans}
-            tileClassName={({ date, view }) => {
-              if (plansDateRange && view === "month") {
-                for (let i = 0; i < plansDateRange.length; i++) {
-                  if (
-                    date.valueOf() >= plansDateRange[i][0].start &&
-                    date.valueOf() <= plansDateRange[i][0].end
-                  ) {
-                    return "tile_active";
+          <div className="calendarPage__Rightcalendar">
+            <Calendar
+              className="calendarPage__calendar"
+              onChange={onDateChange}
+              showDoubleView={JSON.parse(showDoubleView)}
+              showWeekNumbers={JSON.parse(showWeekNumbers)}
+              value={date}
+              //nextLabel={<ArrowRightIcon onClick={() => onClickLabel("next")} />}
+              nextLabel={<ArrowRightIcon />}
+              next2Label={null}
+              //prevLabel={<ArrowLeftIcon onClick={() => onClickLabel("prev")} />}
+              prevLabel={<ArrowLeftIcon />}
+              prev2Label={null}
+              // showNavigation={false}
+              // onClickMonth={getThisMonthPlans}
+              tileClassName={({ date, view }) => {
+                if (plansDateRange && view === "month") {
+                  for (let i = 0; i < plansDateRange.length; i++) {
+                    if (
+                      date.valueOf() >= plansDateRange[i][0].start &&
+                      date.valueOf() <= plansDateRange[i][0].end
+                    ) {
+                      return "tile_active";
+                    }
                   }
                 }
-              }
-            }}
-          />
-          <div className="calendarPage__functionsContainer">
-            <div className="calendarPage__rightFunctionsContainer">
-              <IconButton
-                color={plansListOpen ? "primary" : "default"}
-                onClick={() => setPlansListOpen(plansListOpen ? false : true)}
-              >
-                <EventNoteIcon className="icon icon-active " />
-              </IconButton>
+              }}
+            />
+            <div className="calendarPage__functionsContainer">
+              <div className="calendarPage__rightFunctionsContainer">
+                <IconButton
+                  color={plansListOpen ? "primary" : "default"}
+                  onClick={() => setPlansListOpen(plansListOpen ? false : true)}
+                >
+                  <EventNoteIcon className="icon icon-active " />
+                </IconButton>
 
-              <IconButton
-                color={settingListOpen ? "primary" : "default"}
-                onClick={() =>
-                  setSettingListOpen(settingListOpen ? false : true)
-                }
-              >
-                <SettingsIcon className="icon" />
-              </IconButton>
+                <IconButton
+                  color={settingListOpen ? "primary" : "default"}
+                  onClick={() =>
+                    setSettingListOpen(settingListOpen ? false : true)
+                  }
+                >
+                  <SettingsIcon className="icon" />
+                </IconButton>
+              </div>
+            </div>
+            {plansListOpen && (
+              <ListOfPlans plans={plans} backgroundColor={"#fefefe"} />
+            )}
+
+            {settingListOpen && (
+              <div>
+                <SettingItem name="showDoubleView" />
+                <SettingItem name="showWeekNumbers" />
+              </div>
+            )}
+
+            <div className="caloriesCalculator">
+              <h3>{moment(date).format("L")} surplus calories</h3>
+              <div className="caloriesCalculator__container">
+                <div>
+                  {planTDEE[0] ? planTDEE[0] : parseInt(TDEE)} <p>target</p>
+                </div>
+                <pre> - </pre>
+                <div>
+                  {totalCalories}
+                  <p>foods</p>
+                </div>
+                <pre> + </pre>
+                <div>
+                  {sportsTotalCalories}
+                  <p>sports</p>
+                </div>
+                <pre> = </pre>
+                <div>
+                  {surplusCalories}
+                  <p>surplus</p>
+                </div>
+              </div>
             </div>
           </div>
-          {plansListOpen && (
-            <ListOfPlans plans={plans} backgroundColor={"#fefefe"} />
-          )}
-
-          {settingListOpen && (
-            <div>
-              <SettingItem name="showDoubleView" />
-              <SettingItem name="showWeekNumbers" />
-            </div>
-          )}
-
-          <div className="caloriesCalculator">
-            <h3>{moment(date).format("L")} surplus calories</h3>
-            <div className="caloriesCalculator__container">
-              <div>
-                {planTDEE[0] ? planTDEE[0] : parseInt(TDEE)} <p>target</p>
-              </div>
-              <pre> - </pre>
-              <div>
-                {totalCalories}
-                <p>foods</p>
-              </div>
-              <pre> + </pre>
-              <div>
-                {sportsTotalCalories}
-                <p>sports</p>
-              </div>
-              <pre> = </pre>
-              <div>
-                {surplusCalories}
-                <p>surplus</p>
-              </div>
-            </div>
+          
+          <div className="calendarPage__Leftcalendar">
+            {/* 早餐 */}
+            <Card type="breakfast" date={date} category="food" />
+            {/* 中餐 */}
+            <Card type="lunch" date={date} category="food" />
+            {/* 晚餐 */}
+            <Card type="dinner" date={date} category="food" />
+            {/* 點心 */}
+            <Card type="snack" date={date} category="food" />
+            <hr />
+            {/* 運動 */}
+            <Card type="sports" date={date} category="sport" />
           </div>
-          {/* 早餐 */}
-          <Card type="breakfast" date={date} category="food" />
-          {/* 中餐 */}
-          <Card type="lunch" date={date} category="food" />
-          {/* 晚餐 */}
-          <Card type="dinner" date={date} category="food" />
-          {/* 點心 */}
-          <Card type="snack" date={date} category="food" />
-          <hr />
-          {/* 運動 */}
-          <Card type="sports" date={date} category="sport" />
         </>
       ) : (
         <LoadingPage />

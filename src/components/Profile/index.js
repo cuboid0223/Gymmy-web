@@ -220,13 +220,15 @@ const Profile = () => {
 
   return (
     <div className="profile">
+      <div className ="profile__leftContainer">
       <IconButton
         className="profile__userInfo__settingButton"
         onClick={isModalOpen}
       >
         <SettingsIcon />
       </IconButton>
-      <div>
+      
+
         <div className="profile__infoContainer personalBasicInfoContainer">
           {userLoggedIn.photoURL ? (
             <Avatar className="profile__avatar" src={userLoggedIn?.photoURL} />
@@ -341,31 +343,32 @@ const Profile = () => {
             </form>
           </Modal>
         </div>
-
-        <div className="profile__infoContainer">
-          {/* current state  */}
-          <ul className="profile__userInfo">
-            <li>
-              <span>BMI</span>
-              <p>{BMIData?.bmi}</p>
-            </li>
-            <li>
-              <span>activity</span>
-              <p>{userInfo?.activity_level}</p>
-            </li>
-            <li>
-              <span>TDEE</span>
-              <p>{user_TDEE} cal</p>
-            </li>
-          </ul>
-          {/* ideal state  */}
-          {/* <div className="profile__weightContainer">
-              <h3>Ideal </h3>
-              <p>Weight: {Math.round(idealWeight * 100) / 100} kg</p>
-              <p>Healthy BMI Range: {BMIData?.healthy_bmi_range}</p>
-            </div> */}
-        </div>
-
+                <div className="profile__infoContainer">
+                  {/* current state  */}
+                <ul className="profile__userInfo">
+                  <li>
+                    <span>BMI</span>
+                    <p>{BMIData?.bmi}</p>
+                  </li>
+                  <li>
+                    <span>activity</span>
+                    <p>{userInfo?.activity_level}</p>
+                  </li>
+                  <li>
+                    <span>TDEE</span>
+                    <p>{user_TDEE} cal</p>
+                  </li>
+                </ul>
+                {/* ideal state  */}
+                {/* <div className="profile__weightContainer">
+                    <h3>Ideal </h3>
+                    <p>Weight: {Math.round(idealWeight * 100) / 100} kg</p>
+                    <p>Healthy BMI Range: {BMIData?.healthy_bmi_range}</p>
+                  </div> */}
+              </div>
+              </div>
+              
+              
         <div className="profile__plansContainer">
           {/* list of user plans */}
           <ListOfPlans plans={plans} />
@@ -373,6 +376,8 @@ const Profile = () => {
           <Button className="profile__planModalBtn" onClick={planModalOpen_f}>
             Start a new plan
           </Button>
+          
+          
           {/* the modal */}
           <PlanModal
             TDEE={user_TDEE}
@@ -382,7 +387,8 @@ const Profile = () => {
           />
         </div>
       </div>
-    </div>
+
+    
   );
 };
 

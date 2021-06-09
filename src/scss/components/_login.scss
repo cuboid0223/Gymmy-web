@@ -1,28 +1,4 @@
-$pcWidth:768px;
-$padWidth:768px;
-$phoneWidth:320px;
-
-@mixin pc(){
-  @media all and (min-width: $pcWidth) {
-    @content ;
-  }
-}
-
-
-@mixin pad(){
-  @media all and (max-width: $padWidth) {
-    @content ;
-    
-  }
-}
-
-@mixin phone(){
-  @media all and (max-width: $phoneWidth) {
-    @content ;
-    
-  }
-}
-
+  
 .login {
   height: 100vh;
   padding: 20px;
@@ -31,26 +7,30 @@ $phoneWidth:320px;
   justify-content: center;
   align-items: center;
   background-color: $primary-color;
-  @include pc{
-  width: 100%;
-  max-width:2000px;
-  margin: auto;
+  @include desktop{
+    width:100%;
+    margin: auto;
+  }
+  @include ipadPro{
+    width:100%;
+    margin: auto;
   }
   @include pad{
-  width: 100%;
-  max-width:2000px;
-  margin: auto;
+    width:100%;
+    margin: auto;
   }
-  @include phone{
-  width: 100%;
-  max-width:2000px;
-  margin: auto;
+  @include iphone{
+    width:100%;
+    margin: auto;
   }
-
   &__logo {
     display: none;
   }
-
+  &__item{
+    @include desktop {
+    display:flex;
+    }
+  }
   &__form {
     height: 300px;
     width: 100%;
@@ -104,7 +84,12 @@ $phoneWidth:320px;
     display: flex !important;
     justify-content: space-around !important;
   }
-
+  &__Google-and-FB-box{
+    width: 100%;
+    @include desktop{
+      padding: 50px 0 0 30px;
+    }
+  }
   .google-color {
     color: $primary-color;
     background-color: #4a91ff;
@@ -118,7 +103,19 @@ $phoneWidth:320px;
     color: $primary-color;
     background-color: #3f59a8;
   }
+  
+  background-image: url("https://static.pexels.com/photos/414171/pexels-photo-414171.jpeg");
+  background-size: cover;
+  -webkit-animation: slidein 100s;
+  animation: slidein 100s;
+
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+
+  -webkit-animation-direction: alternate;
+  animation-direction: alternate;
+
 }
-
-
-

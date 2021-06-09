@@ -1,29 +1,7 @@
-$pcWidth:768px;
-$padWidth:768px;
-$phoneWidth:320px;
-
-@mixin pc(){
-  @media all and (min-width: $pcWidth) {
-    @content ;
-  }
-}
-
-
-@mixin pad(){
-  @media all and (max-width: $padWidth) {
-    @content ;
-    
-  }
-}
-
-@mixin phone(){
-  @media all and (max-width: $phoneWidth) {
-    @content ;
-    
-  }
-}
 
 .signUp {
+  width: 100%;
+  margin: auto;
   height: 100vh;
   //   margin-top: 60px;
   display: flex;
@@ -44,20 +22,6 @@ $phoneWidth:320px;
   -webkit-animation-direction: alternate;
   animation-direction: alternate;
 
-  @include pc{
-    width: 100%;
-    max-width:400px;
-    margin: auto;
-    }
-    @include pad{
-    width: 100%;
-    max-width:2000px;
-    margin: auto;
-    }
-    @include phone{
-    width: 100%;
-    max-width:2000px;
-    margin: auto;
-    }
+  
     
 }

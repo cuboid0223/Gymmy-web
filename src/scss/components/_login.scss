@@ -34,6 +34,9 @@
   &__form {
     height: 300px;
     width: 100%;
+    @include desktop{
+      max-width: 50%;
+    }
     background-color: #fefefe;
     padding: 10px;
     display: flex;
@@ -90,6 +93,10 @@
       padding: 50px 0 0 30px;
     }
   }
+  &__providerButton{
+    width: 100% !important;
+  }
+
   .google-color {
     color: $primary-color;
     background-color: #4a91ff;

@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import _ from "lodash/fp";
 import AlertMessage from "../AlertMessage";
-
+import logo from "../.././assets/gymmy.png";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -120,6 +120,7 @@ const SignUp = () => {
 
   return (
     <div className="signUp">
+      <img className="login__logo" src={logo} alt="Logo" />
       <form className="login__form" onSubmit={(e) => e.preventDefault()}>
         <div className="login__formBox">
           <label className="login__formLabel">E-mail:</label>

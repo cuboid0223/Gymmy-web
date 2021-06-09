@@ -1354,6 +1354,12 @@
   border-radius: 10px;
 }
 
+@media (min-width: 1025px) {
+  .login__form {
+    max-width: 50%;
+  }
+}
+
 .login__formBox {
   width: 100%;
 }
@@ -1416,6 +1422,10 @@
   }
 }
 
+.login__providerButton {
+  width: 100% !important;
+}
+
 .login .google-color {
   color: #f5f5f5;
   background-color: #4a91ff;
@@ -1431,6 +1441,8 @@
 }
 
 .signUp {
+  width: 100%;
+  margin: auto;
   height: 100vh;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1455,30 +1467,6 @@
   animation-iteration-count: infinite;
   -webkit-animation-direction: alternate;
   animation-direction: alternate;
-}
-
-@media all and (min-width: 768px) {
-  .signUp {
-    width: 100%;
-    max-width: 400px;
-    margin: auto;
-  }
-}
-
-@media all and (max-width: 768px) {
-  .signUp {
-    width: 100%;
-    max-width: 2000px;
-    margin: auto;
-  }
-}
-
-@media all and (max-width: 320px) {
-  .signUp {
-    width: 100%;
-    max-width: 2000px;
-    margin: auto;
-  }
 }
 
 .calendarPage {
@@ -2044,7 +2032,7 @@
   }
 }
 
-@media all and (max-width: 768px) {
+@media (max-width: 768px) and (min-width: 569px) {
   .planDetailPage {
     padding-left: 20px;
     padding-right: 20px;
